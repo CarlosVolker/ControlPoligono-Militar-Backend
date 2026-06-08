@@ -148,11 +148,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# BrowsableAPIRenderer solo en DEBUG: en produccion la API responde solo JSON.
+_DEFAULT_RENDERER_CLASSES = ['rest_framework.renderers.JSONRenderer']
+if DEBUG:
+    _DEFAULT_RENDERER_CLASSES.append('rest_framework.renderers.BrowsableAPIRenderer')
+
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Permite interfaz web de formularios
-     ],
+    'DEFAULT_RENDERER_CLASSES': _DEFAULT_RENDERER_CLASSES,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'apps.identity.authentication.SessionCsrfAuthentication',
     ],
@@ -190,9 +192,9 @@ CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
 # --- Feature flags de migración de autorización ---
 # FASE 3: activar para usar RolePermission/PositionPermission en lugar de PermissionRule
-AUTHZ_USE_PERMISSION_MODEL = config('AUTHZ_USE_PERMISSION_MODEL', default=False, cast=bool)
+AUTHZ_USE_PERMISSION_MODEL = config('AUTHZ_USE_PERMISSION_MODEL', default=True, cast=bool)
 # FASE 4: activar para usar UnitMembership como fuente de scope
-AUTHZ_USE_UNIT_MEMBERSHIP = config('AUTHZ_USE_UNIT_MEMBERSHIP', default=False, cast=bool)
+AUTHZ_USE_UNIT_MEMBERSHIP = config('AUTHZ_USE_UNIT_MEMBERSHIP', default=True, cast=bool)
 
 # Onboarding: contrasena inicial asignada cuando un admin crea un usuario.
 # El usuario es forzado a cambiarla en su primer inicio de sesion.

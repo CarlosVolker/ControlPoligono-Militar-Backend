@@ -47,6 +47,10 @@ Todas las configuraciones sensibles se pasan por variables de entorno (archivo `
 | `DEFAULT_TEMP_PASSWORD` | Contraseña temporal para usuarios nuevos | `User1234` |
 | `AXES_FAILURE_LIMIT` | Intentos fallidos antes del bloqueo | `5` |
 | `AXES_COOLOFF_MINUTES` | Minutos de bloqueo | `30` (dev) / `60` (prod) |
+| `AUTHZ_USE_PERMISSION_MODEL` | Usa RolePermission/PositionPermission (modelo v2). **Debe ser `True`** — el sistema ya migró completamente. | `True` |
+| `AUTHZ_USE_UNIT_MEMBERSHIP` | Usa UnitMembership como fuente de scope (modelo v2). **Debe ser `True`**. | `True` |
+
+> Los flags `AUTHZ_USE_PERMISSION_MODEL` y `AUTHZ_USE_UNIT_MEMBERSHIP` son feature flags de la migración al modelo de autorización v2. La migración está completa: deben dejarse en `True` en todos los entornos. Ponerlos en `False` reactiva código legacy y produce evaluación de permisos incorrecta.
 
 ## Checklist de producción
 

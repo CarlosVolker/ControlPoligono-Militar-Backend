@@ -2,6 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -621,9 +623,6 @@ class UsuarioViewSet(TenantScopedQuerysetMixin, viewsets.ModelViewSet):
         if not new_password:
             return Response({'error': 'La nueva contraseña es requerida'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if len(new_password) < 6:
-            return Response({'error': 'La contraseña debe tener al menos 6 caracteres'}, status=status.HTTP_400_BAD_REQUEST)
-
         # Si es self y NO esta en flujo de must_change, exigir old_password.
         # Si esta en must_change (login forzado tras temporal), permite sin old_password
         # porque la sesion ya valido la temporal.
@@ -632,6 +631,12 @@ class UsuarioViewSet(TenantScopedQuerysetMixin, viewsets.ModelViewSet):
                 return Response({'error': 'Contraseña actual es requerida'}, status=status.HTTP_400_BAD_REQUEST)
             if not user.check_password(old_password):
                 return Response({'error': 'Contraseña actual incorrecta'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Valida fortaleza con los AUTH_PASSWORD_VALIDATORS del proyecto.
+        try:
+            validate_password(new_password, user=user)
+        except DjangoValidationError as exc:
+            return Response({'error': exc.messages}, status=status.HTTP_400_BAD_REQUEST)
 
         user.password = make_password(new_password)
         user.password_changed_at = timezone.now()
@@ -664,10 +669,7 @@ class UsuarioViewSet(TenantScopedQuerysetMixin, viewsets.ModelViewSet):
         user.password_changed_at = None
         user.save(update_fields=['password', 'must_change_password', 'password_changed_at'])
         return Response(
-            {
-                'detail': f'Contrasena reseteada al valor temporal. El usuario debera cambiarla en su proximo login.',
-                'temp_password': settings.DEFAULT_TEMP_PASSWORD,
-            },
+            {'detail': 'Contraseña reseteada. El usuario deberá cambiarla en su próximo inicio de sesión.'},
             status=status.HTTP_200_OK,
         )
 
@@ -1290,6 +1292,33 @@ class CalibreViewSet(viewsets.ModelViewSet):
         'destroy':        'manage',
     }
 
+    def _require_super_admin(self, request):
+        """El catalogo de calibres es global: solo super_admin puede modificarlo.
+        Lanza PermissionDenied (403) si el solicitante no es super_admin."""
+        from rest_framework.exceptions import PermissionDenied
+        account = getattr(request, 'identity_account', None)
+        is_super = account is not None and account.assignments.filter(
+            position__role__code='super_admin', is_active=True,
+        ).exists()
+        if not is_super:
+            raise PermissionDenied('Solo super_admin puede gestionar el catálogo global de calibres.')
+
+    def create(self, request, *args, **kwargs):
+        self._require_super_admin(request)
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        self._require_super_admin(request)
+        return super().update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        self._require_super_admin(request)
+        return super().partial_update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        self._require_super_admin(request)
+        return super().destroy(request, *args, **kwargs)
+
 
 class EjercicioMilitarViewSet(TenantScopedQuerysetMixin, viewsets.ModelViewSet):
     queryset = EjercicioMilitar.objects.all().select_related(
@@ -1674,11 +1703,19 @@ class EligibleTargetUnitsView(APIView):
         if not primary_unit:
             return Response({'results': [], 'reason': 'sin_unidad_personal'})
 
+        # El usuario target debe estar dentro del scope del solicitante: su
+        # unidad primaria tiene que pertenecer a las unidades permitidas.
+        requester = getattr(request, 'identity_account', None)
+        allowed = get_allowed_unit_ids(requester)
+        if allowed is not None and primary_unit.id not in allowed:
+            return Response(
+                {'detail': 'El usuario objetivo no está dentro de su rama.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         eligible = eligible_target_units(primary_unit, max_levels=2)
 
         # Filtrar por scope del solicitante.
-        requester = getattr(request, 'identity_account', None)
-        allowed = get_allowed_unit_ids(requester)
         if allowed is not None:
             eligible = [u for u in eligible if u.id in allowed]
 
@@ -1762,9 +1799,20 @@ class UserPermissionOverrideViewSet(viewsets.ModelViewSet):
             account__tenant=self.request.tenant,
         ).select_related('account__user', 'created_by__user')
 
+    def _validate_account_tenant(self, serializer):
+        account = serializer.validated_data.get('account')
+        if account is not None and account.tenant_id != getattr(self.request.tenant, 'id', None):
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({'account': 'La cuenta no pertenece al tenant del request.'})
+
     def perform_create(self, serializer):
+        self._validate_account_tenant(serializer)
         # created_by = el solicitante
         serializer.save(created_by=getattr(self.request, 'identity_account', None))
+
+    def perform_update(self, serializer):
+        self._validate_account_tenant(serializer)
+        serializer.save()
 
 
 # Catalogo documentado de acciones (clave: action_code -> {label, description}).
