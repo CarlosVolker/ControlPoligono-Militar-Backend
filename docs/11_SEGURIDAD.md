@@ -390,3 +390,78 @@ Agregar una segunda capa de verificación para las cuentas `super_admin` y `tena
 | Tokens de larga vida | Access token: 10 min; rotación de refresh |
 | Inyección SQL | ORM de Django → queries parametrizadas |
 | Exposición de datos en listados | Scope automático en `get_queryset` |
+
+---
+
+## Auditoría de seguridad — 2026-06-07
+
+### Correcciones aplicadas
+
+**C1 — Reset de contraseña (un solo uso + expiración + fortaleza)**
+Valida el `codigo` exacto contra `CodigoRecuperacion`, verifica expiración (<5 min), borra el código tras usarlo (un solo uso), y valida fortaleza con `validate_password()`.
+Archivo: `apipoligono/utils/recuperacion_utilidades.py`
+
+**C2 — Endpoints de recuperación (throttle + respuestas opacas)**
+Las 4 vistas (`/api/recuperar/`, `/api/recuperar/crear/`, `/api/recuperar/comprobar/`, `/api/recuperar/cambiar/`) usan `AuthEndpointThrottle`. Todas responden siempre HTTP 200 con mensaje genérico — no revelan si el RUT existe o no.
+Archivo: `apipoligono/views.py` (vistas de recuperación)
+
+**C3 — Feature flags de autorización v2 con default `True`**
+`AUTHZ_USE_PERMISSION_MODEL` y `AUTHZ_USE_UNIT_MEMBERSHIP` cambiaron su default a `True` en `settings.py`. El sistema opera exclusivamente en modo v2 (RolePermission + UnitMembership).
+Archivo: `control_poligono/settings.py`
+
+**C4 — `UserPermissionOverride` validación cross-tenant**
+`UserPermissionOverrideViewSet` valida que el `account` del body pertenezca al mismo tenant del request antes de crear o editar un override.
+Archivo: `apps/authorization/views.py`
+
+**A1 — `RolePermission`/`PositionPermission` scoping por tenant**
+`RolePermissionViewSet` y `PositionPermissionViewSet` filtran por tenant. Roles de sistema (`is_system=True`) solo pueden ser editados por super_admin.
+Archivo: `apps/authorization/views.py`
+
+**A2 — `CalibreViewSet` restringido a super_admin**
+Create/update/delete del catálogo de calibres requiere ser super_admin (helper `_require_super_admin`).
+Archivo: `apipoligono/views.py` (CalibreViewSet)
+
+**A3 — `BrowsableAPIRenderer` solo en `DEBUG=True`**
+En producción (`DEBUG=False`) solo `JSONRenderer` está activo. Elimina la superficie de ataque del formulario HTML de DRF.
+Archivo: `control_poligono/settings.py`
+
+**A4 — `EligibleTargetUnitsView` scope validado**
+Valida que la unidad primaria del usuario target esté dentro del scope del solicitante antes de responder.
+Archivo: `apipoligono/views.py` (EligibleTargetUnitsView)
+
+**A5 — PII eliminada de logs**
+Eliminados `print()` con RUT del backend de autenticación.
+Archivo: `apipoligono/backends.py`
+
+**M1 — Contraseña temporal no devuelta en respuesta JSON**
+`resetear_contrasena` ya no incluye la contraseña en la respuesta.
+Archivo: `apipoligono/utils/recuperacion_utilidades.py`
+
+**M3 — Validadores de contraseña en todos los flujos**
+`cambiar_contrasena` usa `validate_password()` de Django en todos los flujos de cambio.
+Archivo: `apipoligono/utils/recuperacion_utilidades.py`
+
+---
+
+### Pendientes con decisión de negocio
+
+**M2 — `on_delete=CASCADE` en `ResultadoTiro`**
+`ResultadoTiro.id_usuario`, `ResultadoTiro.id_arma` y `ResultadoTiro.id_fraccion` usan CASCADE. Borrar un usuario, arma o fracción destruye silenciosamente registros de evaluaciones militares con valor histórico y potencialmente legal.
+Opciones: soft-delete con campo `is_active`, `PROTECT` para impedir el borrado si existen resultados, o flujo de archivo previo al borrado.
+Archivo: `apipoligono/models.py` (líneas 165-167)
+
+**M5 — Serializers exponen PII amplia en listados**
+`tiradores_elegibles` y `usuarios_listar` devuelven RUT, correo y assignments completos a cualquier rol con permiso `view_unit`. Se debe definir qué campos necesita realmente el frontend para cada vista antes de reducir el serializer.
+Archivos: `apipoligono/views.py` (tiradores_elegibles ~línea 812, usuarios_listar ~línea 1139)
+
+**M6 — Sesión sin tope absoluto de tiempo**
+La sesión es sliding (8h de inactividad), pero un usuario activo nunca es desconectado. En entorno militar puede ser relevante un tope absoluto (ej. 12h desde el login). Requiere decidir si se necesita expiración absoluta y cuántas horas.
+Archivo: `control_poligono/settings.py` (`SESSION_COOKIE_AGE`, `SESSION_EXPIRE_AT_BROWSER_CLOSE`)
+
+**B4 — Remitente de correo hardcodeado**
+El correo de recuperación de contraseña tiene un remitente hardcodeado. Requiere definir el correo institucional oficial del sistema.
+Archivo: `apipoligono/utils/recuperacion_utilidades.py`
+
+**I1 — Headers de seguridad HTTP para producción (Nginx)**
+Pendientes de configurar cuando se despliegue el servidor Nginx: `SECURE_HSTS_SECONDS`, `SECURE_SSL_REDIRECT`, `SECURE_PROXY_SSL_HEADER`, `SECURE_CONTENT_TYPE_NOSNIFF`, `X_FRAME_OPTIONS` en Django (además de los ya presentes en el bloque Nginx).
+Documento a actualizar cuando se complete el deploy: `docs/08_DEPLOYMENT.md`

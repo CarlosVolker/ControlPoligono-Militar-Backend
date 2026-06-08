@@ -251,3 +251,22 @@ sudo systemctl restart poligono
 | `ALLOWED_HOSTS` | `localhost,127.0.0.1` | Dominio real |
 | Servidor | `runserver` | Gunicorn + Nginx |
 | CORS | `localhost:3000,5173` | Dominio del frontend |
+
+---
+
+## Headers de seguridad HTTP en Django — pendientes para producción
+
+Cuando se configure Nginx en producción, agregar también las siguientes variables en Django (`settings.py` o `.env`) para que `SecurityMiddleware` las gestione. No se activan hasta tener el proxy TLS configurado porque `SECURE_SSL_REDIRECT` en desarrollo rompe el servidor local.
+
+| Variable Django | Valor recomendado | Propósito |
+|---|---|---|
+| `SECURE_HSTS_SECONDS` | `63072000` (2 años) | Fuerza HTTPS en el navegador vía HSTS |
+| `SECURE_HSTS_INCLUDE_SUBDOMAINS` | `True` | Extiende HSTS a subdominios |
+| `SECURE_SSL_REDIRECT` | `True` | Redirige HTTP → HTTPS desde Django |
+| `SECURE_PROXY_SSL_HEADER` | `('HTTP_X_FORWARDED_PROTO', 'https')` | Indica que Nginx ya terminó TLS |
+| `SECURE_CONTENT_TYPE_NOSNIFF` | `True` | Header `X-Content-Type-Options: nosniff` |
+| `X_FRAME_OPTIONS` | `'DENY'` | Header `X-Frame-Options: DENY` |
+
+Los headers `Strict-Transport-Security`, `X-Content-Type-Options` y `X-Frame-Options` ya están configurados en el bloque Nginx del archivo anterior. Una vez que Django también los emita, el navegador recibirá los headers desde ambas capas — eso es correcto y no genera conflicto.
+
+Documentar estas variables en `.env.example` y activarlas en el mismo momento en que se configure el servidor Nginx. Ver estado de esta tarea en `docs/11_SEGURIDAD.md` (pendiente I1).
