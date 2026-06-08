@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "Bash(*python* manage.py check*)",
+      "Bash(*python* manage.py test*)",
+      "Bash(*python* manage.py makemigrations*)",
+      "Bash(*python* manage.py migrate*)",
+      "Bash(*python* manage.py showmigrations*)",
+      "Bash(*python* manage.py shell*)",
+      "Bash(*python* manage.py runserver*)",
+      "Bash(*python* manage.py collectstatic*)",
+      "Bash(*python* manage.py init_access_model*)",
+      "Bash(*python* manage.py crear_master*)",
+      "Bash(*python* manage.py seed_positions*)",
+      "Bash(*python* manage.py dump_user_assignments*)",
+      "Bash(pip list*)",
+      "Bash(pip show*)",
+      "Bash(pip freeze*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(git remote -v*)",
+      "Bash(git stash list*)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fd*)",
+      "Bash(git checkout --*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf C:*)",
+      "Bash(rm -rf ~*)",
+      "PowerShell(Remove-Item -Recurse -Force C:\\*)"
+    ]
+  }
+}
