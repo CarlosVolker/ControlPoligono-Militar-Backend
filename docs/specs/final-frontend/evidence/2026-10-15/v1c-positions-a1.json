@@ -1,0 +1,128 @@
+{
+  "schema": "frontend-t11-v1c-positions-a1/v1",
+  "date": "2026-10-15",
+  "task": "T11 V1c — puestos por UI de punta a punta (alias A1 acreditado; sin holder a propósito)",
+  "alias": "A1",
+  "stage": "residue",
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "alias_matched": true,
+    "missing_field": null,
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "permissions_count": 41
+    }
+  },
+  "position": {
+    "marker": "T11A1POSMVA9YIWO",
+    "code": "T11A1POSMVA9YIWOP",
+    "id": 60,
+    "create": {
+      "method": "POST",
+      "path": "/api/posiciones/",
+      "status": 201
+    },
+    "create_fields": [
+      "armory",
+      "armory_code",
+      "code",
+      "created_at",
+      "current_holders_count",
+      "description",
+      "id",
+      "is_active",
+      "is_unique_holder",
+      "name",
+      "organization_unit",
+      "organization_unit_code",
+      "organization_unit_name",
+      "recinto",
+      "recinto_code",
+      "recinto_name",
+      "role",
+      "role_code",
+      "role_name",
+      "scope_code",
+      "scope_policy",
+      "tenant",
+      "updated_at"
+    ],
+    "role_selected": "admin_unidad",
+    "unit_selected": true,
+    "detail_get": 200,
+    "history_get": 200,
+    "history_tab": "sin_request_nuevo",
+    "holders_tab": true,
+    "edit_put": {
+      "opened": true,
+      "method_set": "PUT",
+      "status": 200
+    },
+    "edit_patch": {
+      "opened": true,
+      "method_set": "PATCH",
+      "status": 200
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/api/posiciones/60/",
+      "status": 204
+    }
+  },
+  "verify": {
+    "position_get_after_delete": 404
+  },
+  "residue": {
+    "positions_rows_with_marker": 0
+  },
+  "gate": {
+    "actor_role": "super_admin",
+    "holder_assigned_on_purpose": false,
+    "credentials_printed_or_persisted": false
+  },
+  "cleanup_errors": [],
+  "network": {
+    "total_api_calls": 52,
+    "mutations": [
+      {
+        "seq": 13,
+        "method": "POST",
+        "path": "/api/posiciones/",
+        "raw": "/api/posiciones/",
+        "status": 201
+      },
+      {
+        "seq": 28,
+        "method": "PUT",
+        "path": "/api/posiciones/{id}/",
+        "raw": "/api/posiciones/60/",
+        "status": 200
+      },
+      {
+        "seq": 40,
+        "method": "PATCH",
+        "path": "/api/posiciones/{id}/",
+        "raw": "/api/posiciones/60/",
+        "status": 200
+      },
+      {
+        "seq": 47,
+        "method": "DELETE",
+        "path": "/api/posiciones/{id}/",
+        "raw": "/api/posiciones/60/",
+        "status": 204
+      }
+    ]
+  },
+  "page_errors": []
+}

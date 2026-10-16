@@ -1,0 +1,21 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "exercises",
+  "actor_alias": "A1",
+  "marker": "DCTMV7GUDU6EXC",
+  "record_id": 5,
+  "delete": {
+    "source": "UI click in identified confirmation",
+    "method": "DELETE",
+    "path": "/api/ejercicios/5/",
+    "status": 204
+  },
+  "reconcile_after_delete": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/ejercicios/5/",
+    "status": 404
+  },
+  "child_consumption_rows_created": 0
+}

@@ -1,0 +1,148 @@
+schema_version: "2.0"
+
+spec:
+  id: "spec-complete-promotion-001"
+  title: "Promoción completa de usuario temporal (recorrido íntegro en el cable)"
+  type: "full"
+  status: "approved"
+
+ownership:
+  created_by: "Lore Master"
+  created_at: "2026-10-05"
+  updated_at: "2026-10-05"
+  approved_at: "2026-10-05"
+  verified_at: null
+
+estimation:
+  complexity: "large"
+
+quality_gates:
+  tests: required
+  security_review: required
+  code_review: required
+  documentation: required
+
+specialist_reviews:
+  portal_warden: required
+  kobold_scholar: n/a
+  haste_halfling: n/a
+  arcane_architect: required
+  qa_goblin: required
+  hellknight_inspector: n/a
+
+risk:
+  level: "high"
+  flags:
+    - "auth"
+    - "permissions"
+    - "sensitive-data"
+    - "new-api"
+
+traceability:
+  related_specs:
+    - "spec-final-frontend-001"
+  related_decisions: []
+  related_bugs: []
+  related_audits: []
+
+closure:
+  superseded_by: null
+  abandoned_reason: null
+  consolidated_into: []
+
+# ---------------------------------------------------------------------------
+# Notas de trazabilidad (no normativas del schema; se conservan aquí porque
+# spec-meta.yaml es la única fuente de verdad de esta spec).
+#
+# Numeración: `docs/specs/complete-promotion/` no contenía specs previas, por lo
+# que corresponde `max(existentes) + 1` = `001` para esta carpeta
+# (docs/sdd.md > Numeración de IDs). El slug es el nombre de la carpeta. El
+# identificador fue además asignado por el preflight del orquestador que delegó
+# el encargo de formalización, y coincide con ese cálculo.
+#
+# Tipo: `full` por complejidad y riesgo, no por número de archivos. Esta spec
+# conserva un cuerpo único consolidado en `spec.md` (más `index.md`), porque
+# así se formalizó el encargo; la separación en requirements/technical-design/
+# tasks/verification no se hace aquí y no se promete para este artefacto.
+#
+# Estado: `approved` con `approved_at: 2026-10-05`. La base de aprobación es la
+# respuesta del operador «Dale con todo nada de datos minimos» a la pregunta de
+# ampliar backend y consumidores para detectar y confirmar la promoción
+# completa (spec.md §1.2, A-1/A-2). Ese «dale con todo» está acotado por el
+# verbo: aprueba ampliar el DISEÑO, no ejecutar. Por eso:
+#   - `verified_at` sigue en `null` y ningún quality gate está en `passed`.
+#   - No se ejecutó build, lint, tests, navegador, servidor, shell ni escritura
+#     en base de datos, y no se escribió código de promoción.
+#   - La aprobación no autoriza implementación ni equivale a veredicto
+#     VALIDATED de un gate de plan (docs/sdd.md > Estados). El veredicto de
+#     cierre lo emite el orquestador, no este artefacto.
+#
+# Gates y reviewers (derivados de `risk.flags`, docs/routing-triggers.md):
+#   - `security_review: required` por los flags `auth`, `permissions` y
+#     `sensitive-data`: la propuesta toca permiso `create_users`, devuelve PII de
+#     persona y reactiva una `Account` (spec.md §4.1, §6.2).
+#   - `tests: required`: promoción, precondición, `409` y revalidación en
+#     transacción son lógica comprobable.
+#   - `code_review: required` por el flag `new-api` (nueva acción de
+#     previsualización + nuevo código `409` en el contrato de alta).
+#   - `documentation: required`: cambia comportamiento visible de API y cliente.
+#   - `portal_warden: required` por `new-api`. El diseño read-only procede de un
+#     handoff Portal, que es evidencia técnica, NO veredicto de revisión.
+#   - `arcane_architect: required` por trigger secundario: `risk.level: high` con
+#     evidencia concreta de decisión arquitectónica durable — nuevo contrato de
+#     escritura en `POST /api/usuarios/` (precondición opcional + `409`) y
+#     cambio de comportamiento de `Account` en la promoción (spec.md §4.2,
+#     §6.2). Difiere del `n/a` de la spec padre, cuya evidencia era otra.
+#   - `kobold_scholar: n/a`: no hay `db-schema` ni `db-migration`.
+#     `Usuario.is_temporary` ya existe (spec.md S-12) y no se propone migración,
+#     campo ni modelo nuevo. Su `required` en la spec padre proviene del modelo
+#     de preferencias de apariencia, ajeno a este recorrido; no se reasigna.
+#   - `haste_halfling: n/a`: no hay flag `performance` ni `concurrency`.
+#   - `hellknight_inspector: n/a`: slot absorbido por `code_review`.
+#   - Nombre de slot: se usa `haste_halfling` para coincidir con el schema ya
+#     escrito en `docs/specs/final-frontend/spec-meta.yaml:28`. La plantilla
+#     global escribe `hasted_halfling`; se declara la discrepancia en vez de
+#     divergir el schema dentro del mismo repositorio.
+#
+# Relación con la spec padre:
+#   - `traceability.related_specs: ["spec-final-frontend-001"]` declara la
+#     relación y trazabilidad. `spec-final-frontend-001` NO es el `id` de este
+#     artefacto ni se renombra.
+#   - Asimetría deliberada: `docs/specs/final-frontend/spec-meta.yaml` conserva
+#     `traceability.related_specs: []` porque ese archivo está fuera del conjunto
+#     de escritura de este encargo y no se modifica. Quien lea la spec padre
+#     debe llegar a esta spec por `spec.md` §1.1 y por este registro.
+#   - El estado del padre se referencia por lectura, no se replica:
+#     `status: approved` (`../final-frontend/spec-meta.yaml:7`), `approved_at:
+#     2026-10-02` (`:13`), `verified_at: null` (`:14`).
+#
+# Procedencia y canonicidad (spec.md §1.4):
+#   - El cuerpo se reubicó desde `docs/specs/final-frontend/complete-promotion-spec.md`,
+#     que nació como tomo suplementario SIN `id` ni metadata propios.
+#   - Ese origen queda como puntero breve a `docs/specs/complete-promotion/spec.md`:
+#     reubicación, NO duplicación. Hay una sola copia del contrato.
+#   - Se conserva la numeración de los identificadores de contenido (`CP-*`,
+#     `CP-R-*`, `CP-P-*`, `CP-V-*`, `CP-K-*`, `CP-X-*`, `A-*`, `G-*`, `S-*`,
+#     `D-*`) sin renumerar, para que las citas de planes y revisiones sigan
+#     apuntando al mismo significado.
+#   - Dependencia `D-2` (registro canónico del documento): RESUELTA el
+#     2026-10-05 por este registro. Antes de esta formalización, el plan no podía
+#     tratar el documento como canónico.
+#
+# Ancla de cliente resuelta en esta formalización:
+#   - El handoff Portal citaba `identity/api:77-104` y `identity/api:423-460` como
+#     localizador abreviado. Ese localizador figuraba como NO resoluble en el
+#     cuerpo de origen; la búsqueda del path completo resuelve a
+#     `front/src/features/identity/api.ts` (1273 líneas) y ambos rangos caen
+#     sobre bloques DTO reales. Se registra como S-13, S-14, S-15 y S-17 en
+#     `spec.md` §3, con contenido leído y alcance limitado a existencia y
+#     bloques DTO: no se reexploró la capa HTTP del cliente.
+#   - Efecto sobre el alcance aprobado: ninguno. `CP-P-06` (claves exactas de
+#     `candidate`) sigue ABIERTO; sólo pasó de anclaje no resuelto a anclaje
+#     resoluble. Ningún caso `CP-P-01..09` se declara resuelto.
+#
+# Lo que este registro NO hace:
+#   - No mueve la spec padre, sus planes ni sus gates.
+#   - No declara `passed` ningún gate ni fija `verified_at`.
+#   - No autoriza implementación, instalación de dependencias, ejecución de
+#     comandos, navegador, MCP, base de datos ni subagentes.

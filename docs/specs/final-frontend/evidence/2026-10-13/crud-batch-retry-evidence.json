@@ -1,0 +1,106 @@
+{
+  "schema": "frontend-ui-crud-batch/v1",
+  "date": "2026-10-13",
+  "actor": {
+    "alias": "A1",
+    "role": "super_admin"
+  },
+  "context": {
+    "tenant": "desarrollo-poligono-local",
+    "active_unit": "CIA-A"
+  },
+  "marker": "DCTMV7GIND8",
+  "policy": {
+    "mutation_source": "real UI click only",
+    "reconciliation_source": "GET with the authenticated browser session",
+    "excluded": [
+      "people collection and PII",
+      "backend writes",
+      "account changes",
+      "dependency or server changes"
+    ]
+  },
+  "values": {
+    "unitCode": "DCTMV7GIND8U",
+    "unitName": "DCTMV7GIND8 Unidad",
+    "unitNameUpdated": "DCTMV7GIND8 Unidad editada",
+    "weaponModel": "DCTMV7GIND8-MOD",
+    "weaponModelUpdated": "DCTMV7GIND8-MOD-EDIT",
+    "weaponSerial": "DCTMV7GIND8-SN",
+    "exerciseName": "DCTMV7GIND8-EJERCICIO",
+    "munitionModel": "DCTMV7GIND8-MUN",
+    "observation": "DCTMV7GIND8-OBS",
+    "observationUpdated": "DCTMV7GIND8-OBS-EDIT"
+  },
+  "operations": [
+    {
+      "name": "create_organization_unit",
+      "source": "ui_click",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 201,
+      "request_body_sanitized": {
+        "code": "DCTMV7GIND8U",
+        "name": "DCTMV7GIND8 Unidad",
+        "parent": null,
+        "unit_type": "company",
+        "is_active": true
+      },
+      "outcome": "http_success"
+    },
+    {
+      "name": "delete_organization_unit",
+      "source": "ui_click",
+      "method": "DELETE",
+      "path": "/api/organization-units/null/",
+      "status": null,
+      "request_body_sanitized": null,
+      "outcome": "no_confirmed_response",
+      "error_type": "unknown"
+    }
+  ],
+  "reconciliation": [],
+  "cleanup": [
+    {
+      "phase": "cleanup.unit",
+      "outcome": "cleanup_error",
+      "error_type": "Error",
+      "uncertain_write": true
+    }
+  ],
+  "execution": {
+    "status": "stopped",
+    "phase": "unit.create",
+    "error_type": "unknown",
+    "error_message_sanitized": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Tabla', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" data-v-6b35cf24=\"\" aria-pressed=\"false\" class=\"btn btn-outli",
+    "uncertain_write": false,
+    "cleanup_final_phase": "cleanup.unit"
+  },
+  "records": {
+    "unit": {
+      "id": null,
+      "created": true,
+      "deleted": false
+    },
+    "weapon": {
+      "id": null,
+      "created": false,
+      "deleted": false
+    },
+    "exercise": {
+      "id": null,
+      "created": false,
+      "deleted": false
+    },
+    "munition": {
+      "id": null,
+      "created": false,
+      "deleted": false
+    },
+    "weaponConsumption": {
+      "id": null,
+      "created": false,
+      "deleted": false
+    }
+  }
+}

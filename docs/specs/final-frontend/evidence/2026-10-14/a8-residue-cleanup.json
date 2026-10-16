@@ -1,0 +1,152 @@
+{
+  "schema": "frontend-a8-residue-cleanup/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — limpieza del residuo de la corrida A8 (tirador) usando el alias A1",
+  "delivery_scope": "UI-driven cleanup of A8 disposable residue using alias A1 (super_admin) plus final sweep by A8CF prefix; not an acceptance verdict",
+  "source_paths": [
+    ".cache/frontend-acceptance/2026-10-14/a8-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "source_records": {
+    "source_readable": true,
+    "residue_reported": [],
+    "phase1_mutations": [
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 204
+      }
+    ],
+    "run_marker": "A8CFMV9G50HY",
+    "prior_attempt_residue": "none_attributable"
+  },
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A1->super_admin; credentials.json provisions exactly one super_admin account (same private file used by the 2026-10-14 tandas)",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "assignments_roles": [
+        {
+          "role": "super_admin",
+          "is_primary": true,
+          "scope_present": false
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "permissions_count": 41
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "cleanup": {
+    "executed": [],
+    "residue": [],
+    "outcome": "no_residue_declared"
+  },
+  "sweep": {
+    "marker_prefix": "A8CF",
+    "run_marker": "A8CFMV9G50HY",
+    "families": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 12,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 45,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 16,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 18,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "armories": {
+        "path": "/api/armorias/",
+        "status": 200,
+        "total": 4,
+        "own_marker": 0,
+        "own_ids": []
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "own_ids": []
+      }
+    },
+    "own_marker_total": 0,
+    "conclusion": "Sin residuo descartable propio con prefijo A8CF en ninguna familia (barrido con A1/super_admin, cobertura total)."
+  },
+  "mutations": [],
+  "limits": [
+    "La Fase 1 (A8, tirador) no declaró residuo: el rol más restringido no ofreció ninguna alta, de modo que no hubo registros descartables propios que A8 no pudiera cerrar. Nada que dar de baja por esta rama.",
+    "Sólo el residuo descartable propio de A8 con prefijo A8CF, identificado desde la fuente de la Fase 1 o por el barrido final; no se tocaron personas reales, cuentas heredadas, roles privilegiados (super_admin/tenant_admin como asignación) ni puestos con titular único ocupado.",
+    "Cero escrituras de RBAC (roles/permisos/overrides/position-permissions); cero cambios de backend, base de datos, dependencias o migraciones; sólo la API real del backend ya en marcha.",
+    "El barrido final se ejecutó con A1 (super_admin) para cubrir las familias que A8 no podía listar (recintos y armas/armerías devolvieron 403 al tirador en la Fase 1).",
+    "DELETE 2xx / GET 404 documentan ausencia en la respuesta del servidor; NO acreditan borrado físico. Si algo quedara indeleble, se detiene esa rama y se reporta; no se repara por base.",
+    "Un intento previo de esta misma tanda se interrumpió sin artefacto; no se halló artefacto ni registro atribuible. El barrido por prefijo A8CF cubre cualquier residuo previo que la API exponga; no se inventa atribución.",
+    "No se imprimen ni persisten credenciales, el valor del tenant ni valores personales (RUT/nombres): el barrido sólo reporta ids y conteos."
+  ],
+  "errors": [],
+  "harness": {
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 7,
+    "mutations": []
+  }
+}

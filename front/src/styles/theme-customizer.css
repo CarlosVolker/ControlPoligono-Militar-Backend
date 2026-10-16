@@ -1,0 +1,1712 @@
+/* ============================================================
+   Darkone - theme customizer (accent + background layer)
+
+   Loaded last in every page's <head>, after styles.css / auth.css /
+   errors.css / baseui*.css. All token overrides hang off html[data-*]
+   attributes set by theme-customizer.js, so the DEFAULT state (no
+   attribute) leaves the original cascade byte-identical: rules here
+   only activate once the visitor picks a non-default option.
+
+     data-accent : violet | green | amber | blue | pink | teal | orange |
+                   red | cyan | lime | indigo | fuchsia | sky | rose |
+                   emerald | gold | olive | signal | steel | mint | copper |
+                   nvg | khaki | gunmetal | wraith | sentinel | sonar
+       data-bg     : abyss | fern | ember | midnight | wine | slate | sand |
+                     field | command | forge | glacier | orchid | clay |
+                     blackout | carbon | obsidian | bunker | trench |
+                     pure | stone | zinc | mauve | sage | mist | taupe
+                     (neutral = attribute absent; pure/stone/zinc/mauve/
+                     sage/mist/taupe are the seven shadcn base palettes,
+                     renamed: pure = shadcn neutral, sage = shadcn olive)
+     data-font   : titillium | exo2 | rajdhani | ibm-plex | inter |
+                    manrope | public-sans | geist
+                   (play = attribute absent; Play is linked statically
+                   in every page head, the other families are injected
+                   on demand by theme-customizer.js / the FOUC guard)
+    data-radius : square | subtle
+                  (soft = attribute absent)
+    data-ambcolor : ember | gold | lime | mint | cyan | violet
+                    (accent = attribute absent: the ambient layer
+                    tints with the live accent at the bare cascade)
+
+     Contrast contract (measured, WCAG 2.x relative luminance):
+     - ink on solid accent follows the 4.5:1 rule: white only where it
+       clears >= 4.5:1 (olive 4.54, gunmetal 5.01, wraith 4.67,
+       sentinel 4.83); every other accent pins --tcf-on-accent to a
+       near-black of its own hue at >= 5.0:1 (worst new ink sonar
+       5.00); the five legacy inks (amber, signal, steel, mint, copper)
+       are kept verbatim;
+     - every re-derived accent clears >= 4.2:1 as a non-text element on
+       --bg dark (worst case indigo 4.34), except five documented
+       carve-outs, all above the WCAG 3:1 non-text floor: gunmetal
+       3.35, sentinel 3.47, wraith 3.59 (deep envelope by design) and
+       copper 4.14, olive 3.69 (identity-preserved from the original
+       system);
+     - light theme routes every accent-as-text consumer through
+       --primary-text, a darkened same-hue variant per accent at
+       >= 5.0:1 on both #ffffff and #f4f6f8 (worst case indigo
+       5.00 on #f4f6f8 / 5.42 on #ffffff);
+     - background tints hold the neutral baseline ratios in both themes
+       (text >= 8.3:1, muted >= 4.9:1 dark / ~3.8:1 light, matching the
+        template's pre-existing light muted value); the seven added tints
+        (midnight, wine, slate, sand, field, command, forge) clear
+         text >= 8.5:1 and muted >= 5.35:1 on their dark column (slate
+         and sand sit at the margin); the five deep blacks (blackout,
+         carbon, obsidian, bunker, trench) clear text >= 9.6:1 and muted
+         >= 6.0:1 dark and muted >= 5.0:1 on their light column;
+      - the seven shadcn bases (pure, stone, zinc, mauve, sage, mist,
+        taupe) consume their OKLCH tokens verbatim from the shadcn CLI
+        themes.ts (converted OKLCH->sRGB hex, alpha border/input tokens
+        composited over each dark bg): dark columns clear text >= 10.0:1
+        and muted >= 6.1:1 on --bg (worst sage); light columns sit on
+        shadcn's pure white bg/surface (text 12.1:1, muted 5.8:1).
+     ============================================================ */
+
+/* ------------------------------------------------------------
+   1. Accent tokens
+   ------------------------------------------------------------ */
+html[data-accent]{ --tcf-on-accent: #fff; }
+/* readable accent-as-text variant for the light theme: defaults to the
+   live accent (dark theme); each accent owns a darkened same-hue
+   override under html[data-theme="light"] (see "Accent text variants") */
+html{ --primary-text: var(--primary); }
+
+html[data-accent="violet"]{
+  --primary: #7e67fe;
+  --primary-soft: rgba(126,103,254,.15);
+  --bui-primary-rgb: 126,103,254;
+  --primary-rgb: 126,103,254;
+  --tcf-grad-2: #a78bfa;  /* original brand gradient, kept verbatim */
+  --tcf-grad-3: #f0abfc;
+  --tcf-on-accent: #0b002c;  /* dark ink: white on violet fails at 3.99:1 */
+}
+html[data-accent="green"]{
+  --primary: #12b76a;
+  --primary-soft: rgba(18,183,106,.15);
+  --bui-primary-rgb: 18,183,106;
+  --primary-rgb: 18,183,106;
+  --tcf-grad-2: #32e382;
+  --tcf-grad-3: #5adfd0;
+  --tcf-on-accent: #02210f;  /* dark ink: white on green fails at 2.62:1 */
+  --primary-ink: #02210f;
+}
+html[data-accent="amber"]{
+  --primary: #f7b733;
+  --primary-soft: rgba(247,183,51,.16);
+  --bui-primary-rgb: 247,183,51;
+  --primary-rgb: 247,183,51;
+  --tcf-grad-2: #f6c681;
+  --tcf-grad-3: #f5b0a5;
+  --tcf-on-accent: #2a1c00;  /* dark ink: white on amber fails at 1.8:1 */
+  --primary-ink: #2a1c00;
+}
+html[data-accent="blue"]{
+  --primary: #2687f0;
+  --primary-soft: rgba(38,135,240,.15);
+  --bui-primary-rgb: 38,135,240;
+  --primary-rgb: 38,135,240;
+  --tcf-grad-2: #83aaf1;
+  --tcf-grad-3: #bbb0f4;
+  --tcf-on-accent: #021630;  /* dark ink: white on blue fails at 3.62:1 */
+  --primary-ink: #021630;
+}
+html[data-accent="pink"]{
+  --primary: #e05898;
+  --primary-soft: rgba(224,88,152,.15);
+  --bui-primary-rgb: 224,88,152;
+  --primary-rgb: 224,88,152;
+  --tcf-grad-2: #e09ab5;
+  --tcf-grad-3: #dec5bf;
+  --tcf-on-accent: #37001d;  /* dark ink: white on pink fails at 3.49:1 */
+  --primary-ink: #37001d;
+}
+html[data-accent="teal"]{
+  --primary: #1bbdbd;
+  --primary-soft: rgba(27,189,189,.15);
+  --bui-primary-rgb: 27,189,189;
+  --primary-rgb: 27,189,189;
+  --tcf-grad-2: #2ee8dd;
+  --tcf-grad-3: #80d3fd;
+  --tcf-on-accent: #012020;  /* dark ink: white on teal fails at 2.32:1 */
+  --primary-ink: #012020;
+}
+html[data-accent="orange"]{
+  --primary: #f87725;
+  --primary-soft: rgba(248,119,37,.15);
+  --bui-primary-rgb: 248,119,37;
+  --primary-rgb: 248,119,37;
+  --tcf-grad-2: #f5986b;
+  --tcf-grad-3: #f38f9b;
+  --tcf-on-accent: #2f1001;  /* dark ink: white on orange fails at 2.74:1 */
+  --primary-ink: #2f1001;
+}
+html[data-accent="red"]{
+  --primary: #e3534f;
+  --primary-soft: rgba(227,83,79,.15);
+  --bui-primary-rgb: 227,83,79;
+  --primary-rgb: 227,83,79;
+  --tcf-grad-2: #eb7b79;
+  --tcf-grad-3: #ef9858;
+  --tcf-on-accent: #2f0002;  /* dark ink: white on red fails at 3.74:1 */
+  --primary-ink: #2f0002;
+}
+html[data-accent="cyan"]{
+  --primary: #13b6d3;
+  --primary-soft: rgba(19,182,211,.15);
+  --bui-primary-rgb: 19,182,211;
+  --primary-rgb: 19,182,211;
+  --tcf-grad-2: #29d3ed;
+  --tcf-grad-3: #6ae8f8;
+  --tcf-on-accent: #011f25;  /* dark ink: white on cyan fails at 2.43:1 */
+  --primary-ink: #011f25;
+}
+html[data-accent="lime"]{
+  --primary: #b5c303;
+  --primary-soft: rgba(181,195,3,.16);
+  --bui-primary-rgb: 181,195,3;
+  --primary-rgb: 181,195,3;
+  --tcf-grad-2: #d3dc32;
+  --tcf-grad-3: #ededa4;
+  --tcf-on-accent: #1a1d01;  /* dark ink: white on lime fails at 1.95:1 */
+  --primary-ink: #1a1d01;
+}
+html[data-accent="indigo"]{
+  --primary: #5b79ef;
+  --primary-soft: rgba(91,121,239,.15);
+  --bui-primary-rgb: 91,121,239;
+  --primary-rgb: 91,121,239;
+  --tcf-grad-2: #809cf5;
+  --tcf-grad-3: #ba98fd;
+  --tcf-on-accent: #040635;  /* dark ink: white on indigo fails at 3.87:1 */
+  --primary-ink: #040635;
+}
+html[data-accent="fuchsia"]{
+  --primary: #c96bd7;
+  --primary-soft: rgba(201,107,215,.15);
+  --bui-primary-rgb: 201,107,215;
+  --primary-rgb: 201,107,215;
+  --tcf-grad-2: #d693e0;
+  --tcf-grad-3: #dcc0e0;
+  --tcf-on-accent: #2d0632;  /* dark ink: white on fuchsia fails at 3.20:1 */
+  --primary-ink: #2d0632;
+}
+html[data-accent="sky"]{
+  --primary: #0ea5e9;
+  --primary-soft: rgba(14,165,233,.15);
+  --bui-primary-rgb: 14,165,233;
+  --primary-rgb: 14,165,233;
+  --tcf-grad-2: #38bdf8;
+  --tcf-grad-3: #7dd3fc;
+  --tcf-on-accent: #011d2d;  /* dark ink: white on sky fails at 2.77:1 */
+  --primary-ink: #011d2d;
+}
+html[data-accent="rose"]{
+  --primary: #e45474;
+  --primary-soft: rgba(228,84,116,.15);
+  --bui-primary-rgb: 228,84,116;
+  --primary-rgb: 228,84,116;
+  --tcf-grad-2: #e97f96;
+  --tcf-grad-3: #e9aeba;
+  --tcf-on-accent: #350110;  /* dark ink: white on rose fails at 3.61:1 */
+  --primary-ink: #350110;
+}
+html[data-accent="emerald"]{
+  --primary: #0dab87;
+  --primary-soft: rgba(13,171,135,.15);
+  --bui-primary-rgb: 13,171,135;
+  --primary-rgb: 13,171,135;
+  --tcf-grad-2: #31c59f;
+  --tcf-grad-3: #69dad2;
+  --tcf-on-accent: #032018;  /* dark ink: white on emerald fails at 2.92:1 */
+  --primary-ink: #032018;
+}
+html[data-accent="gold"]{
+  --primary: #c1a00e;
+  --primary-soft: rgba(193,160,14,.16);
+  --bui-primary-rgb: 193,160,14;
+  --primary-rgb: 193,160,14;
+  --tcf-grad-2: #d0b81f;
+  --tcf-grad-3: #d7cf83;
+  --tcf-on-accent: #211a01;  /* dark ink: white on gold fails at 2.53:1 */
+  --primary-ink: #211a01;
+}
+html[data-accent="olive"]{
+  --primary: #6b7d3b;
+  --primary-soft: rgba(107,125,59,.15);
+  --bui-primary-rgb: 107,125,59;
+  --primary-rgb: 107,125,59;
+  --tcf-grad-2: #9aaf5b;
+  --tcf-grad-3: #c5b87a;
+}
+html[data-accent="signal"]{
+  --primary: #c9922e;
+  --primary-soft: rgba(201,146,46,.16);
+  --bui-primary-rgb: 201,146,46;
+  --primary-rgb: 201,146,46;
+  --tcf-grad-2: #e3b264;
+  --tcf-grad-3: #f1d29a;
+  --tcf-on-accent: #2a1c00;
+  --primary-ink: #2a1c00;
+}
+html[data-accent="steel"]{
+  --primary: #7494a5;
+  --primary-soft: rgba(116,148,165,.15);
+  --bui-primary-rgb: 116,148,165;
+  --primary-rgb: 116,148,165;
+  --tcf-grad-2: #9ab2c0;
+  --tcf-grad-3: #b9d2dc;
+  --tcf-on-accent: #0f1a20;
+  --primary-ink: #0f1a20;
+}
+html[data-accent="mint"]{
+  --primary: #5bc9b5;
+  --primary-soft: rgba(91,201,181,.15);
+  --bui-primary-rgb: 91,201,181;
+  --primary-rgb: 91,201,181;
+  --tcf-grad-2: #7fdbc7;
+  --tcf-grad-3: #a8e8d8;
+  --tcf-on-accent: #0a2620;
+}
+html[data-accent="copper"]{
+  --primary: #b96a3a;
+  --primary-soft: rgba(185,106,58,.16);
+  --bui-primary-rgb: 185,106,58;
+  --primary-rgb: 185,106,58;
+  --tcf-grad-2: #d18c5e;
+  --tcf-grad-3: #e3aa82;
+  --tcf-on-accent: #1a0a02;
+  --primary-ink: #1a0a02;
+}
+html[data-accent="nvg"]{
+  --primary: #85ad5a;
+  --primary-soft: rgba(133,173,90,.15);
+  --bui-primary-rgb: 133,173,90;
+  --primary-rgb: 133,173,90;
+  --tcf-grad-2: #81c681;
+  --tcf-grad-3: #92dcb1;
+  --tcf-on-accent: #112000;  /* dark ink: white on nvg fails at 2.59:1 */
+  --primary-ink: #112000;
+}
+html[data-accent="khaki"]{
+  --primary: #a19a6b;
+  --primary-soft: rgba(161,154,107,.16);
+  --bui-primary-rgb: 161,154,107;
+  --primary-rgb: 161,154,107;
+  --tcf-grad-2: #abb283;
+  --tcf-grad-3: #bbc8ad;
+  --tcf-on-accent: #1e1b08;  /* dark ink: white on khaki fails at 2.86:1 */
+  --primary-ink: #1e1b08;
+}
+html[data-accent="gunmetal"]{
+  --primary: #52738c;
+  --primary-soft: rgba(82,115,140,.15);
+  --bui-primary-rgb: 82,115,140;
+  --primary-rgb: 82,115,140;
+  --tcf-grad-2: #6c84a3;
+  --tcf-grad-3: #8f96aa;
+}
+html[data-accent="wraith"]{
+  --primary: #8268a8;
+  --primary-soft: rgba(130,104,168,.15);
+  --bui-primary-rgb: 130,104,168;
+  --primary-rgb: 130,104,168;
+  --tcf-grad-2: #a277b3;
+  --tcf-grad-3: #bb8fb6;
+}
+html[data-accent="sentinel"]{
+  --primary: #ab509a;
+  --primary-soft: rgba(171,80,154,.15);
+  --bui-primary-rgb: 171,80,154;
+  --primary-rgb: 171,80,154;
+  --tcf-grad-2: #cb6099;
+  --tcf-grad-3: #e07d98;
+}
+html[data-accent="sonar"]{
+  --primary: #03999e;
+  --primary-soft: rgba(3,153,158,.15);
+  --bui-primary-rgb: 3,153,158;
+  --primary-rgb: 3,153,158;
+  --tcf-grad-2: #36abc0;
+  --tcf-grad-3: #77bad7;
+  --tcf-on-accent: #131c1c;  /* dark ink: white on sonar fails at 3.47:1 */
+  --primary-ink: #131c1c;
+}
+
+/* Accent text variants (light theme)
+   --primary hexes are tuned to read as solid surfaces on dark chrome;
+   on light surfaces the same hues fail WCAG text contrast, so every
+   accent owns a darkened same-hue --primary-text at >= 5.0:1 on both
+   #ffffff and #f4f6f8 (ratio on #f4f6f8 noted per line). The dark
+   theme keeps --primary as text via the html{} default above. */
+html[data-theme="light"][data-accent="violet"]{ --primary-text: #6758ca; }  /* 5.07:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="green"]{ --primary-text: #27784b; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="amber"]{ --primary-text: #8a630d; }  /* 5.01:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="blue"]{ --primary-text: #0969c6; }  /* 5.04:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="pink"]{ --primary-text: #b63a77; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="teal"]{ --primary-text: #5d6d6d; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="orange"]{ --primary-text: #ae4d04; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="red"]{ --primary-text: #be3938; }  /* 5.06:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="cyan"]{ --primary-text: #5a6d72; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="lime"]{ --primary-text: #676f1c; }  /* 5.01:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="indigo"]{ --primary-text: #4861ce; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="fuchsia"]{ --primary-text: #9c46a9; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="sky"]{ --primary-text: #0370a1; }  /* 5.05:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="rose"]{ --primary-text: #bd3859; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="emerald"]{ --primary-text: #566f66; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="gold"]{ --primary-text: #7e680b; }  /* 5.01:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="olive"]{ --primary-text: #5e7124; }  /* 5.02:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="signal"]{ --primary-text: #8c6211; }  /* 5.01:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="steel"]{ --primary-text: #00729a; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="mint"]{ --primary-text: #5a6e6a; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="copper"]{ --primary-text: #a15627; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="nvg"]{ --primary-text: #517425; }  /* 5.00:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="khaki"]{ --primary-text: #776a0c; }  /* 5.03:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="gunmetal"]{ --primary-text: #096fa7; }  /* 5.04:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="wraith"]{ --primary-text: #7a5aa6; }  /* 5.05:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="sentinel"]{ --primary-text: #a24791; }  /* 5.04:1 on #f4f6f8 */
+html[data-theme="light"][data-accent="sonar"]{ --primary-text: #4d7072; }  /* 5.00:1 on #f4f6f8 */
+
+/* ------------------------------------------------------------
+   2. Accent derivatives
+   Repairs for hardcoded #7e67fe hex values that live in the base
+   layers (styles.css, auth.css, baseui*.css). These rules only fire
+   while an accent is selected; the default violet state keeps the
+   original declarations untouched.
+   ------------------------------------------------------------ */
+
+/* ink on solid accent surfaces (white by default, dark on amber) */
+html[data-accent] .menu-badge,
+html[data-accent] .btn-primary,
+html[data-accent] .btn-primary:hover,
+html[data-accent] .btn-outline-primary:hover,
+html[data-accent] .btn-soft-primary:hover,
+html[data-accent] .badge.bg-primary,
+html[data-accent] .badge.text-bg-primary,
+html[data-accent] .nav-pills .nav-link.active,
+html[data-accent] .list-group-item.active,
+html[data-accent] .page-item.active .page-link,
+html[data-accent] .gridjs-pagination .gridjs-pages button.gridjs-currentPage,
+html[data-accent] .page-content .dropdown-item:active,
+html[data-accent] .tooltip-primary .tooltip-inner{
+  color: var(--tcf-on-accent);
+}
+
+/* hardcoded hover / soft-text hexes re-derived from the live accent */
+html[data-accent] .btn-primary:hover{
+  background-color: color-mix(in srgb, var(--primary) 84%, #000);
+  border-color: color-mix(in srgb, var(--primary) 84%, #000);
+}
+html[data-accent] .alert-primary,
+html[data-accent] .list-group-item-primary{
+  color: color-mix(in srgb, var(--primary) 62%, #fff);
+}
+
+/* focus rings + checked controls */
+html[data-accent] .form-check-input:focus{
+  box-shadow: 0 0 0 2.4px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+html[data-accent] .form-check-input:checked{
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+html[data-accent] .page-content .form-checkbox-primary .form-check-input:checked,
+html[data-accent] .page-content .form-radio-primary .form-check-input:checked{
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+html[data-accent] .authentication-bg .auth-check:focus{
+  box-shadow: 0 0 0 .15rem color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+/* Grid.js current page + flatpickr selected day */
+html[data-accent] .gridjs-pagination .gridjs-pages button.gridjs-currentPage{
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+html[data-accent] .flatpickr-day.selected, html[data-accent] .flatpickr-day.startRange, html[data-accent] .flatpickr-day.endRange,
+html[data-accent] .flatpickr-day.selected:hover, html[data-accent] .flatpickr-day.startRange:hover, html[data-accent] .flatpickr-day.endRange:hover,
+html[data-accent] .flatpickr-day.selected:focus, html[data-accent] .flatpickr-day.startRange:focus, html[data-accent] .flatpickr-day.endRange:focus,
+html[data-accent] .flatpickr-day.selected.inRange, html[data-accent] .flatpickr-day.startRange.inRange, html[data-accent] .flatpickr-day.endRange.inRange,
+html[data-accent] .flatpickr-day.selected.prevMonthDay, html[data-accent] .flatpickr-day.startRange.prevMonthDay, html[data-accent] .flatpickr-day.endRange.prevMonthDay,
+html[data-accent] .flatpickr-day.selected.nextMonthDay, html[data-accent] .flatpickr-day.startRange.nextMonthDay, html[data-accent] .flatpickr-day.endRange.nextMonthDay{
+  background: var(--primary);
+  border-color: var(--primary);
+}
+html[data-accent] .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+html[data-accent] .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+html[data-accent] .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)){
+  box-shadow: -10px 0 0 var(--primary);
+}
+
+/* Quill toolbar hover (original uses !important) */
+html[data-accent] .ql-toolbar span:hover{ color: var(--primary) !important; }
+
+/* dashboard stat icon: the first stat-card carries an inline
+   rgba(126,103,254,.25) soft plate; !important is required to beat
+   the inline style, scoped hard to that one card */
+html[data-accent] .stat-grid .stat-card:first-child .stat-icon{
+  background: rgba(var(--bui-primary-rgb),.25) !important;
+}
+
+/* Card links retain the selected accent on hover. */
+html[data-accent] .card-link:hover{ color: var(--primary); }
+
+/* accent-as-text consumers, light theme: --primary is tuned for dark
+   surfaces, so the light column re-routes them to --primary-text.
+   The attribute-pair specificity beats the bare html[data-accent]
+   rules above without !important; the Quill hover keeps !important
+   because the base rule carries it too. */
+html[data-theme="light"][data-accent] .alert-primary,
+html[data-theme="light"][data-accent] .list-group-item-primary{
+  color: var(--primary-text);
+}
+html[data-theme="light"][data-accent] .card-link:hover{ color: var(--primary-text); }
+html[data-theme="light"][data-accent] .ql-toolbar span:hover{ color: var(--primary-text) !important; }
+
+/* accordion caret glyph (SVG data URI is baked per accent) */
+html[data-accent="violet"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%237e67fe'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="green"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2312b76a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="amber"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f7b733'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="blue"]   .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232687f0'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="pink"]   .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e05898'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="teal"]   .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%231bbdbd'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="orange"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f87725'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="red"]     .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e3534f'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="cyan"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2313b6d3'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="lime"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23b5c303'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="indigo"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235b79ef'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="fuchsia"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c96bd7'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="sky"]     .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230ea5e9'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="rose"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e45474'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="emerald"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230dab87'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="gold"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c1a00e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="olive"]   .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236b7d3b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="signal"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c9922e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="steel"]   .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%237494a5'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="mint"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235bc9b5'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="copper"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23b96a3a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="nvg"]    .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2385ad5a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="khaki"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a19a6b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="gunmetal"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2352738c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="wraith"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238268a8'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="sentinel"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ab509a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-accent="sonar"]  .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2303999e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+
+/* accordion caret, light theme: the glyph is accent-as-text on the
+   light surface, so it re-bakes with the --primary-text hex of each
+   accent (non-text floor 3.0:1 cleared with margin by every variant) */
+html[data-theme="light"][data-accent="violet"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236758ca'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="green"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2327784b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="amber"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238a630d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="blue"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230969c6'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="pink"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23b63a77'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="teal"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235d6d6d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="orange"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ae4d04'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="red"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23be3938'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="cyan"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235a6d72'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="lime"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23676f1c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="indigo"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234861ce'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="fuchsia"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%239c46a9'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="sky"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230370a1'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="rose"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23bd3859'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="emerald"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23566f66'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="gold"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%237e680b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="olive"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235e7124'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="signal"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238c6211'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="steel"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300729a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="mint"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235a6e6a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="copper"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a15627'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="nvg"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23517425'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="khaki"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23776a0c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="gunmetal"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23096fa7'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="wraith"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%237a5aa6'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="sentinel"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a24791'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+html[data-theme="light"][data-accent="sonar"] .accordion-button:not(.collapsed)::after{ background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234d7072'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+
+/* checked checkbox glyph flips to dark ink on amber */
+html[data-accent="amber"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%232a1c00' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="amber"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%232a1c00' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+/* checked checkbox glyph flips to dark ink on lime and gold too */
+html[data-accent="lime"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231a1d01' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="lime"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231a1d01' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="gold"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23211a01' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="gold"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23211a01' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="signal"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%232a1c00' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="signal"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%232a1c00' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="steel"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%230f1a20' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="steel"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%230f1a20' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="mint"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%230a2620' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="mint"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%230a2620' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="copper"] .form-check-input:checked[type="checkbox"]{
+  --tbl-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231a0a02' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+html[data-accent="copper"] .authentication-bg .auth-check:checked{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231a0a02' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+/* ------------------------------------------------------------
+   3. Background variants
+   Each tint defines both theme columns so data-bg composes with the
+   topbar dark/light toggle: (0,2,1) specificity always beats the
+   single-attribute [data-theme] blocks in styles.css / baseui.css.
+   The --bui-* family mirrors the styles.css family so baseui-derived
+   surfaces (cards, tables, overlays) shift in lockstep.
+   Temperature is deliberate: sand, ember, clay and forge are warm
+   opt-in tints; the default column (command) and the deep blacks at
+   the end of the section stay cold/neutral.
+   ------------------------------------------------------------ */
+html[data-theme="dark"][data-bg="abyss"]{
+  --bg: #151b26;  --surface: #1a2130;  --surface-2: #202a3b;
+  --hover: #263244;  --border: #273349;  --border-2: #2f3d55;
+  --bui-bg: #151b26;  --bui-surface: #1a2130;  --bui-surface-2: #202a3b;  --bui-border: #273349;
+}
+html[data-theme="light"][data-bg="abyss"]{
+  --bg: #eef2f8;  --surface: #ffffff;  --surface-2: #e6ebf4;
+  --hover: #dde5f0;  --border: #d3dcea;  --border-2: #c4d0e2;
+  --bui-bg: #f3f6fb;  --bui-surface: #ffffff;  --bui-surface-2: #e9eef6;  --bui-border: #dde4ee;
+}
+
+html[data-theme="dark"][data-bg="fern"]{
+  --bg: #151d18;  --surface: #1a231d;  --surface-2: #202b23;
+  --hover: #26332a;  --border: #263129;  --border-2: #2e3c32;
+  --bui-bg: #151d18;  --bui-surface: #1a231d;  --bui-surface-2: #202b23;  --bui-border: #263129;
+}
+html[data-theme="light"][data-bg="fern"]{
+  --bg: #edf5ef;  --surface: #ffffff;  --surface-2: #e4efe7;
+  --hover: #d9e8dd;  --border: #cfe0d4;  --border-2: #bfd4c5;
+  --bui-bg: #f2f8f4;  --bui-surface: #ffffff;  --bui-surface-2: #e8f2ec;  --bui-border: #d9e7dd;
+}
+
+html[data-theme="dark"][data-bg="ember"]{
+  --bg: #1e1a16;  --surface: #242019;  --surface-2: #2b251d;
+  --hover: #332b22;  --border: #322a20;  --border-2: #3c3226;
+  --bui-bg: #1e1a16;  --bui-surface: #242019;  --bui-surface-2: #2b251d;  --bui-border: #322a20;
+}
+html[data-theme="light"][data-bg="ember"]{
+  --bg: #f7f2ec;  --surface: #ffffff;  --surface-2: #efe7dd;
+  --hover: #e7dccf;  --border: #e0d3c3;  --border-2: #d4c3af;
+  --bui-bg: #f9f5ef;  --bui-surface: #ffffff;  --bui-surface-2: #f3ece2;  --bui-border: #e7dbcb;
+}
+
+html[data-theme="dark"][data-bg="midnight"]{
+  --bg: #0f1626;  --surface: #131c30;  --surface-2: #18233a;
+  --hover: #1f2b4a;  --border: #1c2740;  --border-2: #253252;
+  --bui-bg: #0f1626;  --bui-surface: #131c30;  --bui-surface-2: #18233a;  --bui-border: #1c2740;
+}
+html[data-theme="light"][data-bg="midnight"]{
+  --bg: #e9edfa;  --surface: #ffffff;  --surface-2: #e2e9f7;
+  --hover: #d8e0f4;  --border: #cfd9f0;  --border-2: #c0cbe9;
+  --bui-bg: #eff2fc;  --bui-surface: #ffffff;  --bui-surface-2: #e6ecf9;  --bui-border: #d8e0f3;
+}
+
+html[data-theme="dark"][data-bg="wine"]{
+  --bg: #1e1417;  --surface: #251a1e;  --surface-2: #2c2024;
+  --hover: #37292e;  --border: #33252a;  --border-2: #3f2e34;
+  --bui-bg: #1e1417;  --bui-surface: #251a1e;  --bui-surface-2: #2c2024;  --bui-border: #33252a;
+}
+html[data-theme="light"][data-bg="wine"]{
+  --bg: #f8eef1;  --surface: #ffffff;  --surface-2: #f1e3e8;
+  --hover: #e9d9df;  --border: #dfccd3;  --border-2: #d3bac4;
+  --bui-bg: #faf2f5;  --bui-surface: #ffffff;  --bui-surface-2: #f4e8ec;  --bui-border: #e6d5db;
+}
+
+html[data-theme="dark"][data-bg="slate"]{
+  --bg: #171b21;  --surface: #1c2129;  --surface-2: #222831;
+  --hover: #29313c;  --border: #262d38;  --border-2: #303946;
+  --bui-bg: #171b21;  --bui-surface: #1c2129;  --bui-surface-2: #222831;  --bui-border: #262d38;
+}
+html[data-theme="light"][data-bg="slate"]{
+  --bg: #edf0f5;  --surface: #ffffff;  --surface-2: #e5e9f0;
+  --hover: #dbe1ea;  --border: #d0d7e1;  --border-2: #c2cad6;
+  --bui-bg: #f2f4f9;  --bui-surface: #ffffff;  --bui-surface-2: #e8ebf2;  --bui-border: #d9dee8;
+}
+
+html[data-theme="dark"][data-bg="sand"]{
+  --bg: #1c1a13;  --surface: #222017;  --surface-2: #29261c;
+  --hover: #322e22;  --border: #2d2a1f;  --border-2: #383426;
+  --bui-bg: #1c1a13;  --bui-surface: #222017;  --bui-surface-2: #29261c;  --bui-border: #2d2a1f;
+}
+html[data-theme="light"][data-bg="sand"]{
+  --bg: #f7f3ea;  --surface: #ffffff;  --surface-2: #efe9dc;
+  --hover: #e6decd;  --border: #ddd2bd;  --border-2: #d0c3a9;
+  --bui-bg: #f9f6ef;  --bui-surface: #ffffff;  --bui-surface-2: #f2ecdf;  --bui-border: #e3d9c6;
+}
+html[data-theme="dark"][data-bg="field"]{
+  --bg: #161a14;  --surface: #1c211a;  --surface-2: #232820;
+  --hover: #2a3125;  --border: #283023;  --border-2: #323c2c;
+  --bui-bg: #161a14;  --bui-surface: #1c211a;  --bui-surface-2: #232820;  --bui-border: #283023;
+}
+html[data-theme="light"][data-bg="field"]{
+  --bg: #f3f4ec;  --surface: #ffffff;  --surface-2: #e8ebde;
+  --hover: #dee1cf;  --border: #d4d8c4;  --border-2: #c2c8ae;
+  --bui-bg: #f7f8f0;  --bui-surface: #ffffff;  --bui-surface-2: #ecefe1;  --bui-border: #dde1cd;
+}
+html[data-theme="dark"][data-bg="command"]{
+  --bg: #11161e;  --surface: #171c25;  --surface-2: #1d242f;
+  --hover: #252d3a;  --border: #212935;  --border-2: #2b333f;
+  --bui-bg: #11161e;  --bui-surface: #171c25;  --bui-surface-2: #1d242f;  --bui-border: #212935;
+}
+html[data-theme="light"][data-bg="command"]{
+  --bg: #eef1f5;  --surface: #ffffff;  --surface-2: #e4e9ef;
+  --hover: #dadee6;  --border: #ced5dd;  --border-2: #bbc4cf;
+  --bui-bg: #f2f4f8;  --bui-surface: #ffffff;  --bui-surface-2: #e8ecf2;  --bui-border: #d6dde5;
+}
+html[data-theme="dark"][data-bg="forge"]{
+  --bg: #1c1813;  --surface: #231e17;  --surface-2: #2b251d;
+  --hover: #332a20;  --border: #2e2620;  --border-2: #3a3026;
+  --bui-bg: #1c1813;  --bui-surface: #231e17;  --bui-surface-2: #2b251d;  --bui-border: #2e2620;
+}
+html[data-theme="light"][data-bg="forge"]{
+  --bg: #f7f1e8;  --surface: #ffffff;  --surface-2: #efe5d4;
+  --hover: #e3d7c1;  --border: #dac9af;  --border-2: #cab798;
+  --bui-bg: #f9f4ec;  --bui-surface: #ffffff;  --bui-surface-2: #f3ead9;  --bui-border: #e2d2b8;
+}
+html[data-theme="dark"][data-bg="glacier"]{
+  --bg: #0e1a20;  --surface: #14222a;  --surface-2: #192b34;
+  --hover: #1f3742;  --border: #1c2f3a;  --border-2: #243a47;
+  --bui-bg: #0e1a20;  --bui-surface: #14222a;  --bui-surface-2: #192b34;  --bui-border: #1c2f3a;
+}
+html[data-theme="light"][data-bg="glacier"]{
+  --bg: #eef4f6;  --surface: #ffffff;  --surface-2: #e0ecef;
+  --hover: #d2e1e6;  --border: #c5d6dc;  --border-2: #b3c8d0;
+  --bui-bg: #f1f5f8;  --bui-surface: #ffffff;  --bui-surface-2: #e6eff1;  --bui-border: #cdd9df;
+}
+html[data-theme="dark"][data-bg="orchid"]{
+  --bg: #1a0f1a;  --surface: #211421;  --surface-2: #291829;
+  --hover: #311d31;  --border: #2a1a2a;  --border-2: #352036;
+  --bui-bg: #1a0f1a;  --bui-surface: #211421;  --bui-surface-2: #291829;  --bui-border: #2a1a2a;
+}
+html[data-theme="light"][data-bg="orchid"]{
+  --bg: #f6eef5;  --surface: #ffffff;  --surface-2: #ecdee9;
+  --hover: #dfc9dc;  --border: #d0b8cb;  --border-2: #bda5b8;
+  --bui-bg: #f7f0f6;  --bui-surface: #ffffff;  --bui-surface-2: #ede0eb;  --bui-border: #d4becf;
+}
+html[data-theme="dark"][data-bg="clay"]{
+  --bg: #1c1612;  --surface: #231b16;  --surface-2: #2b221c;
+  --hover: #332921;  --border: #2e251f;  --border-2: #3a3026;
+  --bui-bg: #1c1612;  --bui-surface: #231b16;  --bui-surface-2: #2b221c;  --bui-border: #2e251f;
+}
+html[data-theme="light"][data-bg="clay"]{
+  --bg: #f7eee5;  --surface: #ffffff;  --surface-2: #ebdfd0;
+  --hover: #dccdb8;  --border: #cfb9a0;  --border-2: #bba587;
+  --bui-bg: #f8f1ea;  --bui-surface: #ffffff;  --bui-surface-2: #ede3d6;  --bui-border: #d3c0a9;
+}
+
+/* five deep blacks: hard, near-absolute darks below every pre-existing
+   tint (deepest prior floor: orchid L 0.189). Ramps mirror the command
+   deltas; the light columns are near-white with a faint same-hue tint.
+   Verified: dark text #aab8c5 >= 9.6:1 and muted #8391a2 >= 6.0:1 on
+   every dark bg (worst trench 9.60 / 6.05); light text #2d3742 >= 10.5:1
+   and muted #5b6776 >= 5.0:1 on every light bg (worst carbon 5.01). */
+html[data-theme="dark"][data-bg="blackout"]{
+  --bg: #030507;  --surface: #07090d;  --surface-2: #0c0f13;
+  --hover: #13181d;  --border: #0f1318;  --border-2: #171c22;
+  --bui-bg: #030507;  --bui-surface: #07090d;  --bui-surface-2: #0c0f13;  --bui-border: #0f1318;
+}
+html[data-theme="light"][data-bg="blackout"]{
+  --bg: #eef0f3;  --surface: #ffffff;  --surface-2: #e4e8ec;
+  --hover: #dadee3;  --border: #d0d5da;  --border-2: #bec5cc;
+  --bui-bg: #f1f3f6;  --bui-surface: #ffffff;  --bui-surface-2: #e8ebef;  --bui-border: #d5dade;
+}
+
+html[data-theme="dark"][data-bg="carbon"]{
+  --bg: #06070a;  --surface: #0b0d11;  --surface-2: #101418;
+  --hover: #181c22;  --border: #14181d;  --border-2: #1c2127;
+  --bui-bg: #06070a;  --bui-surface: #0b0d11;  --bui-surface-2: #101418;  --bui-border: #14181d;
+}
+html[data-theme="light"][data-bg="carbon"]{
+  --bg: #eeeff1;  --surface: #ffffff;  --surface-2: #e5e7ea;
+  --hover: #dadde1;  --border: #d0d3d8;  --border-2: #bfc3c9;
+  --bui-bg: #f0f2f5;  --bui-surface: #ffffff;  --bui-surface-2: #e8eaed;  --bui-border: #d5d8dc;
+}
+
+html[data-theme="dark"][data-bg="obsidian"]{
+  --bg: #0a0710;  --surface: #110d18;  --surface-2: #171320;
+  --hover: #201b2b;  --border: #1c1725;  --border-2: #251f31;
+  --bui-bg: #0a0710;  --bui-surface: #110d18;  --bui-surface-2: #171320;  --bui-border: #1c1725;
+}
+html[data-theme="light"][data-bg="obsidian"]{
+  --bg: #f0eef6;  --surface: #ffffff;  --surface-2: #e8e4f2;
+  --hover: #dfdaea;  --border: #d5d0e2;  --border-2: #c6bfd4;
+  --bui-bg: #f3f0fa;  --bui-surface: #ffffff;  --bui-surface-2: #ece8f4;  --bui-border: #dad5e5;
+}
+
+html[data-theme="dark"][data-bg="bunker"]{
+  --bg: #090c08;  --surface: #0f130e;  --surface-2: #151914;
+  --hover: #1d231c;  --border: #191e17;  --border-2: #212720;
+  --bui-bg: #090c08;  --bui-surface: #0f130e;  --bui-surface-2: #151914;  --bui-border: #191e17;
+}
+html[data-theme="light"][data-bg="bunker"]{
+  --bg: #edf0ed;  --surface: #ffffff;  --surface-2: #e4e8e3;
+  --hover: #d9dfd8;  --border: #cfd5ce;  --border-2: #bec6bc;
+  --bui-bg: #f0f3ef;  --bui-surface: #ffffff;  --bui-surface-2: #e7ece6;  --bui-border: #d4dad3;
+}
+
+html[data-theme="dark"][data-bg="trench"]{
+  --bg: #110c08;  --surface: #18130d;  --surface-2: #1f1912;
+  --hover: #292219;  --border: #241d16;  --border-2: #2e261d;
+  --bui-bg: #110c08;  --bui-surface: #18130d;  --bui-surface-2: #1f1912;  --bui-border: #241d16;
+}
+html[data-theme="light"][data-bg="trench"]{
+  --bg: #f1efec;  --surface: #ffffff;  --surface-2: #ebe6e1;
+  --hover: #e2dcd6;  --border: #d8d2cb;  --border-2: #cac2b9;
+  --bui-bg: #f5f1ee;  --bui-surface: #ffffff;  --bui-surface-2: #ede9e5;  --bui-border: #ddd7d1;
+}
+
+/* seven shadcn base palettes (ws-20): tokens extracted verbatim from the
+   shadcn CLI registry (apps/v4/registry/themes.ts, OKLCH) and converted
+   to sRGB hex with a W3C css-color-4-conformant OKLab pipeline, verified
+   against the known neutral/stone/zinc scale hexes. Mapping:
+   --bg <- background, --surface <- card, --surface-2 <- secondary
+   (popover equals card in these themes), --hover <- accent,
+   --border <- border, --border-2 <- input. shadcn's dark border/input
+   are alpha tokens (white 10% / 15%), composited over each theme's own
+   dark background into the opaque hexes below. Two faithful collapses:
+   shadcn dark accent equals secondary, and light input equals border,
+   so --hover == --surface-2 (both columns) and --border-2 == --border
+   (light column). Light columns paint shadcn's pure white: background
+   and card share #ffffff, so cards separate through their borders
+   instead of elevation — the source system's own behavior. Renamed to
+   avoid colliding with the pre-existing Inume neutral default:
+   pure = shadcn neutral, sage = shadcn olive. */
+html[data-theme="dark"][data-bg="pure"]{
+  --bg: #0a0a0a;  --surface: #171717;  --surface-2: #262626;
+  --hover: #262626;  --border: #232323;  --border-2: #2f2f2f;
+  --bui-bg: #0a0a0a;  --bui-surface: #171717;  --bui-surface-2: #262626;  --bui-border: #232323;
+}
+html[data-theme="light"][data-bg="pure"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f5f5f5;
+  --hover: #f5f5f5;  --border: #e5e5e5;  --border-2: #e5e5e5;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f5f5f5;  --bui-border: #e5e5e5;
+}
+
+html[data-theme="dark"][data-bg="stone"]{
+  --bg: #0c0a09;  --surface: #1c1917;  --surface-2: #292524;
+  --hover: #292524;  --border: #242322;  --border-2: #302f2e;
+  --bui-bg: #0c0a09;  --bui-surface: #1c1917;  --bui-surface-2: #292524;  --bui-border: #242322;
+}
+html[data-theme="light"][data-bg="stone"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f5f5f4;
+  --hover: #f5f5f4;  --border: #e7e5e4;  --border-2: #e7e5e4;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f5f5f4;  --bui-border: #e7e5e4;
+}
+
+html[data-theme="dark"][data-bg="zinc"]{
+  --bg: #09090b;  --surface: #18181b;  --surface-2: #27272a;
+  --hover: #27272a;  --border: #222223;  --border-2: #2e2e30;
+  --bui-bg: #09090b;  --bui-surface: #18181b;  --bui-surface-2: #27272a;  --bui-border: #222223;
+}
+html[data-theme="light"][data-bg="zinc"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f4f4f5;
+  --hover: #f4f4f5;  --border: #e4e4e7;  --border-2: #e4e4e7;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f4f4f5;  --bui-border: #e4e4e7;
+}
+
+html[data-theme="dark"][data-bg="mauve"]{
+  --bg: #0c090c;  --surface: #1d161e;  --surface-2: #2a212c;
+  --hover: #2a212c;  --border: #242224;  --border-2: #302e30;
+  --bui-bg: #0c090c;  --bui-surface: #1d161e;  --bui-surface-2: #2a212c;  --bui-border: #242224;
+}
+html[data-theme="light"][data-bg="mauve"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f3f1f3;
+  --hover: #f3f1f3;  --border: #e7e4e7;  --border-2: #e7e4e7;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f3f1f3;  --bui-border: #e7e4e7;
+}
+
+html[data-theme="dark"][data-bg="sage"]{
+  --bg: #0c0c09;  --surface: #1d1d16;  --surface-2: #2b2b22;
+  --hover: #2b2b22;  --border: #242422;  --border-2: #30302e;
+  --bui-bg: #0c0c09;  --bui-surface: #1d1d16;  --bui-surface-2: #2b2b22;  --bui-border: #242422;
+}
+html[data-theme="light"][data-bg="sage"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f4f4f0;
+  --hover: #f4f4f0;  --border: #e8e8e3;  --border-2: #e8e8e3;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f4f4f0;  --bui-border: #e8e8e3;
+}
+
+html[data-theme="dark"][data-bg="mist"]{
+  --bg: #090b0c;  --surface: #161b1d;  --surface-2: #22292b;
+  --hover: #22292b;  --border: #222324;  --border-2: #2e3030;
+  --bui-bg: #090b0c;  --bui-surface: #161b1d;  --bui-surface-2: #22292b;  --bui-border: #222324;
+}
+html[data-theme="light"][data-bg="mist"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f1f3f3;
+  --hover: #f1f3f3;  --border: #e3e7e8;  --border-2: #e3e7e8;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f1f3f3;  --bui-border: #e3e7e8;
+}
+
+html[data-theme="dark"][data-bg="taupe"]{
+  --bg: #0c0a09;  --surface: #1d1816;  --surface-2: #2b2422;
+  --hover: #2b2422;  --border: #242322;  --border-2: #302f2e;
+  --bui-bg: #0c0a09;  --bui-surface: #1d1816;  --bui-surface-2: #2b2422;  --bui-border: #242322;
+}
+html[data-theme="light"][data-bg="taupe"]{
+  --bg: #ffffff;  --surface: #ffffff;  --surface-2: #f3f1f1;
+  --hover: #f3f1f1;  --border: #e8e4e3;  --border-2: #e8e4e3;
+  --bui-bg: #ffffff;  --bui-surface: #ffffff;  --bui-surface-2: #f3f1f1;  --bui-border: #e8e4e3;
+}
+
+/* ------------------------------------------------------------
+   4. Typography variants
+   --font is the single type token of the system (styles.css :root);
+   body, shell, baseui (var(--font, "Play", ...)) and the apex layer
+   (var(--font) !important) all consume it, so overriding it here
+   cascades everywhere. This section never touches the mono stack:
+   monospaced elements resolve through --font-mono (styles.css :root,
+   Geist Mono), which the font axis deliberately leaves alone.
+   Default (play) = attribute absent, original cascade byte-identical.
+   ------------------------------------------------------------ */
+html[data-font="titillium"]{
+  --font: "Titillium Web", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="exo2"]{
+  --font: "Exo 2", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="rajdhani"]{
+  --font: "Rajdhani", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="ibm-plex"]{
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="inter"]{
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="manrope"]{
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="public-sans"]{
+  --font: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-font="geist"]{
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------
+   5. Radius variants
+   Defaults (soft) leave the original cascade untouched.
+   ------------------------------------------------------------ */
+html[data-radius="square"]{
+  --card-radius: 0;
+  --r-pill: 0;
+  --r-md: 0;
+  --r-sm: 0;
+  --r-search: 0;
+  --bui-card-radius: 0;
+  --bui-radius: 0;
+  --bui-radius-sm: 0;
+  --bui-radius-lg: 0;
+  --bui-radius-pill: 0;
+}
+html[data-radius="subtle"]{
+  --card-radius: 2px;
+  --r-pill: 2px;
+  --r-md: 2px;
+  --r-sm: 2px;
+  --r-search: 2px;
+  --bui-card-radius: 2px;
+  --bui-radius: 2px;
+  --bui-radius-sm: 2px;
+  --bui-radius-lg: 2px;
+  --bui-radius-pill: 2px;
+}
+
+/* Quill hardcodes "Play" in baseui-forms.css (one of them with
+   !important); re-derive both from the live font while a non-default
+   family is active. theme-customizer.css loads last in every head,
+   so the !important pair resolves in its favor. */
+html[data-font] .ql-container{ font-family: var(--font); }
+html[data-font] .ql-toolbar{ font-family: var(--font) !important; }
+
+/* ------------------------------------------------------------
+   6. Ambient color variants
+   accent (the default) keeps the attribute absent: the ambient
+   layer tints with the live accent at the bare cascade. Each named
+   tint pins --ambient-tint, consumed by the ambient engine (app.js).
+   ------------------------------------------------------------ */
+html[data-ambcolor="ember"] { --ambient-tint: #ff8a3c; }
+html[data-ambcolor="gold"]  { --ambient-tint: #f0b429; }
+html[data-ambcolor="lime"]  { --ambient-tint: #c8f04f; }
+html[data-ambcolor="mint"]  { --ambient-tint: #5bc9b5; }
+html[data-ambcolor="cyan"]  { --ambient-tint: #4fc3e0; }
+html[data-ambcolor="violet"]{ --ambient-tint: #9182ff; }
+
+/* ------------------------------------------------------------
+   5. Customizer chrome (FAB + offcanvas panel)
+   Vocabulary: system surfaces, 3px double border signature, popIn-
+   grade durations with an ease-out curve, semantic z scale.
+   ------------------------------------------------------------ */
+.tcf-fab{
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: var(--bui-z-fixed, 1030);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  cursor: pointer;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.35),
+    0 0 0 1px color-mix(in srgb, var(--primary) 12%, transparent),
+    0 0 14px color-mix(in srgb, var(--primary) 22%, transparent);
+  transition:
+    transform .18s cubic-bezier(.22,1,.36,1),
+    box-shadow .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+.tcf-fab:hover{
+  transform: translateY(-2px) scale(1.05);
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.4),
+    0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent),
+    0 0 20px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+.tcf-fab:active{ transform: scale(.94); }
+.tcf-fab:focus-visible{ outline: 2px solid var(--primary); outline-offset: 3px; }
+.tcf-fab iconify-icon{
+  display: block;
+  transition: transform .25s cubic-bezier(.22,1,.36,1);
+}
+.tcf-fab[aria-expanded="true"] iconify-icon{ transform: rotate(90deg); }
+
+.tcf-panel{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--bui-z-offcanvas, 1045);
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  background: var(--surface);
+  border-left: 3px double var(--border);
+  box-shadow: var(--shadow-pop);
+  transform: translateX(calc(100% + 24px));
+  visibility: hidden;
+  transition:
+    transform .28s cubic-bezier(.22,1,.36,1),
+    visibility 0s .28s;
+}
+.tcf-panel.is-open{
+  transform: none;
+  visibility: visible;
+  transition: transform .28s cubic-bezier(.22,1,.36,1);
+}
+
+.tcf-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tcf-title{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--heading);
+}
+.tcf-subtitle{
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.tcf-close{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px -6px 0 0;
+  padding: 0;
+  border-radius: 50%; /* circle-by-nature: close button ignores radius preset */
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.tcf-close:hover{ background: var(--hover); color: var(--heading); }
+.tcf-close:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.tcf-body{
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.tcf-body::-webkit-scrollbar{ width: 6px; }
+.tcf-body::-webkit-scrollbar-thumb{ background: var(--border); border-radius: 3px; }
+.tcf-body::-webkit-scrollbar-track{ background: transparent; }
+
+.tcf-group + .tcf-group{ margin-top: 26px; }
+.tcf-label{
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* accent swatches */
+/* row-gap leaves room for the .tcf-swatchname label that sits below
+   each 30px circle (injected by theme-customizer.js buildExtendedUI) */
+.tcf-swatches{ display: flex; flex-wrap: wrap; gap: 26px 12px; }
+.tcf-swatch{
+  --sw: #7e67fe;
+  --tcf-check-ink: #fff;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sw);
+  cursor: pointer;
+  transition:
+    transform .15s cubic-bezier(.22,1,.36,1),
+    box-shadow .15s ease;
+}
+.tcf-swatch:hover{ transform: scale(1.14); }
+.tcf-swatch:active{ transform: scale(.94); }
+.tcf-swatch:focus-visible{ outline: 2px solid var(--heading); outline-offset: 3px; }
+.tcf-swatch[aria-checked="true"]{
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--sw);
+}
+.tcf-swatch::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 14px;
+  height: 14px;
+  background: var(--tcf-check-ink);
+  -webkit-mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .15s ease, transform .15s cubic-bezier(.22,1,.36,1);
+}
+.tcf-swatch[aria-checked="true"]::after{ opacity: 1; transform: none; }
+/* visible name below each circle (aria-label only ships in markup);
+   styled after .tcf-bgname but sized for the dense 30px-circles grid */
+.tcf-swatchname{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  font-size: 9px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.tcf-swatch[aria-checked="true"] .tcf-swatchname{ color: var(--heading); font-weight: 700; }
+
+.tcf-swatch--violet { --sw: #7e67fe; }
+.tcf-swatch--green  { --sw: #12b76a; }
+.tcf-swatch--amber  { --sw: #f7b733; --tcf-check-ink: #2a1c00; }
+.tcf-swatch--blue   { --sw: #3b82f6; }
+.tcf-swatch--pink   { --sw: #ec4899; }
+.tcf-swatch--teal   { --sw: #14b8a6; }
+.tcf-swatch--orange { --sw: #f97316; }
+.tcf-swatch--red    { --sw: #ef4444; }
+.tcf-swatch--cyan   { --sw: #06b6d4; }
+.tcf-swatch--lime   { --sw: #84cc16; --tcf-check-ink: #1f2a00; }
+.tcf-swatch--indigo { --sw: #6366f1; }
+.tcf-swatch--fuchsia{ --sw: #d946ef; }
+.tcf-swatch--sky    { --sw: #0ea5e9; }
+.tcf-swatch--rose   { --sw: #f43f5e; }
+.tcf-swatch--emerald{ --sw: #10b981; }
+.tcf-swatch--gold   { --sw: #eab308; --tcf-check-ink: #2a1c00; }
+.tcf-swatch--olive  { --sw: #6b7d3b; }
+.tcf-swatch--signal { --sw: #c9922e; --tcf-check-ink: #2a1c00; }
+.tcf-swatch--steel  { --sw: #7494a5; --tcf-check-ink: #0f1a20; }
+.tcf-swatch--mint   { --sw: #5bc9b5; --tcf-check-ink: #0a2620; }
+.tcf-swatch--copper { --sw: #b96a3a; --tcf-check-ink: #1a0a02; }
+.tcf-swatch--nvg    { --sw: #85ad5a; --tcf-check-ink: #112000; }
+.tcf-swatch--khaki  { --sw: #a19a6b; --tcf-check-ink: #1e1b08; }
+.tcf-swatch--gunmetal{ --sw: #52738c; }
+.tcf-swatch--wraith { --sw: #8268a8; }
+.tcf-swatch--sentinel{ --sw: #ab509a; }
+.tcf-swatch--sonar  { --sw: #03999e; --tcf-check-ink: #131c1c; }
+
+/* background swatches: miniature bg/surface/accent previews */
+.tcf-swatches--bg{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tcf-bgcard{
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-bgcard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-bgprev{
+  --pv-bg: #191e23;
+  --pv-surface: #1d2329;
+  --pv-border: #272f37;
+  display: block;
+  position: relative;
+  height: 46px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--pv-bg);
+  border: 1px solid var(--pv-border);
+  transition: transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s ease;
+}
+.tcf-bgcard:hover .tcf-bgprev{ transform: translateY(-1px); }
+.tcf-bgcard:active .tcf-bgprev{ transform: translateY(0) scale(.98); }
+.tcf-bgcard[aria-checked="true"] .tcf-bgprev{
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary);
+}
+.tcf-bgprev i:first-child{
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 58%;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--pv-surface);
+  border: 1px solid var(--pv-border);
+}
+.tcf-bgprev i:last-child{
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  width: 36%;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--primary);   /* live: previews the current accent pairing */
+}
+.tcf-bgprev--neutral { --pv-bg: #191e23; --pv-surface: #1d2329; --pv-border: #272f37; }
+.tcf-bgprev--abyss   { --pv-bg: #151b26; --pv-surface: #1a2130; --pv-border: #273349; }
+.tcf-bgprev--fern    { --pv-bg: #151d18; --pv-surface: #1a231d; --pv-border: #263129; }
+.tcf-bgprev--ember   { --pv-bg: #1e1a16; --pv-surface: #242019; --pv-border: #322a20; }
+.tcf-bgprev--midnight{ --pv-bg: #0f1626; --pv-surface: #131c30; --pv-border: #1c2740; }
+.tcf-bgprev--wine    { --pv-bg: #1e1417; --pv-surface: #251a1e; --pv-border: #33252a; }
+.tcf-bgprev--slate   { --pv-bg: #171b21; --pv-surface: #1c2129; --pv-border: #262d38; }
+.tcf-bgprev--sand    { --pv-bg: #1c1a13; --pv-surface: #222017; --pv-border: #2d2a1f; }
+.tcf-bgprev--field   { --pv-bg: #161a14; --pv-surface: #1c211a; --pv-border: #283023; }
+.tcf-bgprev--command { --pv-bg: #11161e; --pv-surface: #171c25; --pv-border: #212935; }
+.tcf-bgprev--forge   { --pv-bg: #1c1813; --pv-surface: #231e17; --pv-border: #2e2620; }
+.tcf-bgprev--glacier { --pv-bg: #0e1a20; --pv-surface: #14222a; --pv-border: #1c2f3a; }
+.tcf-bgprev--orchid  { --pv-bg: #1a0f1a; --pv-surface: #211421; --pv-border: #2a1a2a; }
+.tcf-bgprev--clay    { --pv-bg: #1c1612; --pv-surface: #231b16; --pv-border: #2e251f; }
+.tcf-bgprev--blackout{ --pv-bg: #030507; --pv-surface: #07090d; --pv-border: #0f1318; }
+.tcf-bgprev--carbon  { --pv-bg: #06070a; --pv-surface: #0b0d11; --pv-border: #14181d; }
+.tcf-bgprev--obsidian{ --pv-bg: #0a0710; --pv-surface: #110d18; --pv-border: #1c1725; }
+.tcf-bgprev--bunker  { --pv-bg: #090c08; --pv-surface: #0f130e; --pv-border: #191e17; }
+.tcf-bgprev--trench  { --pv-bg: #110c08; --pv-surface: #18130d; --pv-border: #241d16; }
+/* shadcn bases: dark-column values (same convention as every preview) */
+.tcf-bgprev--pure    { --pv-bg: #0a0a0a; --pv-surface: #171717; --pv-border: #232323; }
+.tcf-bgprev--stone   { --pv-bg: #0c0a09; --pv-surface: #1c1917; --pv-border: #242322; }
+.tcf-bgprev--zinc    { --pv-bg: #09090b; --pv-surface: #18181b; --pv-border: #222223; }
+.tcf-bgprev--mauve   { --pv-bg: #0c090c; --pv-surface: #1d161e; --pv-border: #242224; }
+.tcf-bgprev--sage    { --pv-bg: #0c0c09; --pv-surface: #1d1d16; --pv-border: #242422; }
+.tcf-bgprev--mist    { --pv-bg: #090b0c; --pv-surface: #161b1d; --pv-border: #222324; }
+.tcf-bgprev--taupe   { --pv-bg: #0c0a09; --pv-surface: #1d1816; --pv-border: #242322; }
+.tcf-bgname{
+  display: block;
+  margin-top: 7px;
+  font-size: 12px;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.tcf-bgcard[aria-checked="true"] .tcf-bgname{ color: var(--heading); font-weight: 700; }
+
+/* font cards: the preview renders its own family regardless of the
+   live --font, so each option stays identifiable while comparing */
+.tcf-fonts{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tcf-fontcard{
+  --fp: system-ui, sans-serif;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-fontcard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-fontprev{
+  display: block;
+  position: relative;
+  padding: 10px 12px 9px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--fp);
+  transition:
+    transform .15s cubic-bezier(.22,1,.36,1),
+    border-color .15s ease,
+    box-shadow .15s ease;
+}
+.tcf-fontcard:hover .tcf-fontprev{
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+.tcf-fontcard[aria-checked="true"] .tcf-fontprev{
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary);
+}
+.tcf-fontaa{
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--heading);
+}
+.tcf-fontsample{
+  display: block;
+  margin-top: 6px;
+  min-height: 2.6em;
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.tcf-fontcheck{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,.35);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .15s ease, transform .15s cubic-bezier(.22,1,.36,1);
+}
+.tcf-fontcheck::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 9px;
+  height: 9px;
+  background: var(--tcf-on-accent, #fff);  /* dark ink follows amber/lime/gold */
+  -webkit-mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+}
+.tcf-fontcard[aria-checked="true"] .tcf-fontcheck{ opacity: 1; transform: none; }
+.tcf-fontmeta{ display: block; margin-top: 7px; }
+.tcf-fontname{
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.tcf-fontcard[aria-checked="true"] .tcf-fontname{ color: var(--heading); }
+.tcf-fonttag{
+  display: block;
+  margin-top: 1px;
+  font-size: 10px;
+  letter-spacing: .3px;
+  color: var(--muted);
+}
+
+.tcf-fontprev--play     { --fp: "Play", system-ui, sans-serif; }
+.tcf-fontprev--titillium{ --fp: "Titillium Web", system-ui, sans-serif; }
+.tcf-fontprev--exo2     { --fp: "Exo 2", system-ui, sans-serif; }
+.tcf-fontprev--rajdhani { --fp: "Rajdhani", system-ui, sans-serif; }
+.tcf-fontprev--ibm-plex { --fp: "IBM Plex Sans", system-ui, sans-serif; }
+.tcf-fontprev--inter       { --fp: "Inter", system-ui, sans-serif; }
+.tcf-fontprev--manrope     { --fp: "Manrope", system-ui, sans-serif; }
+.tcf-fontprev--public-sans { --fp: "Public Sans", system-ui, sans-serif; }
+.tcf-fontprev--geist       { --fp: "Geist", system-ui, sans-serif; }
+
+/* radius cards: fixed previews communicate each preset independently
+   from the active global token values. */
+.tcf-radius{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tcf-radiuscard{
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-radiuscard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-radiusprev{
+  display: block;
+  height: 38px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: transform .15s cubic-bezier(.22,1,.36,1), border-color .15s ease, box-shadow .15s ease;
+}
+.tcf-radiusprev--square{ border-radius: 0; }
+.tcf-radiusprev--subtle{ border-radius: 2px; }
+.tcf-radiusprev--soft{ border-radius: 5.6px; }
+.tcf-radiuscard:hover .tcf-radiusprev{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
+.tcf-radiuscard[aria-checked="true"] .tcf-radiusprev{ box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+.tcf-radiusname{ display: block; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--muted); transition: color .15s ease; }
+.tcf-radiusdesc{ display: block; margin-top: 1px; font-size: 10px; color: var(--muted); }
+.tcf-radiuscard[aria-checked="true"] .tcf-radiusname{ color: var(--heading); }
+
+/* icon family cards: each preview renders three samples from its own
+   family (excluded from the live remap via .tcf-famsample), so every
+   option stays identifiable while comparing — font-preview precedent. */
+.tcf-iconfams{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tcf-famcard{
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-famcard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-famprev{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  position: relative;
+  height: 46px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--heading);
+  transition:
+    transform .15s cubic-bezier(.22,1,.36,1),
+    border-color .15s ease,
+    box-shadow .15s ease;
+}
+.tcf-famprev iconify-icon{ font-size: 20px; }
+.tcf-famcard:hover .tcf-famprev{
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+.tcf-famcard[aria-checked="true"] .tcf-famprev{
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary);
+}
+.tcf-famcheck{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,.35);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .15s ease, transform .15s cubic-bezier(.22,1,.36,1);
+}
+.tcf-famcheck::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 9px;
+  height: 9px;
+  background: var(--tcf-on-accent, #fff);  /* dark ink follows amber/lime/gold */
+  -webkit-mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/%3e%3c/svg%3e") center / contain no-repeat;
+}
+.tcf-famcard[aria-checked="true"] .tcf-famcheck{ opacity: 1; transform: none; }
+.tcf-famname{ display: block; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--muted); transition: color .15s ease; }
+.tcf-famcard[aria-checked="true"] .tcf-famname{ color: var(--heading); }
+.tcf-famtag{ display: block; margin-top: 1px; font-size: 10px; letter-spacing: .3px; color: var(--muted); }
+
+/* Phosphor card preview (spec-7): the three samples render through
+   iconify itself (ph:house, ph:bell and the custom ph-arms:gun, all
+   excluded from the live remap via .tcf-famsample), so the --phosphor
+   modifier only lays a quiet dot raster under them — the 256px pixel
+   grid the family's glyphs are drawn on. Static, token-based, no
+   animation; composes over the shared .tcf-famprev surface. */
+.tcf-famprev--phosphor{
+  background-image: radial-gradient(color-mix(in srgb, var(--muted) 38%, transparent) 1px, transparent 1.4px);
+  background-size: 9px 9px;
+  background-position: center;
+}
+
+/* Lucide card preview: the three samples render through iconify itself
+   (lucide:house, lucide:bell and the custom lucide-arms:gun, all
+   excluded from the live remap via .tcf-famsample), so the --lucide
+   modifier only lays a quiet keyline grid under them — the 24×24 pixel
+   grid the family's glyphs are drawn on (12px cells at card scale,
+   half the glyph grid, mirroring the phosphor dot-raster precedent).
+   Static, token-based, no animation; composes over the shared
+   .tcf-famprev surface. */
+.tcf-famprev--lucide{
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--muted) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--muted) 22%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-position: center;
+}
+
+/* CC BY 4.0 attribution, shown only while fa7-solid is active */
+.tcf-attr{ margin: 10px 0 0; font-size: 11px; }
+
+/* ambient background cards (spec-6): each preview is a static CSS
+   composite of its data-ambient variant — pure gradients and one
+   masked glyph, no animation, no transitions of movement and no
+   reuse of the live engine that app.js mounts on the page. */
+.tcf-ambients{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tcf-ambientcard{
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-ambientcard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-ambientprev{
+  display: block;
+  position: relative;
+  height: 44px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.tcf-ambientprev::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.tcf-ambientprev--embers::before{
+  background-image:
+    radial-gradient(2.2px 2.2px at 24% 74%, rgb(255, 158, 94) 50%, transparent 52%),
+    radial-gradient(1.8px 1.8px at 46% 52%, rgb(255, 138, 76) 50%, transparent 52%),
+    radial-gradient(2px 2px at 64% 68%, rgb(255, 158, 94) 50%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 78% 36%, rgb(255, 122, 54) 48%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 34% 28%, rgb(255, 138, 76) 48%, transparent 52%),
+    linear-gradient(to top, color-mix(in srgb, rgb(255, 122, 54) 26%, transparent), transparent 46%);
+}
+.tcf-ambientprev--fireflies::before{
+  background-image:
+    radial-gradient(2.2px 2.2px at 18% 42%, rgb(212, 255, 150) 50%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 40% 68%, rgb(186, 255, 120) 46%, transparent 52%),
+    radial-gradient(2px 2px at 58% 30%, rgb(212, 255, 150) 50%, transparent 52%),
+    radial-gradient(1.6px 1.6px at 76% 58%, rgb(186, 255, 120) 46%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 88% 24%, rgb(212, 255, 150) 44%, transparent 52%);
+}
+.tcf-ambientprev--rain{ --tcf-rain: color-mix(in srgb, var(--primary) 20%, rgb(139, 157, 181)); }
+.tcf-ambientprev--rain::before{
+  background-image:
+    linear-gradient(to bottom, transparent, var(--tcf-rain) 34%, var(--tcf-rain) 62%, transparent),
+    linear-gradient(to bottom, transparent, var(--tcf-rain) 30%, var(--tcf-rain) 66%, transparent),
+    linear-gradient(to bottom, transparent, var(--tcf-rain) 36%, var(--tcf-rain) 60%, transparent),
+    linear-gradient(to bottom, transparent, var(--tcf-rain) 32%, var(--tcf-rain) 64%, transparent);
+  background-size: 1px 24px, 1px 17px, 1px 28px, 1px 15px;
+  background-position: 20% 26%, 44% 62%, 66% 18%, 84% 58%;
+  background-repeat: no-repeat;
+}
+.tcf-ambientprev--searchlights::before{
+  background-image:
+    conic-gradient(from 11deg at 4% 122%, transparent 0deg, color-mix(in srgb, var(--primary) 34%, transparent) 9deg, transparent 18deg),
+    conic-gradient(from 331deg at 96% 122%, transparent 0deg, color-mix(in srgb, var(--primary) 34%, transparent) 9deg, transparent 18deg);
+}
+.tcf-ambientprev--tracers{ --tcf-tracer: color-mix(in srgb, var(--primary) 62%, #fff); }
+/* ballistic trails: a long thin wake that fades toward the tail + a
+   short bright head dot with bloom at the leading tip (mirrors the
+   live engine's rail + ::after head geometry), plus one distant
+   faint pass without a legible head */
+.tcf-ambientprev--tracers::before{
+  background-image:
+    radial-gradient(3px 3px at 71% 30%, color-mix(in srgb, var(--primary) 26%, #fff) 44%, transparent 60%),
+    radial-gradient(8px 8px at 71% 30%, color-mix(in srgb, var(--primary) 38%, transparent) 16%, transparent 60%),
+    linear-gradient(115deg, transparent 6%, color-mix(in srgb, var(--primary) 22%, transparent) 44%, color-mix(in srgb, var(--primary) 46%, transparent) 72%, var(--tcf-tracer) 84%, transparent 88%),
+    radial-gradient(2.4px 2.4px at 32% 68%, color-mix(in srgb, var(--primary) 26%, #fff) 42%, transparent 58%),
+    radial-gradient(7px 7px at 32% 68%, color-mix(in srgb, var(--primary) 34%, transparent) 14%, transparent 58%),
+    linear-gradient(115deg, transparent 8%, color-mix(in srgb, var(--primary) 20%, transparent) 46%, color-mix(in srgb, var(--primary) 42%, transparent) 74%, var(--tcf-tracer) 85%, transparent 89%),
+    linear-gradient(115deg, transparent 10%, color-mix(in srgb, var(--primary) 16%, transparent) 52%, color-mix(in srgb, var(--primary) 30%, transparent) 82%, transparent 88%);
+  background-size: auto, auto, 36px 3px, auto, auto, 28px 2.5px, 20px 2px;
+  background-position: 0 0, 0 0, 52% 26%, 0 0, 0 0, 18% 64%, 74% 78%;
+  background-repeat: no-repeat;
+}
+.tcf-ambientprev--ricochet::before{
+  background-image:
+    radial-gradient(2.4px 2.4px at 26% 62%, color-mix(in srgb, var(--primary) 62%, #fff) 46%, transparent 54%),
+    radial-gradient(8px 8px at 26% 62%, color-mix(in srgb, var(--primary) 30%, transparent) 16%, transparent 58%),
+    radial-gradient(1.8px 1.8px at 62% 26%, color-mix(in srgb, var(--primary) 62%, #fff) 46%, transparent 54%),
+    radial-gradient(7px 7px at 62% 26%, color-mix(in srgb, var(--primary) 26%, transparent) 16%, transparent 58%),
+    radial-gradient(1.5px 1.5px at 84% 72%, color-mix(in srgb, var(--primary) 58%, #fff) 44%, transparent 54%);
+}
+.tcf-ambientprev--ash::before{
+  background-image:
+    radial-gradient(1.8px 1.8px at 22% 30%, rgb(199, 168, 143) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 44% 58%, rgb(181, 150, 128) 48%, transparent 52%),
+    radial-gradient(1.8px 1.8px at 62% 38%, rgb(199, 168, 143) 50%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 78% 66%, rgb(172, 142, 120) 46%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 34% 80%, rgb(181, 150, 128) 46%, transparent 52%),
+    linear-gradient(to bottom, color-mix(in srgb, rgb(199, 168, 143) 15%, transparent), transparent 46%);
+}
+.tcf-ambientprev--off::before{
+  background: linear-gradient(135deg, transparent 45%, color-mix(in srgb, var(--muted) 60%, transparent) 45%, color-mix(in srgb, var(--muted) 60%, transparent) 55%, transparent 55%);
+}
+.tcf-ambientcard:hover .tcf-ambientprev{ border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
+.tcf-ambientcard[aria-checked="true"] .tcf-ambientprev{ box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+.tcf-ambientname{ display: block; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--muted); transition: color .15s ease; }
+.tcf-ambientdesc{ display: block; margin-top: 1px; font-size: 10px; color: var(--muted); }
+.tcf-ambientcard[aria-checked="true"] .tcf-ambientname{ color: var(--heading); }
+
+/* ambient color cards (8th axis): each preview is a static color
+   dot — Accent shows the live --primary, the six named tints their
+   fixed --ambient-tint hex, so every option stays identifiable
+   independently of the active selection (radius-preview precedent).
+   No animation, no movement. */
+.tcf-ambcolors{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tcf-ambcolorcard{
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tcf-ambcolorcard:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-md); }
+.tcf-ambcolorprev{
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s ease;
+}
+.tcf-ambcolorcard:hover .tcf-ambcolorprev{ transform: translateY(-1px); }
+.tcf-ambcolorcard[aria-checked="true"] .tcf-ambcolorprev{ box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+.tcf-ambcolorprev--accent{ background: var(--primary); }  /* live: follows the active accent */
+.tcf-ambcolorprev--ember { background: #ff8a3c; }
+.tcf-ambcolorprev--gold  { background: #f0b429; }
+.tcf-ambcolorprev--lime  { background: #c8f04f; }
+.tcf-ambcolorprev--mint  { background: #5bc9b5; }
+.tcf-ambcolorprev--cyan  { background: #4fc3e0; }
+.tcf-ambcolorprev--violet{ background: #9182ff; }
+.tcf-ambcolorname{ display: block; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--muted); transition: color .15s ease; }
+.tcf-ambcolorcard[aria-checked="true"] .tcf-ambcolorname{ color: var(--heading); }
+
+.tcf-note{
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.tcf-foot{
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tcf-reset{
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+.tcf-reset:hover{
+  color: var(--heading);
+  background: var(--hover);
+  border-color: color-mix(in srgb, var(--primary) 50%, var(--border));
+}
+.tcf-reset:focus-visible{ outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* light theme chrome tweaks */
+[data-theme="light"] .tcf-fab{
+  box-shadow:
+    0 6px 16px rgba(31,41,55,.18),
+    0 0 0 1px color-mix(in srgb, var(--primary) 14%, transparent),
+    0 0 12px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+[data-theme="light"] .tcf-fab:hover{
+  box-shadow:
+    0 10px 22px rgba(31,41,55,.22),
+    0 0 0 1px color-mix(in srgb, var(--primary) 22%, transparent),
+    0 0 18px color-mix(in srgb, var(--primary) 32%, transparent);
+}
+[data-theme="light"] .tcf-panel{ box-shadow: 0 14px 30px rgba(31,41,55,.16); }
+
+/* mobile */
+@media (max-width: 767px){
+  .tcf-fab{ right: 16px; bottom: 16px; }
+  .tcf-panel{ width: min(300px, calc(100vw - 24px)); }
+}
+
+/* reduced motion: chrome switches state instantly */
+@media (prefers-reduced-motion: reduce){
+  .tcf-panel,
+  .tcf-fab,
+  .tcf-fab iconify-icon,
+  .tcf-swatch,
+  .tcf-swatch::after,
+  .tcf-bgprev,
+  .tcf-bgname,
+  .tcf-fontprev,
+  .tcf-fontcheck,
+  .tcf-fontname,
+  .tcf-radiusprev,
+  .tcf-radiusname,
+  .tcf-famprev,
+  .tcf-famcheck,
+  .tcf-famname,
+  .tcf-ambientprev,
+  .tcf-ambientname,
+  .tcf-ambcolorprev,
+  .tcf-ambcolorname,
+  .tcf-close,
+  .tcf-reset{
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------
+   Registro de deshabilitado para las muestras del personalizador
+   (barrido UX 2026-10-16). Mismo registro que `dashboard.css`
+   `.btn:disabled`; sin él, un eje bloqueado se veía clicable.
+   ------------------------------------------------------------ */
+.tcf-swatch:disabled,
+.tcf-bgcard:disabled,
+.tcf-fontcard:disabled,
+.tcf-radiuscard:disabled,
+.tcf-famcard:disabled,
+.tcf-ambientcard:disabled,
+.tcf-ambcolorcard:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}

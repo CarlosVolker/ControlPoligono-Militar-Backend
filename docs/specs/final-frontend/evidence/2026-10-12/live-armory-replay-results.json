@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "execution": "Reejecución de run-live-armory.cjs contra el producto y backend locales reales",
+  "actor": "A7",
+  "role": "encargado_almacen",
+  "status": "ok",
+  "dataset": "Armería de desarrollo existente y asignada; sin creación de registros",
+  "operations": [
+    { "op": "OP-ARM-001", "method": "GET", "path": "/api/armorias/", "status": 200 },
+    { "op": "OP-ARM-003", "method": "GET", "path": "/api/armorias/{id}/", "status": 200 },
+    { "op": "OP-ARM-005", "method": "PATCH", "path": "/api/armorias/{id}/", "status": 200, "body_keys": ["name"] }
+  ],
+  "editor_matches_backend": {
+    "name": true,
+    "code": true,
+    "descripcion": true,
+    "organization_unit_code": true,
+    "is_active": true
+  },
+  "unchanged_patch": { "message_visible": true, "armory_write_requests": 0 },
+  "fresh_get_confirms_changed_name": true,
+  "restoration": {
+    "method": "PATCH",
+    "path": "/api/armorias/{id}/",
+    "status": 200,
+    "body_keys": ["name"],
+    "fresh_get_status": 200,
+    "original_name_confirmed": true,
+    "code_description_active_and_unit_preserved": true,
+    "organization_unit_code_present_in_both_responses": true
+  },
+  "controlled_context_closed": true,
+  "recovery_needed": false,
+  "records_created": 0,
+  "records_deleted": 0,
+  "backend_code_changed": false,
+  "limitations": [
+    "Esta reejecución comprueba las mismas tres operaciones de A7, no tres celdas adicionales de la matriz",
+    "Se comparó el campo real organization_unit_code; no certifica aislamiento entre unidades ni tenants",
+    "Los regresos al catálogo usaron recargas normales del producto; la causa de los timeouts anteriores del sidebar sigue sin establecerse",
+    "Esta reejecución no ejercitó logout, PUT, alta, baja ni validación de campos requeridos",
+    "Los demás actores y la aceptación integral siguen sin verificar"
+  ],
+  "global": "NOT_VERIFIED"
+}

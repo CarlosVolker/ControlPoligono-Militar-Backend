@@ -1,0 +1,625 @@
+{
+  "schema": "frontend-t11-writes-tiro/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Fichas de escritura del lote tiro+armerías (46 celdas NE esperadas ALLOW), por orden del operador.",
+  "method": "Llamada directa con la sesión real del actor (misma llamada que emite la UI); CSRF real; marcadores T11; limpieza y barrido propios.",
+  "markers": "T11<ALIAS><FAM>-01",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    }
+  },
+  "unit_codes_len": {
+    "A2": 5,
+    "A3": 5,
+    "A5": 5
+  },
+  "steps": [
+    {
+      "op": "OP-RNG-002",
+      "actor": "A1",
+      "family": "RNG",
+      "verb": "POST",
+      "path_tpl": "/poligonos/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A1",
+      "family": "RNG",
+      "verb": "PUT",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A1",
+      "family": "RNG",
+      "verb": "PATCH",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A1",
+      "family": "LES",
+      "verb": "POST",
+      "path_tpl": "/lecciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A1",
+      "family": "LES",
+      "verb": "PUT",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A1",
+      "family": "LES",
+      "verb": "PATCH",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A1",
+      "family": "FRC",
+      "verb": "POST",
+      "path_tpl": "/fracciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A1",
+      "family": "FRC",
+      "verb": "PUT",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A1",
+      "family": "FRC",
+      "verb": "PATCH",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A1",
+      "family": "FRC",
+      "verb": "DELETE",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A1",
+      "family": "LES",
+      "verb": "DELETE",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A1",
+      "family": "RNG",
+      "verb": "DELETE",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A2",
+      "family": "RNG",
+      "verb": "POST",
+      "path_tpl": "/poligonos/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A2",
+      "family": "RNG",
+      "verb": "PUT",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A2",
+      "family": "RNG",
+      "verb": "PATCH",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A2",
+      "family": "LES",
+      "verb": "POST",
+      "path_tpl": "/lecciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A2",
+      "family": "LES",
+      "verb": "PUT",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A2",
+      "family": "LES",
+      "verb": "PATCH",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A2",
+      "family": "FRC",
+      "verb": "POST",
+      "path_tpl": "/fracciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A2",
+      "family": "FRC",
+      "verb": "PUT",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A2",
+      "family": "FRC",
+      "verb": "PATCH",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A2",
+      "family": "FRC",
+      "verb": "DELETE",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A2",
+      "family": "LES",
+      "verb": "DELETE",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A5",
+      "family": "RNG",
+      "verb": "POST",
+      "path_tpl": "/poligonos/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A5",
+      "family": "RNG",
+      "verb": "PUT",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A5",
+      "family": "RNG",
+      "verb": "PATCH",
+      "path_tpl": "/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A5",
+      "family": "LES",
+      "verb": "POST",
+      "path_tpl": "/lecciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A5",
+      "family": "LES",
+      "verb": "PUT",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A5",
+      "family": "LES",
+      "verb": "PATCH",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A5",
+      "family": "FRC",
+      "verb": "POST",
+      "path_tpl": "/fracciones/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A5",
+      "family": "FRC",
+      "verb": "PUT",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A5",
+      "family": "FRC",
+      "verb": "PATCH",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A5",
+      "family": "FRC",
+      "verb": "DELETE",
+      "path_tpl": "/fracciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A5",
+      "family": "LES",
+      "verb": "DELETE",
+      "path_tpl": "/lecciones/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-002",
+      "actor": "A2",
+      "family": "ARM",
+      "verb": "POST",
+      "path_tpl": "/armorias/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-002",
+      "actor": "A3",
+      "family": "ARM",
+      "verb": "POST",
+      "path_tpl": "/armorias/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-002",
+      "actor": "A5",
+      "family": "ARM",
+      "verb": "POST",
+      "path_tpl": "/armorias/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A1",
+      "family": "ARM",
+      "verb": "PUT",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A1",
+      "family": "ARM",
+      "verb": "PATCH",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A2",
+      "family": "ARM",
+      "verb": "PUT",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A2",
+      "family": "ARM",
+      "verb": "PATCH",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A2",
+      "family": "ARM",
+      "verb": "DELETE",
+      "path_tpl": "/armorias/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A3",
+      "family": "ARM",
+      "verb": "PUT",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A3",
+      "family": "ARM",
+      "verb": "PATCH",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A5",
+      "family": "ARM",
+      "verb": "PUT",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A5",
+      "family": "ARM",
+      "verb": "PATCH",
+      "path_tpl": "/armorias/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    }
+  ],
+  "relays": [
+    {
+      "what": "poligono_A2",
+      "id": 4,
+      "status": 204
+    },
+    {
+      "what": "armoria_A5",
+      "id": 10,
+      "status": 204
+    },
+    {
+      "what": "poligono_A5",
+      "id": 5,
+      "status": 204
+    }
+  ],
+  "sweep": {
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 5,
+        "marker_matches": 1
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 1
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    },
+    "own_matches": 2,
+    "note": "conteo de coincidencias \"T11\" en listados leídos por A1"
+  },
+  "page_errors": [],
+  "remaining_after_cleanup": {
+    "poligonos": {},
+    "lecciones": {},
+    "fracciones": {},
+    "armorias": {
+      "A3": 9
+    }
+  },
+  "summary": {
+    "steps": 46,
+    "match_2xx": 46,
+    "not_2xx": 0,
+    "no_response": 0,
+    "relays": 3,
+    "sweep_own_matches": 2
+  }
+}

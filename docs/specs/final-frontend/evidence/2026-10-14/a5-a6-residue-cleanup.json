@@ -1,0 +1,361 @@
+{
+  "schema": "frontend-a5-a6-residue-cleanup/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — limpieza del residuo de las tandas A5 y A6 usando el alias A1",
+  "delivery_scope": "UI-driven cleanup of A5 disposable residue (weapon 15, exercise 16, temp user 41) plus A6 residue sweep, using alias A1; not an acceptance verdict",
+  "source_paths": [
+    ".cache/frontend-acceptance/2026-10-14/a5-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-14/a6-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "source_records": {
+    "weapon": {
+      "step": "weapon",
+      "id": 15,
+      "note": "DELETE por UI devolvió 403; no se forzó la API"
+    },
+    "exercise": {
+      "step": "exercise",
+      "id": 16,
+      "note": "la UI no ofreció la baja; no se forzó la API"
+    },
+    "temp_user": {
+      "step": "temp_user",
+      "id": 41,
+      "note": "la UI no ofreció la baja; no se forzó la API"
+    },
+    "a5_marker": "A5CFMV8GJ6BB",
+    "a6_marker": "A6CFMV8GVQEQ",
+    "a5_temp_rut_marker": "03360439-4"
+  },
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A1->super_admin; credentials.json provisions exactly one super_admin account (same private file used by the 2026-10-14 tandas)",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "assignments_roles": [
+        {
+          "role": "super_admin",
+          "is_primary": true,
+          "scope_present": false
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "permissions_count": 41
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "operations": [
+    {
+      "family": "armas",
+      "operation": "detail_before",
+      "method": "GET",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "driver": "UI (ficha del arma residuo)"
+    },
+    {
+      "family": "armas",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/armas/{id}/",
+      "status": 204,
+      "driver": "UI (Eliminar → Confirmar baja)"
+    },
+    {
+      "family": "armas",
+      "operation": "detail_after",
+      "method": "GET",
+      "path": "/api/armas/{id}/",
+      "status": 404,
+      "driver": "API (verificación de baja)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "detail_before",
+      "method": "GET",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "driver": "UI (ficha del ejercicio residuo)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/ejercicios/{id}/",
+      "status": 204,
+      "driver": "UI (Eliminar → Confirmar baja)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "detail_after",
+      "method": "GET",
+      "path": "/api/ejercicios/{id}/",
+      "status": 404,
+      "driver": "API (verificación de baja)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "detail_before",
+      "method": "GET",
+      "path": "/api/usuarios/{id}/",
+      "status": 200,
+      "driver": "UI (ficha del usuario temporal residuo)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/usuarios/{id}/",
+      "status": 204,
+      "driver": "UI (Dar de baja → Confirmar baja)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "detail_after",
+      "method": "GET",
+      "path": "/api/usuarios/{id}/",
+      "status": 404,
+      "driver": "API (verificación de baja)"
+    },
+    {
+      "family": "barrido",
+      "operation": "sweep_markers",
+      "method": "GET",
+      "path": "A5CF + A6CF (7 familias)",
+      "status": 200,
+      "driver": "API (lectura de barrido)"
+    }
+  ],
+  "not_offered": [],
+  "denials": [],
+  "records": {
+    "weapon": {
+      "id": 15,
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/armas/15/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/armas/15/",
+        "status": 204,
+        "driver": "UI (Eliminar → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/armas/15/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    },
+    "exercise": {
+      "id": 16,
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/ejercicios/16/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/ejercicios/16/",
+        "status": 204,
+        "driver": "UI (Eliminar → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/ejercicios/16/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    },
+    "temp_user": {
+      "rut_marker": "03360439-4",
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "id": 41,
+      "get_before": {
+        "method": "GET",
+        "path": "/api/usuarios/41/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/usuarios/41/",
+        "status": 204,
+        "driver": "UI (Dar de baja → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/usuarios/41/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    }
+  },
+  "sweep": {
+    "markers": {
+      "a5": "A5CF",
+      "a6": "A6CF"
+    },
+    "a5_run_marker": "A5CFMV8GJ6BB",
+    "a6_run_marker": "A6CFMV8GVQEQ",
+    "families": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 12,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 45,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 16,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 18,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 3,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 3,
+        "a5_marker": 0,
+        "a6_marker": 0,
+        "temp_rut_matches": 0,
+        "own_marker_total": 0,
+        "matched": []
+      }
+    },
+    "own_marker_total": 0
+  },
+  "mutations": [
+    {
+      "screen": "weapon",
+      "method": "DELETE",
+      "path": "/api/armas/15/",
+      "status": 204,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "exercise",
+      "method": "DELETE",
+      "path": "/api/ejercicios/16/",
+      "status": 204,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "temp_user",
+      "method": "DELETE",
+      "path": "/api/usuarios/41/",
+      "status": 204,
+      "kind": "cleanup"
+    }
+  ],
+  "limits": [
+    "Sólo registros descartables propios con marcador de las tandas A5 (arma 15, ejercicio 16, usuario temporal por RUT descartable propio) y A6; no se tocaron personas reales, cuentas heredadas, roles privilegiados (super_admin/tenant_admin como asignación) ni puestos con titular único ocupado.",
+    "Cero escrituras de roles/permisos/overrides/position-permissions; cero cambios de backend, base de datos, dependencias o migraciones; sólo la API real del backend ya en marcha.",
+    "Limpieza SÓLO por UI: no se forzó DELETE por API. Si un registro sigue sin poder darse de baja, se detiene esa rama y se reporta; no se repara por base de datos.",
+    "DELETE 2xx / GET 404 documentan ausencia en la respuesta del servidor; NO acreditan borrado físico.",
+    "La rama de puestos se excluye: DELETE /api/posiciones/{id}/ = 500 con cualquier assignment asociada (deuda backend §11); no se tocó ningún puesto.",
+    "expected_by_actor sigue NOT_VERIFIED; esta corrida no emite veredicto de aceptación.",
+    "No se imprimen ni persisten credenciales ni el valor del tenant."
+  ],
+  "errors": [],
+  "harness": {
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 34,
+    "mutations": [
+      {
+        "method": "DELETE",
+        "path": "/api/armas/{id}/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/ejercicios/{id}/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/usuarios/{id}/",
+        "status": 204
+      }
+    ]
+  }
+}

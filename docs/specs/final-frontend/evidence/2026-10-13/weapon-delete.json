@@ -1,0 +1,22 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "weapons",
+  "actor_alias": "A1",
+  "marker": "DCTMV7GRCUNARM",
+  "record_id": 4,
+  "delete": {
+    "source": "UI click in detail confirmation",
+    "method": "DELETE",
+    "path": "/api/armas/4/",
+    "status": 204
+  },
+  "reconcile_after_delete": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/armas/4/",
+    "status": 404
+  },
+  "visible_ui_outcome": "El arma fue dada de baja según la respuesta del servidor.",
+  "records_left_by_this_family": 0
+}

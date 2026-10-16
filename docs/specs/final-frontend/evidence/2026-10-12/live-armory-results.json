@@ -1,0 +1,72 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/live-armory-results.json. Sin secretos, sin DTO ni nombres/identificadores privados: sólo estados HTTP, conteos y claves de campo.",
+  "date": "2026-10-12",
+  "source": "Direct orchestrator Playwright UI; real local product and backend; no API mocks or injected cookies",
+  "actor": "A7",
+  "role": "encargado_almacen",
+  "dataset": "Existing development tenant and assigned armory; no records seeded",
+  "login_status": 200,
+  "observations": [
+    {
+      "op": "OP-ARM-001",
+      "method": "GET",
+      "path": "/api/armorias/",
+      "status": 200,
+      "visible_rows": 1,
+      "state": "OBSERVED_OK",
+      "scope": "Existing armory visible to A7; not exhaustive isolation verification"
+    },
+    {
+      "op": "OP-ARM-003",
+      "method": "GET",
+      "path": "/api/armorias/{id}/",
+      "status": 200,
+      "existing_record_matched": true,
+      "editor_seed_matched_response": true,
+      "state": "OBSERVED_OK"
+    },
+    {
+      "op": "OP-ARM-005",
+      "method": "PATCH",
+      "path": "/api/armorias/{id}/",
+      "status": 200,
+      "payload_keys": [
+        "name"
+      ],
+      "state": "OBSERVED_OK",
+      "scope": "Reversible name change on existing assigned armory"
+    }
+  ],
+  "unchanged_patch": {
+    "message_visible": true,
+    "business_requests": 0
+  },
+  "persistence_check": {
+    "fresh_product_get_status": 200,
+    "changed_name_persisted": true
+  },
+  "restoration": {
+    "method": "PATCH",
+    "status": 200,
+    "fresh_product_get_status": 200,
+    "original_name_restored": true,
+    "code_preserved": true,
+    "description_preserved": true,
+    "active_state_preserved": true,
+    "represented_unit_field_equality": true,
+    "route": "Restoration completed through UI after reloading the tenant-scoped catalog"
+  },
+  "records_created": 0,
+  "records_deleted": 0,
+  "backend_code_changed": false,
+  "controlled_browser_context_closed": true,
+  "limitations": [
+    "Returning from detail to the editor using the initial automation locator timed out; the cause is not established and is not attributed to frontend or backend",
+    "Logout was not confirmed: the response wait timed out; the controlled context was closed only after restoration was verified",
+    "PUT, creation, deletion and required-field validation against the live backend remain NOT_EXERCISED",
+    "Other actors, other units and other armories are not certified by this case",
+    "No full CRUD, full tenant/unit isolation or integral product acceptance is claimed"
+  ],
+  "global": "NOT_VERIFIED",
+  "_caveat_organization_unit": "La igualdad del campo organization_unit que figura en la evidencia NO demuestra unidad real ni aislamiento de unidad: el campo real es organization_unit_code. No se afirma aislamiento de unidad ni celda de unidad en PASS."
+}

@@ -1,0 +1,104 @@
+schema_version: "2.0"
+
+spec:
+  id: "spec-private-master-helper-001"
+  title: "Auxiliar privado para la cuenta de desarrollo (rol raíz)"
+  type: "lightweight"
+  status: "approved"
+
+ownership:
+  created_by: "Lore Master"
+  created_at: "2026-10-05"
+  updated_at: "2026-10-05"
+  approved_at: "2026-10-05"
+  verified_at: null
+
+estimation:
+  complexity: "medium"
+
+quality_gates:
+  tests: required
+  security_review: required
+  code_review: required
+  documentation: required
+
+specialist_reviews:
+  portal_warden: n/a
+  kobold_scholar: n/a
+  haste_halfling: n/a
+  arcane_architect: n/a
+  qa_goblin: n/a
+  hellknight_inspector: n/a
+
+risk:
+  level: "high"
+  flags:
+    - "auth"
+    - "permissions"
+    - "sensitive-data"
+
+traceability:
+  related_specs:
+    - "spec-final-frontend-001"
+  related_decisions: []
+  related_bugs: []
+  related_audits: []
+
+closure:
+  superseded_by: null
+  abandoned_reason: null
+  consolidated_into: []
+
+# ---------------------------------------------------------------------------
+# Notas de trazabilidad (no normativas del schema; se conservan aquí porque
+# spec-meta.yaml es la única fuente de verdad de esta spec).
+#
+# Numeración: el slug es el nombre de la carpeta `private-master-helper`; no
+# existía ninguna spec con ese slug, de modo que corresponde
+# `max(existentes con ese slug) + 1` = 001 (`docs/sdd.md` > Numeración de IDs).
+#
+# Registro canónico: esta carpeta es la ubicación canónica de la spec. Antes
+# de ella, el mismo documento vivía como documento suplementario dentro de
+# `docs/specs/final-frontend/private-development-account-spec.md`, sin
+# `spec-meta.yaml` propio; esa ruta conserva ahora un puntero al artefacto
+# canónico y no conserva cuerpo duplicado. No se modificó
+# `docs/specs/final-frontend/spec-meta.yaml` ni `docs/specs/final-frontend/index.md`.
+#
+# Estado: `approved` (2026-10-05) por elección explícita del operador de la vía
+# «Auxiliar privado» (spec.md §1.2, A-1..A-5). La aprobación es del **alcance**
+# de preparar y revisar el auxiliar: no autoriza implementación, instalación
+# de dependencias, ejecución por agentes, navegador, shell, seeds, migraciones
+# ni escritura en base de datos (spec.md §12, `PDA-X-01`). `verified_at` sigue
+# en null y ningún gate está en `passed`: los criterios `PDA-V-01..13` sólo
+# puede observarlos el operador en una ejecución privada autorizada (§8), y el
+# veredicto de cierre lo emite el orquestador (§13, `PDA-X-12`).
+#
+# Gates y reviewers (evidencia en el propio documento):
+#   - `security_review: required` por los flags `auth`, `permissions` y
+#     `sensitive-data`, con evidencia citable en spec.md §4.1 (captura del
+#     secreto), §4.4 (superficies prohibidas) y §4.5 (auditoría). El diseño de
+#     seguridad de origen es el handoff `ses_ef1ad5c5fffeDGSdOTXuYXXo6B`
+#     (`Dhampir-Slayer`); la revisión del **código** del auxiliar sigue
+#     pendiente porque el archivo no existe.
+#   - `code_review: required` por `risk.level: high`; aplica al código futuro,
+#     no a este documento.
+#   - `tests: required` por existir criterios observables `PDA-V-01..13` que un
+#     test automatizado no sustituye (spec.md §13).
+#   - `documentation: required`: este documento es esa entrega de diseño; la
+#     documentación de uso queda para la implementación.
+#   - Los `specialist_reviews` quedan en `n/a`: no hay evidencia que active
+#     `portal_warden` (sin API nueva), `kobold_scholar` (sin schema ni
+#     migración), `haste_halfling` (sin plano caliente), `arcane_architect`
+#     (sin decisión estructural transversal) ni `hellknight_inspector` (a
+#     evaluar cuando exista el código). Ninguno se activa por `risk.level:
+#     high` en abstracto.
+#
+# Parent spec: `spec-final-frontend-001`. Su metadata y su índice son archivos
+# distintos y no se tocan en este registro. Los gates que esa spec declara se
+# leen en spec.md §9 **con referencia explícita a su archivo**, y no se
+# reasignan ni se duplican aquí.
+#
+# Sin plan: no existe `plan_payload` ni artefacto de plan para este auxiliar.
+# Los planes de `spec-final-frontend-001` (base, de acceso y
+# `implementation-plan-remaining.md`) quedan intactos.
+# ---------------------------------------------------------------------------

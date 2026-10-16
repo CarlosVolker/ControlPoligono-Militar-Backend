@@ -1,0 +1,50 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/shooting-seed-results.json. Alias de rol e identificadores numéricos ya presentes en el origen; sin secretos ni datos de cuentas.",
+  "date": "2026-10-12",
+  "source": "product_api_session",
+  "reason_ui_not_used": "La UI de captura no puede crear el primer resultado: GET /api/fracciones/{id}/tiradores/ (OP-FRC-007, apipoligono/views.py:1186-1199) deriva usuarios y armas elegibles de ResultadoTiro existentes; con cero resultados devuelve conjuntos vacios y el boton Capturar resultado queda deshabilitado. Deuda backend registrada aparte.",
+  "actor": "A1",
+  "role": "super_admin",
+  "action": "siembra dev de resultados de tiro ordenada por el operador",
+  "records_created": [
+    {
+      "id_resultado": 1,
+      "id_fraccion": 1,
+      "id_usuario": 27,
+      "id_arma": 1,
+      "tiros_acertados": 8,
+      "total_tiros": 10,
+      "numero_carril": 1
+    },
+    {
+      "id_resultado": 2,
+      "id_fraccion": 1,
+      "id_usuario": 26,
+      "id_arma": 2,
+      "tiros_acertados": 7,
+      "total_tiros": 10,
+      "numero_carril": 2
+    }
+  ],
+  "method": "POST /api/resultados/ con sesion real del producto y X-CSRFToken/X-Tenant-Code; status 201 en ambos",
+  "verification": {
+    "capture_screen_rows": 2,
+    "capture_rows_show_edit_and_delete": true,
+    "dashboard": {
+      "tiradores_unicos": 2,
+      "disparos_registrados": 20,
+      "aciertos_registrados": 15,
+      "proporcion": "75%",
+      "sin_resultados_banner": false
+    },
+    "logout_status": 200
+  },
+  "reversibility": "Eliminar por fila en /tiro/fracciones/1/resultados o DELETE /api/resultados/{id}/ con ids 1 y 2",
+  "existing_records_touched": 0,
+  "limitations": [
+    "Esto es siembra de datos dev, no certificacion de la captura por UI: la creacion por formulario sigue bloqueada por la deuda backend de opciones",
+    "No se ejercito PUT/PATCH/DELETE de resultados",
+    "No se modificaron lecciones, fracciones, armas ni cuentas"
+  ],
+  "global": "NOT_VERIFIED"
+}

@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-10-09T11:40:52.338Z",
+  "kind": "BEFORE",
+  "compiler": "3.5.43",
+  "source_sha256": "9f230b6d7e68ce99a1a3d85448bfe8848786e46a3720fbde04a23d253dc55de2",
+  "script_sha256": "8ea1b66f05fb5ca8933f570880cb962e5f45e584974ff87ba9e3c7c07117d06d",
+  "form_pairs": {
+    "user": {
+      "cond": "modal === MODAL.CREATE_USER || modal === MODAL.EDIT_USER",
+      "expected_fields": 10,
+      "found_field_labels": 10,
+      "form_open_found": true
+    },
+    "temporary": {
+      "cond": "modal === MODAL.CREATE_TEMPORARY",
+      "expected_fields": 6,
+      "found_field_labels": 6,
+      "form_open_found": true
+    },
+    "assignment": {
+      "cond": "modal === MODAL.PRIMARY_ASSIGNMENT || modal === MODAL.ADD_ASSIGNMENT",
+      "expected_fields": 4,
+      "found_field_labels": 4,
+      "form_open_found": true
+    },
+    "position": {
+      "cond": "modal === MODAL.EDIT_POSITION",
+      "expected_fields": 9,
+      "found_field_labels": 9,
+      "form_open_found": true
+    },
+    "holder": {
+      "cond": "modal === MODAL.ASSIGN_HOLDER",
+      "expected_fields": 2,
+      "found_field_labels": 2,
+      "form_open_found": true
+    },
+    "membership": {
+      "cond": "modal === MODAL.EDIT_MEMBERSHIP",
+      "expected_fields": 5,
+      "found_field_labels": 5,
+      "form_open_found": true
+    }
+  },
+  "note": "hashes/metadata/pairs only; no source content"
+}

@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-14",
+  "task": "C8 — verificación runtime read-only: persistencia y aislamiento de apariencia en el cliente (sólo lo NO acreditado)",
+  "status": "DELIVERED",
+  "mode": "read-only",
+  "source_kind": "direct_subagent_playwright_ui",
+  "harness": ".playwright-mcp/appearance-readonly.cjs",
+  "target": {
+    "client_base": "http://127.0.0.1:5175",
+    "backend": "http://127.0.0.1:8000",
+    "route_exercised": "/personalizador",
+    "login": "UI real (POST /api/auth/login/ 200), mecanismo privado de cuentas de rol; servidores y navegador ya autorizados por el operador en la sesión. No se levantó ni reinició ningún servidor."
+  },
+  "not_repeated": "Las promociones ya acreditadas el 2026-10-13 (ocho PUT 200 uno por eje, GET confirmatorio, persistencia tras re-login, aislamiento A7->A8, reset DELETE 204) NO se repitieron. Fuente: docs/specs/final-frontend/evidence/2026-10-13/appearance-eight-axes-results.json.",
+
+  "check_1_appearance_read_from_backend_not_browser_state": {
+    "verdict": "OBSERVED_OK",
+    "backend_read_observed": {
+      "method": "GET",
+      "endpoint": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "occurrences": 2,
+      "occurrence_note": "Una durante el arranque del cliente tras login; una en lectura read-only reutilizando la sesión UI para correlacionar DTO y DOM.",
+      "response_keys": ["ds_theme", "ds_accent", "ds_bg", "ds_font", "ds_radius", "ds_iconfam", "ds_ambient", "ds_ambcolor"],
+      "response_values": {
+        "ds_theme": "dark",
+        "ds_accent": "mint",
+        "ds_bg": "command",
+        "ds_font": "ibm-plex",
+        "ds_radius": "square",
+        "ds_iconfam": "phosphor",
+        "ds_ambient": "embers",
+        "ds_ambcolor": "accent"
+      }
+    },
+    "dom_correlation": {
+      "applied_html_data_attributes": {
+        "data-theme": "dark",
+        "data-accent": "mint",
+        "data-bg": "command",
+        "data-font": "ibm-plex",
+        "data-radius": "square",
+        "data-iconfam": "phosphor",
+        "data-ambient": "embers"
+      },
+      "note": "data-ambcolor no se emite cuando el valor es 'accent' (DESIGN_SYSTEM_APPEARANCE_ATTRIBUTE_OMISSION_VALUES, front/src/types/appearance.ts:639-645). El valor aplicado coincide eje por eje con el DTO del backend.",
+      "matches_backend_dto": true
+    },
+    "storage_keys_found": {
+      "note": "Sólo NOMBRES de clave, sin valores. Se tomó instantánea antes del login, tras el login y tras abrir el personalizador.",
+      "pre_login": {
+        "localStorage": ["iconify-count", "iconify-version"],
+        "sessionStorage": ["iconify-count", "iconify-version"],
+        "cookies_visible_to_js": []
+      },
+      "post_login": {
+        "localStorage": ["iconify2", "iconify1", "iconify0", "iconify-count", "iconify-version"],
+        "sessionStorage": ["iconify-count", "iconify-version"],
+        "cookies_visible_to_js": ["csrftoken"]
+      },
+      "post_personalizer": {
+        "localStorage": ["iconify0", "iconify1", "iconify2", "iconify3", "iconify4", "iconify5", "iconify6", "iconify7", "iconify8", "iconify-count", "iconify-version"],
+        "sessionStorage": ["iconify-count", "iconify-version"],
+        "cookies_visible_to_js": ["csrftoken"]
+      },
+      "appearance_or_theme_keys_found": 0,
+      "classification_of_keys_present": {
+        "iconify*": "caché interna de la librería Iconify (iconos del CDN); NO es estado de apariencia ni de preferencias.",
+        "csrftoken": "cookie de token CSRF del mecanismo de sesión Django; NO es estado de apariencia.",
+        "sessionid": "NO visible a JS (cookie HttpOnly); es cookie de sesión, NO de apariencia. Su ausencia en la lista es esperada y no se interpreta como ausencia."
+      }
+    },
+    "conclusion": "La apariencia vigente proviene del backend (GET 200 con las ocho claves ds_*) y se refleja en los atributos data-* de <html>. No existe ninguna clave de apariencia/theme en localStorage ni sessionStorage, ni cookie de estado de apariencia; las únicas claves presentes son la caché de Iconify y el csrftoken de sesión."
+  },
+
+  "check_2_option_catalog_source_and_counts": {
+    "verdict": "OBSERVED_OK",
+    "catalog_origin": "Los catálogos de opciones NO los sirve el backend. Son estáticos del bundle del cliente (front/src/types/appearance.ts), transliterados 1:1 desde la biblioteca externa del Design System. El endpoint del backend sólo entrega los VALORES vigentes por eje, no la lista de opciones.",
+    "runtime_option_counts": {
+      "theme": 2,
+      "accent": 27,
+      "bg": 26,
+      "font": 9,
+      "radius": 3,
+      "iconfam": 7,
+      "ambient": 8,
+      "ambcolor": 7
+    },
+    "runtime_option_counts_detail": {
+      "panel_axes_measured_by_dom": {
+        "accent": { "role": "radiogroup", "radios": 27 },
+        "bg": { "role": "radiogroup", "radios": 26 },
+        "font": { "role": "radiogroup", "radios": 9 },
+        "radius": { "role": "radiogroup", "radios": 3 },
+        "iconfam": { "role": "radiogroup", "radios": 7 },
+        "ambient": { "role": "radiogroup", "radios": 8 },
+        "ambcolor": { "role": "radiogroup", "radios": 7 }
+      },
+      "theme_axis": {
+        "mechanism": "toggle en la topbar (App.vue previewAxis('theme', ...); DashboardTopbar.vue .icon-btn.theme-toggle)",
+        "states": 2,
+        "observed_aria_label": "Cambiar a tema claro (estado actual: dark => ofrece light)"
+      }
+    },
+    "comparison_with_source": {
+      "front_declared_counts": {
+        "source": "front/src/types/appearance.ts:562-571 (DESIGN_SYSTEM_APPEARANCE_OPTION_COUNTS)",
+        "values": { "theme": 2, "accent": 27, "bg": 26, "font": 9, "radius": 3, "iconfam": 7, "ambient": 8, "ambcolor": 7 }
+      },
+      "design_system_external_source": {
+        "library": "../../Inume Design System/ (biblioteca visual externa)",
+        "file": "assets/js/theme-customizer.js",
+        "catalogs": {
+          "accent": { "var": "ACCENTS", "lines": "55-57", "count": 27 },
+          "bg": { "var": "BGS", "lines": "58-60", "count": 26 },
+          "font": { "var": "FONTS", "lines": "61-62", "count": 9 },
+          "radius": { "var": "RADII", "lines": "63", "count": 3 },
+          "ambient": { "var": "AMBIENTS", "lines": "64-65", "count": 8 },
+          "ambcolor": { "var": "AMBCOLORS", "lines": "66", "count": 7 },
+          "iconfam": { "var": "ICON_FAMS", "lines": "216", "count": 7 },
+          "theme": { "values": "dark | light", "lines": "400", "count": 2 }
+        }
+      },
+      "match": true,
+      "match_note": "Los conteos y los valores por eje medidos en runtime (DOM) coinciden exactamente con la lista declarada por el cliente y con los arreglos de la biblioteca externa del DS. No se observaron valores inventados ni fuera de catálogo."
+    },
+    "observed_values_by_axis": {
+      "accent": ["violet", "green", "amber", "blue", "pink", "teal", "orange", "red", "cyan", "lime", "indigo", "fuchsia", "sky", "rose", "emerald", "gold", "olive", "signal", "steel", "mint", "copper", "nvg", "khaki", "gunmetal", "wraith", "sentinel", "sonar"],
+      "bg": ["neutral", "abyss", "fern", "ember", "midnight", "wine", "slate", "sand", "field", "command", "forge", "glacier", "orchid", "clay", "blackout", "carbon", "obsidian", "bunker", "trench", "pure", "stone", "zinc", "mauve", "sage", "mist", "taupe"],
+      "font": ["play", "titillium", "exo2", "rajdhani", "ibm-plex", "inter", "manrope", "public-sans", "geist"],
+      "radius": ["square", "subtle", "soft"],
+      "iconfam": ["default", "mingcute", "solar", "mdi", "fa7-solid", "phosphor", "lucide"],
+      "ambient": ["embers", "fireflies", "rain", "searchlights", "tracers", "ricochet", "ash", "off"],
+      "ambcolor": ["accent", "ember", "gold", "lime", "mint", "cyan", "violet"]
+    }
+  },
+
+  "network_observed": {
+    "total_api_requests": 7,
+    "gets": [
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/usuarios/27/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/", "status": 200 },
+      { "method": "GET", "path": "/api/poligonos/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/1/resultados-resumen/", "status": 200 }
+    ],
+    "posts": [
+      { "method": "POST", "path": "/api/auth/login/", "status": 200, "note": "Login legítimo por UI, requerido para acceder a la ruta." }
+    ],
+    "puts": [],
+    "patches": [],
+    "deletes": [],
+    "mutations": 0,
+    "mutations_note": "Cero PUT/PATCH/DELETE. No se cambió ninguna preferencia, no se pulsó guardar ni reset."
+  },
+
+  "no_secrets": "El artefacto no contiene credenciales, cookies con valor, tokens, RUT, correos ni datos personales. Sólo se registran NOMBRES de claves de almacenamiento y valores de token de apariencia (no PII). El arnés lee la credencial del archivo privado directamente y no la imprime.",
+
+  "limitations": [
+    "Alias de actor: se usó únicamente la cuenta del rol 'tirador'. NO se atribuye alias A1..A8 ni se re-verificó aislamiento entre cuentas (ya acreditado el 2026-10-13 A7->A8).",
+    "El aislamiento por usuario NO se re-verifica aquí; se conserva la acreditación previa.",
+    "sessionid es cookie HttpOnly y no es legible por JS; su ausencia en la lista de cookies visibles es esperada, no prueba de ausencia.",
+    "Los catálogos de opciones son estáticos en el bundle del cliente; esta verificación confirma coincidencia de conteo y valores con la fuente declarada, no que exista un endpoint que sirva el catálogo (no lo sirve).",
+    "Los iconfam usan colecciones Iconify custom (ph-arms:*, lucide-arms:*) registradas en runtime; su disponibilidad de glifo no se mide aquí.",
+    "No se midió paridad de render ni estados completos (validación, movimiento reducido, variantes)."
+  ],
+
+  "no_visual_parity_claim": "No se afirma paridad visual total al Design System. Lo observado son atributos data-* aplicados en <html> y conteos de opciones; no una comparación pixel a pixel ni de estilos calculados."
+}

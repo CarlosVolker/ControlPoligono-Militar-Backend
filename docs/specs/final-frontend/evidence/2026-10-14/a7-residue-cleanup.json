@@ -1,0 +1,184 @@
+{
+  "schema": "frontend-a7-residue-cleanup/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — limpieza del residuo de la corrida A7 (encargado_almacen) usando el alias A1",
+  "delivery_scope": "UI-driven cleanup of A7 disposable residue (exercise by marker A7CF) using alias A1; not an acceptance verdict",
+  "source_paths": [
+    ".cache/frontend-acceptance/2026-10-14/a7-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "source_records": {
+    "residue_reported": [
+      {
+        "step": "exercise",
+        "id": "/api/ejercicios/17/",
+        "note": "DELETE status 403 por UI y por API"
+      }
+    ],
+    "exercise": {
+      "id": 17,
+      "label": "A7CFMV8HOZJ3 ejercicio"
+    },
+    "run_marker": "A7CFMV8HOZJ3"
+  },
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A1->super_admin; credentials.json provisions exactly one super_admin account (same private file used by the 2026-10-14 tandas)",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "assignments_roles": [
+        {
+          "role": "super_admin",
+          "is_primary": true,
+          "scope_present": false
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "permissions_count": 41
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "records": {
+    "exercise": {
+      "id": 17,
+      "nombre": "A7CFMV8HOZJ3 ejercicio",
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/ejercicios/17/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/ejercicios/17/",
+        "status": 204,
+        "driver": "UI (Eliminar → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/ejercicios/17/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    }
+  },
+  "sweep": {
+    "marker_prefix": "A7CF",
+    "run_marker": "A7CFMV8HOZJ3",
+    "families": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 12,
+        "own_marker": 0,
+        "matched": []
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "own_marker": 0,
+        "matched": []
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 45,
+        "own_marker": 0,
+        "matched": []
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 16,
+        "own_marker": 0,
+        "matched": []
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 18,
+        "own_marker": 0,
+        "matched": []
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "matched": []
+      },
+      "armories": {
+        "path": "/api/armorias/",
+        "status": 200,
+        "total": 4,
+        "own_marker": 0,
+        "matched": []
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "matched": []
+      }
+    },
+    "own_marker_total": 0
+  },
+  "not_offered": [],
+  "denied_by_backend": [],
+  "ui_neutral_denial": [],
+  "fail_closed": [],
+  "mutations": [
+    {
+      "screen": "exercise",
+      "method": "DELETE",
+      "path": "/api/ejercicios/17/",
+      "status": 204,
+      "kind": "cleanup"
+    }
+  ],
+  "limits": [
+    "Sólo el residuo descartable propio de A7 con marcador A7CF (ejercicio 17), identificado desde la fuente de la Fase 1; no se tocaron personas reales, cuentas heredadas, roles privilegiados ni puestos con titular.",
+    "Cero escrituras de RBAC, backend, base de datos, dependencias o migraciones; sólo la API real del backend ya en marcha.",
+    "DELETE 204 / GET 404 documentan ausencia en la respuesta del servidor; NO acreditan borrado físico.",
+    "Si el residuo siguiera sin poder darse de baja, se reporta tal cual; no se repara por base de datos.",
+    "No se imprimen ni persisten credenciales ni el valor del tenant."
+  ],
+  "errors": [],
+  "harness": {
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 16,
+    "mutations": [
+      {
+        "method": "DELETE",
+        "path": "/api/ejercicios/{id}/",
+        "status": 204
+      }
+    ]
+  }
+}

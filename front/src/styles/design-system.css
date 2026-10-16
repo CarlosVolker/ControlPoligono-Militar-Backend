@@ -1,0 +1,685 @@
+/*
+ * Base compartida mínima del Inume Design System.
+ * Fuente: ../../Inume Design System/assets/css/baseui.css,
+ * baseui-forms.css y baseui-tables.css; no importar la biblioteca.
+ *
+ * Contrato de integración: cargar esta capa antes de dashboard.css; conservar
+ * después las hojas Auth/Access actuales en su orden de imports; cargar
+ * theme-customizer.css al final, como exige stores/appearance.ts:61-74.
+ * Las declaraciones duplicadas por dashboard.css o por estilos scoped de
+ * vistas se omiten aquí; solo se añaden propiedades/selectores faltantes.
+ */
+
+/* baseui.css:35-93 — tokens BUI que las capas actuales no declaran. */
+:root {
+  --bui-bg: #191e23;
+  --bui-surface: #1d2329;
+  --bui-surface-2: #242b33;
+  --bui-border: #272f37;
+  --bui-text: #aab8c5;
+  --bui-heading: #aab8c5;
+  --bui-muted: #8391a2;
+
+  --bui-primary-rgb: 126,103,254;
+  --bui-secondary-rgb: 66,78,90;
+  --bui-success-rgb: 104,206,125;
+  --bui-info-rgb: 69,175,235;
+  --bui-warning-rgb: 231,152,95;
+  --bui-danger-rgb: 215,83,65;
+  --bui-light-rgb: 36,43,51;
+  --bui-dark-rgb: 241,241,241;
+
+  --bui-card-radius: 5.6px;
+  --bui-card-border: 3px double var(--bui-border);
+  --bui-card-shadow: 0 3px 4px 0 rgba(0,0,0,.03);
+  --bui-radius: 5.6px;
+  --bui-radius-sm: 4px;
+  --bui-radius-lg: 8px;
+  --bui-radius-pill: 50rem;
+
+  --bui-z-dropdown: 1000;
+  --bui-z-sticky: 1020;
+  --bui-z-fixed: 1030;
+  --bui-z-backdrop: 1040;
+  --bui-z-offcanvas: 1045;
+  --bui-z-modal: 1050;
+  --bui-z-popover: 1070;
+  --bui-z-tooltip: 1080;
+  --bui-z-toast: 1090;
+
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;  /* styles.css:65 */
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);  /* styles.css:109 */
+}
+
+[data-theme="light"] {
+  --bui-bg: #f8f7fa;
+  --bui-surface: #ffffff;
+  --bui-surface-2: #f8f9fa;
+  --bui-border: var(--border);
+  --bui-text: var(--text);
+  --bui-heading: var(--heading);
+  --bui-muted: var(--muted);
+  --bui-light-rgb: 238,242,247;
+  --bui-dark-rgb: 33,37,46;
+  --bui-card-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+
+/* baseui.css:219-262 — completa solo las propiedades que faltan en la
+   definición compartida .card / .card-body de dashboard.css. */
+.card {
+  position: relative;
+  min-width: 0;
+  box-shadow: var(--bui-card-shadow);
+  word-wrap: break-word;
+}
+
+.card-header {
+  padding: 18px 24px;
+  margin-bottom: 0;
+  background-color: transparent;
+  border-bottom: 1px solid var(--bui-border);
+  border-radius: 4.6px 4.6px 0 0;
+}
+
+.card-header:first-child {
+  border-radius: 4.6px 4.6px 0 0;
+}
+
+.card-header .card-title {
+  margin-bottom: 12px;
+}
+
+.card-header .card-title:last-child {
+  margin-bottom: 0;
+}
+
+.card-header .card-subtitle {
+  margin: 0;
+  color: var(--bui-text);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  color: var(--text);
+}
+
+.card-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* baseui.css:144-179; baseui-forms.css:46-48. Solo las columnas y el gutter
+   que aparecen en los formularios entregados. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -12px;
+  margin-left: -12px;
+}
+
+.row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.row.g-3 {
+  margin-top: -24px;
+}
+
+.row.g-3 > * {
+  padding-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.333333%;
+  }
+
+  .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+
+/* baseui.css:384-489 — variantes usadas que no define dashboard.css.
+   .btn y .btn-primary permanecen en la hoja actual. */
+.btn-secondary {
+  color: #fff;
+  background-color: rgba(var(--bui-secondary-rgb),1);
+  border-color: rgba(var(--bui-secondary-rgb),1);
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: color-mix(in srgb, rgba(var(--bui-secondary-rgb),1) 84%, #000);
+  border-color: color-mix(in srgb, rgba(var(--bui-secondary-rgb),1) 84%, #000);
+}
+
+.btn-warning {
+  color: var(--on-warning);
+  background-color: rgba(var(--bui-warning-rgb),1);
+  border-color: rgba(var(--bui-warning-rgb),1);
+}
+
+.btn-warning:hover {
+  color: var(--on-warning);
+  background-color: color-mix(in srgb, rgba(var(--bui-warning-rgb),1) 84%, #000);
+  border-color: color-mix(in srgb, rgba(var(--bui-warning-rgb),1) 84%, #000);
+}
+
+.btn-danger {
+  color: var(--on-danger);
+  background-color: rgba(var(--bui-danger-rgb),1);
+  border-color: rgba(var(--bui-danger-rgb),1);
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: color-mix(in srgb, rgba(var(--bui-danger-rgb),1) 84%, #000);
+  border-color: color-mix(in srgb, rgba(var(--bui-danger-rgb),1) 84%, #000);
+}
+
+.btn-outline-primary {
+  color: rgba(var(--bui-primary-rgb),1);
+  border-color: rgba(var(--bui-primary-rgb),1);
+  background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: rgba(var(--bui-primary-rgb),1);
+  border-color: rgba(var(--bui-primary-rgb),1);
+}
+
+.btn-outline-secondary {
+  color: rgba(var(--bui-secondary-rgb),1);
+  border-color: rgba(var(--bui-secondary-rgb),1);
+  background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: rgba(var(--bui-secondary-rgb),1);
+  border-color: rgba(var(--bui-secondary-rgb),1);
+}
+
+.btn-outline-danger {
+  color: var(--danger-text);
+  border-color: currentColor;
+  background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+  color: var(--on-danger);
+  background-color: rgba(var(--bui-danger-rgb),1);
+  border-color: rgba(var(--bui-danger-rgb),1);
+}
+
+.btn-lg {
+  padding: 10px 42px;
+  font-size: 16px;
+  border-radius: var(--bui-radius-lg);
+}
+
+.btn-sm {
+  padding: 5.568px 18px;
+  font-size: 12.6px;
+  border-radius: var(--bui-radius-sm);
+}
+
+[data-theme="light"] .btn-outline-primary:not(:hover) {
+  color: var(--primary-text);
+}
+
+/* baseui.css:317-374 — badges usados por tablas/listas. */
+.badge {
+  display: inline-block;
+  padding: 3px 6px;
+  color: #fff;
+  font-size: .75em;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: 1px solid transparent;
+  border-radius: var(--bui-radius-sm);
+  background-color: transparent;
+}
+
+.badge:empty {
+  display: none;
+}
+
+.badge.bg-primary {
+  background-color: rgba(var(--bui-primary-rgb),1);
+}
+
+.badge.bg-secondary {
+  background-color: rgba(var(--bui-secondary-rgb),1);
+}
+
+.badge.bg-success {
+  background-color: rgba(var(--bui-success-rgb),1);
+  color: var(--on-success);
+}
+
+.badge.bg-warning {
+  background-color: rgba(var(--bui-warning-rgb),1);
+  color: var(--on-warning);
+}
+
+.badge.bg-danger {
+  background-color: rgba(var(--bui-danger-rgb),1);
+  color: var(--on-danger);
+}
+
+.badge-soft-primary {
+  color: rgba(var(--bui-primary-rgb),1);
+  background-color: rgba(var(--bui-primary-rgb),.18) !important;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.badge-soft-success {
+  color: var(--success-text);
+  background-color: rgba(var(--bui-success-rgb),.18) !important;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.badge-soft-warning {
+  color: var(--warning-text);
+  background-color: rgba(var(--bui-warning-rgb),.18) !important;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.badge-soft-danger {
+  color: var(--danger-text);
+  background-color: rgba(var(--bui-danger-rgb),.18) !important;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .badge-soft-primary {
+  color: #b2a4fe;
+}
+
+[data-theme="light"] .badge-soft-primary {
+  color: var(--primary-text);
+}
+
+/* baseui.css:823-839 — tabs; no local shared rule supplies these selectors. */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.nav-link {
+  display: block;
+  padding: 8px 16px;
+  color: var(--bui-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--bui-radius) var(--bui-radius) 0 0;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.nav-link:hover {
+  color: var(--bui-heading);
+}
+
+.nav-link.active {
+  color: rgba(var(--bui-primary-rgb),1);
+}
+
+.nav-link.disabled {
+  color: var(--bui-muted);
+  opacity: .6;
+  pointer-events: none;
+}
+
+.nav-link:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 .15rem rgba(var(--bui-primary-rgb),.25);
+}
+
+.nav-tabs {
+  border-bottom: 1px solid var(--bui-border);
+}
+
+.nav-tabs .nav-link.active {
+  color: rgba(var(--bui-primary-rgb),1);
+  background-color: var(--bui-surface);
+  border-color: var(--bui-border) var(--bui-border) var(--bui-surface);
+}
+
+[data-theme="light"] .nav-tabs .nav-link.active {
+  color: var(--primary-text);
+}
+
+/* baseui-tables.css:27-75, 82-127, 149-152, 234-250 — tablas de las vistas.
+   No toca .data-table del dashboard ni sus estados propios. */
+:root {
+  --tbl-color: var(--bui-text);
+  --tbl-border-color: var(--bui-border);
+  --tbl-bg: transparent;
+  --tbl-accent-bg: transparent;
+  --tbl-overlay: rgba(0,0,0,.02);
+  --tbl-secondary-color: var(--bui-muted);
+  --tbl-secondary-color-rgb: 131,145,162;
+  --tbl-link-color: #afb9cf;
+  --tbl-link-hover-color: #bbc4d6;
+  --tbl-border-width: 1px;
+}
+
+[data-theme="light"] {
+  --tbl-color: var(--bui-text);
+  --tbl-border-color: var(--bui-border);
+  --tbl-secondary-color: #5b6b7d;
+  --tbl-secondary-color-rgb: 91,107,125;
+  --tbl-link-color: #8486a7;
+  --tbl-link-hover-color: var(--primary-text);
+}
+
+table {
+  caption-side: bottom;
+  border-collapse: collapse;
+}
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
+th {
+  text-align: inherit;
+  text-align: -webkit-match-parent;
+}
+
+caption {
+  padding-top: 13.6px;
+  padding-bottom: 13.6px;
+  color: var(--tbl-secondary-color);
+  text-align: left;
+}
+
+.table {
+  --tbl-color-type: initial;
+  --tbl-bg-type: initial;
+  --tbl-color-state: initial;
+  --tbl-bg-state: initial;
+  --tbl-color: var(--bui-text);
+  --tbl-bg: transparent;
+  --tbl-border-color: var(--bui-border);
+  --tbl-accent-bg: transparent;
+  --tbl-striped-color: var(--bui-text);
+  --tbl-striped-bg: var(--tbl-overlay);
+  --tbl-active-color: var(--bui-text);
+  --tbl-active-bg: var(--tbl-overlay);
+  --tbl-hover-color: var(--bui-text);
+  --tbl-hover-bg: var(--tbl-overlay);
+  width: 100%;
+  margin-bottom: 24px;
+  vertical-align: top;
+  border-color: var(--tbl-border-color);
+}
+
+.table > :not(caption) > * > * {
+  padding: 13.6px;
+  color: var(--tbl-color-state, var(--tbl-color-type, var(--tbl-color)));
+  background-color: var(--tbl-bg);
+  border-bottom-width: var(--tbl-border-width);
+  box-shadow: inset 0 0 0 9999px var(--tbl-bg-state, var(--tbl-bg-type, var(--tbl-accent-bg)));
+}
+
+.table > tbody {
+  vertical-align: inherit;
+}
+
+.table > thead {
+  vertical-align: bottom;
+}
+
+.table > thead th {
+  vertical-align: middle;
+  font-weight: 500;
+}
+
+.table-hover > tbody > tr:hover > * {
+  --tbl-color-state: var(--tbl-hover-color);
+  --tbl-bg-state: var(--tbl-hover-bg);
+}
+
+.table-centered td,
+.table-centered th {
+  vertical-align: middle !important;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bui-border) transparent;
+}
+
+.table-responsive::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: var(--bui-border);
+  border-radius: 999px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* baseui-forms.css:23-37, 159-190, 339-345, 405-419, 443-457.
+   Global selectors also cover DsModal's body-teleported forms. Existing
+   select.form-control markup is mapped to the source .form-select anatomy;
+   its selector name cannot be changed in this write set. */
+:root {
+  --buf-input-border: #d8dfe7;
+  --buf-input-focus: #b0b0bb;
+  --buf-placeholder: var(--bui-muted);
+  --buf-valid: var(--success);
+  --buf-invalid: var(--danger);
+}
+
+[data-theme="dark"] {
+  --buf-input-border: #3a4551;
+  --buf-input-focus: #4a5663;
+  --buf-placeholder: var(--bui-muted);
+  --buf-check-border: rgba(255,255,255,.25);  /* baseui-forms.css:36 */
+}
+
+.form-select,
+select.form-control {
+  --buf-select-chevron: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2336404a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  display: block;
+  width: 100%;
+  padding: 8px 72px 8px 24px;
+  color: var(--bui-text);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--bui-surface);
+  background-image: var(--buf-select-chevron), var(--buf-select-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  background-size: 14px 10px;
+  border: 1px solid var(--buf-input-border);
+  border-radius: var(--bui-radius);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-select:focus,
+select.form-control:focus {
+  border-color: var(--buf-input-focus);
+  outline: 0;
+  box-shadow: none;
+}
+
+.form-select[multiple],
+.form-select[size]:not([size="1"]),
+select.form-control[multiple],
+select.form-control[size]:not([size="1"]) {
+  padding-right: 24px;
+  background-image: none;
+}
+
+.form-select:disabled,
+select.form-control:disabled {
+  background-color: var(--bui-bg);
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid,
+.form-control[aria-invalid="true"] {
+  border-color: var(--buf-invalid);
+  padding-right: calc(1.5em + 1rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23d75341'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23d75341' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .25rem) center;
+  background-size: calc(.75em + .5rem) calc(.75em + .5rem);
+}
+
+.form-control.is-invalid:focus,
+.was-validated .form-control:invalid:focus,
+.form-control[aria-invalid="true"]:focus {
+  border-color: var(--buf-invalid);
+  box-shadow: 0 0 0 .15rem rgba(215,83,65,.25);
+}
+
+.form-select.is-invalid,
+.was-validated .form-select:invalid,
+.form-select[aria-invalid="true"],
+select.form-control.is-invalid,
+select.form-control[aria-invalid="true"] {
+  border-color: var(--buf-invalid);
+}
+
+.form-select.is-invalid:not([multiple]):not([size]),
+.form-select.is-invalid:not([multiple])[size="1"],
+.was-validated .form-select:invalid:not([multiple]):not([size]),
+.was-validated .form-select:invalid:not([multiple])[size="1"],
+.form-select[aria-invalid="true"]:not([multiple]):not([size]),
+select.form-control.is-invalid:not([multiple]):not([size]),
+select.form-control[aria-invalid="true"]:not([multiple]):not([size]) {
+  --buf-select-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23d75341'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23d75341' stroke='none'/%3e%3c/svg%3e");
+  padding-right: 132px;
+  background-position: right 24px center, center right 72px;
+  background-size: 14px 10px, calc(.75em + .5rem) calc(.75em + .5rem);
+}
+
+.form-select.is-invalid:focus,
+.was-validated .form-select:invalid:focus,
+.form-select[aria-invalid="true"]:focus,
+select.form-control.is-invalid:focus,
+select.form-control[aria-invalid="true"]:focus {
+  border-color: var(--buf-invalid);
+  box-shadow: 0 0 0 .15rem rgba(215,83,65,.25);
+}
+
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 4px;
+  color: var(--danger-text);
+  font-size: 12.25px;
+}
+
+.form-control.is-invalid ~ .invalid-feedback,
+.form-select.is-invalid ~ .invalid-feedback,
+.form-control[aria-invalid="true"] ~ .invalid-feedback,
+.form-select[aria-invalid="true"] ~ .invalid-feedback,
+select.form-control[aria-invalid="true"] ~ .invalid-feedback,
+.was-validated :invalid ~ .invalid-feedback,
+.invalid-feedback.d-block {
+  display: block !important;
+}
+
+/* .mb-3 is the only free-standing spacing utility used by these forms. */
+.mb-3 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* ============================================================
+   Ports 1:1 del DS externo pendientes (barrido UX 2026-10-16).
+   Fuente: assets/css/styles.css del Inume Design System.
+   ============================================================ */
+
+/* styles.css:686-687 — familia sólida pequeña para estados de tabla. */
+.badge-success-sm {
+  padding: 2px 8px;
+  color: var(--on-success);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--r-sm);
+  background: var(--success);
+}
+
+.badge-danger-sm {
+  padding: 2px 8px;
+  color: var(--on-danger);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--r-sm);
+  background: var(--danger);
+}
+
+/* styles.css:465-471 — miga de pan. */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: var(--text);
+}
+
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+
+/* styles.css:121 */
+.muted {
+  color: var(--muted);
+}
+
+/* styles.css:1017 — hover de la miga en tema claro. */
+[data-theme="light"] .breadcrumb a:hover {
+  color: var(--primary-text);
+}

@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-10-09T11:49:07.958Z",
+  "compiler": "3.5.43",
+  "before_hashes": {
+    "source": "a4342aaf11f676dd249b4677b3e47040ca49f0ca846a3589b34dfeec96736ddf",
+    "script": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+    "style": "7c84f5be7614070d250e3c3f4344fbf35f9fc4dc2378307f9a73062d18bac15f",
+    "outofscope": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0"
+  },
+  "after_hashes": {
+    "source": "035839d34369bf2caccd0ce45545cd26c42da203c3a92050688fa5089927aa5c",
+    "script": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+    "style": "5f7ee55780302204f91def9d9e1138896c75decb6e039ecb1a9238ea3d9492c8",
+    "outofscope": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0"
+  },
+  "expected_after_sha256": "035839d34369bf2caccd0ce45545cd26c42da203c3a92050688fa5089927aa5c",
+  "identities": {
+    "current_equals_expected_after": true,
+    "script_unchanged": true,
+    "outofscope_unchanged": true,
+    "old_style_intact": true
+  },
+  "pairs_by_form": {
+    "armory-editor-form": {
+      "for_count": 5,
+      "id_count": 5,
+      "all_match": true
+    },
+    "weapon-editor-form": {
+      "for_count": 5,
+      "id_count": 5,
+      "all_match": true
+    },
+    "calibre-editor-form": {
+      "for_count": 3,
+      "id_count": 3,
+      "all_match": true
+    }
+  },
+  "property_map": {
+    "min-height": {
+      "source": "not declared in baseui-forms.css:159-190 .form-select",
+      "targetLocal": "calc(1.5em + 1rem + 2px)",
+      "rule": "min-height:auto (technical adaptation to neutralize the view-local override; source declares none)"
+    },
+    "border-radius": {
+      "source": "var(--bui-radius) (baseui-forms.css:187)",
+      "targetLocal": "var(--card-radius)",
+      "rule": "border-radius:var(--bui-radius)"
+    },
+    "background-image": {
+      "source": "var(--buf-select-chevron), var(--buf-select-icon, none) (baseui-forms.css:173)",
+      "targetLocal": "single url(svg)",
+      "rule": "background-image:var(--buf-select-chevron), var(--buf-select-icon, none)"
+    },
+    "background-color": {
+      "source": "var(--bui-surface) (baseui-forms.css:172)",
+      "targetLocal": "var(--surface)",
+      "rule": "background-color:var(--bui-surface)"
+    },
+    "border": {
+      "source": "1px solid var(--buf-input-border) (baseui-forms.css:186)",
+      "targetLocal": "1px solid var(--input-border)",
+      "rule": "border:1px solid var(--buf-input-border)"
+    },
+    "focus border-color": {
+      "source": "var(--buf-input-focus) (baseui-forms.css:180)",
+      "targetLocal": "var(--input-focus)",
+      "rule": "border-color:var(--buf-input-focus)"
+    },
+    "disabled background-color": {
+      "source": "var(--bui-bg) (baseui-forms.css:190)",
+      "targetLocal": "var(--bg)",
+      "rule": "background-color:var(--bui-bg)"
+    }
+  },
+  "source_order": [
+    "styles.css",
+    "baseui.css",
+    "baseui-content.css",
+    "baseui-forms.css",
+    "theme-customizer.css"
+  ],
+  "new_scoped_selectors": [
+    ".armory-editor-fields[data-v-acc]",
+    ".armory-editor-field[data-v-acc]",
+    ".armory-editor-field .form-select[data-v-acc]",
+    ".armory-editor-field .form-select[data-v-acc]:focus",
+    ".armory-editor-field .form-select[data-v-acc]:disabled"
+  ],
+  "compile": {
+    "template_errors": [],
+    "style_errors": []
+  },
+  "defects": [],
+  "ok": true
+}

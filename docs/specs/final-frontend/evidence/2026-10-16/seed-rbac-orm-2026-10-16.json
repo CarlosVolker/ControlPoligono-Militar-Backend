@@ -1,0 +1,37 @@
+{
+  "schema": "frontend-t11-seed-rbac-orm/v1",
+  "date": "2026-10-16",
+  "reason": "El alta por API de UserPermissionOverride es imposible: POST /api/authz/overrides/ responde 500 con AssertionError de DRF — 'Unable to create UniqueTogetherValidator for UserPermissionOverride.permission as UserPermissionOverrideSerializer has multiple fields (permission, permission_code) that map to this model field'. Defecto ESTRUCTURAL del serializer (apps/authorization/serializers.py, UserPermissionOverrideSerializer): dispara en TODO payload válido al construir los validadores; el payload inválido daba 400 previo. La fila de PositionPermission SÍ se creó por API (id 2). Orden del operador: 'siembra todo'.",
+  "method": "API real (sesión A1, CSRF) para el PPR; manage.py shell (ORM de desarrollo) para el override — única vía; sin tocar código, sin arreglar el endpoint.",
+  "created": [
+    {
+      "resource": "position-permissions",
+      "id": 2,
+      "via": "API (POST por A1, 201)",
+      "detalle": "puesto 4 (admin_unidad, unidad 4; SIN asignación activa — verificado por lectura ORM 2026-10-16), permiso view_audit_logs (id 33), allowed=true",
+      "neutralidad": "El puesto 4 no tiene asignación activa: la fila no altera permisos efectivos de ninguna cuenta."
+    },
+    {
+      "resource": "overrides",
+      "id": 1,
+      "via": "ORM (única vía posible)",
+      "detalle": "cuenta de A1 (id 2, super_admin con MASTER bypass), permiso view_audit_logs, allowed=true, resource/action vacíos, created_by = cuenta de A1, reason = marcador de desarrollo",
+      "neutralidad": "ALLOW de un permiso que A1 ya posee (bypass): permisos efectivos sin cambio; la precedencia DENY>ALLOW>rol>bypass no se ve afectada al no haber DENY."
+    }
+  ],
+  "marker": "Contenido de desarrollo (seed 2026-10-16)",
+  "post_state": { "position_permissions_total": 1, "overrides_total": 1 },
+  "api_failure_captured": {
+    "endpoint": "POST /api/authz/overrides/",
+    "actor": "A1 (super_admin) vía sesión real",
+    "status": 500,
+    "root_cause_traceback": "AssertionError: Unable to create `UniqueTogetherValidator` for `UserPermissionOverride.permission` as `UserPermissionOverrideSerializer` has multiple fields (permission, permission_code) that map to this model field — DRF serializers.py:1601, durante is_valid() → run_validators() → get_unique_together_validators()",
+    "note": "No existía observación previa del alta de overrides (0 filas en la base antes de hoy). Segunda alta bloqueada por defecto estructural localizado en la misma jornada."
+  },
+  "reversible": "Sí: ambas filas se identifican por marcador 'Contenido de desarrollo (seed 2026-10-16)' y por ids (PPR 2, OVR 1).",
+  "no_code_touched": true,
+  "mutations": [
+    { "resource": "overrides", "id": 1 },
+    { "resource": "position-permissions", "id": 2 }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "date":"2026-10-13",
+  "source_kind":"direct_orchestrator_local_readonly",
+  "recovery":{
+    "email_backend":"django.core.mail.backends.smtp.EmailBackend",
+    "smtp_host_is_loopback":true,
+    "smtp_port":1025,
+    "smtp_port_setting_type":"str",
+    "smtp_loopback_listener_present":false,
+    "mailpit_available":false,
+    "mailhog_available":false,
+    "aiosmtpd_available":false,
+    "python_smtpd_available":false,
+    "probe_note":"Initial socket probe passed string port and failed TypeError; corrected by converting to int only in the read-only probe. Backend settings unchanged.",
+    "email_sent":false,
+    "status":"BLOCKED_PREREQUISITE",
+    "reason":"No SMTP listener at configured loopback port and no existing local mail-capture executable/package detected. No dependencies installed and no backend settings changed."
+  },
+  "forced_password_change":{
+    "model":"apipoligono.Usuario",
+    "must_change_password_true_count":1,
+    "known_login_credential_for_flagged_account":false,
+    "status":"BLOCKED_PREREQUISITE",
+    "reason":"Only one legacy flagged account. No password reset, new account or credential change performed to manufacture a passing flow."
+  },
+  "cross_tenant_isolation":{
+    "tenant_total":1,
+    "active_tenant_total":1,
+    "status":"BLOCKED_PREREQUISITE",
+    "reason":"No second tenant. No tenant provisioned; same-tenant tests do not establish cross-tenant isolation."
+  },
+  "safety":{"backend_modified":false,"schema_modified":false,"credentials_modified":false,"production_accessed":false}
+}

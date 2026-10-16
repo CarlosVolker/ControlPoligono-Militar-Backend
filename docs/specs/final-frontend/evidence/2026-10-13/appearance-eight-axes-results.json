@@ -1,0 +1,44 @@
+{
+  "date":"2026-10-13",
+  "source_kind":"direct_orchestrator_playwright_ui",
+  "actor":"A7",
+  "isolation_observer":"A8",
+  "endpoint":"/api/me/preferences/appearance/design-system/",
+  "baseline_before_writes":{
+    "A7":{"ds_theme":"dark","ds_accent":"mint","ds_bg":"command","ds_font":"ibm-plex","ds_radius":"square","ds_iconfam":"phosphor","ds_ambient":"embers","ds_ambcolor":"accent"},
+    "A8":{"ds_theme":"dark","ds_accent":"mint","ds_bg":"command","ds_font":"ibm-plex","ds_radius":"square","ds_iconfam":"phosphor","ds_ambient":"embers","ds_ambcolor":"accent"}
+  },
+  "baseline_get_status":{"A7":200,"A8":200},
+  "ui_writes_in_order":[
+    {"axis":"accent","value":"violet","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"bg","value":"abyss","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"font","value":"inter","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"radius","value":"soft","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"iconfam","value":"lucide","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"ambient","value":"off","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"ambcolor","value":"gold","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true},
+    {"axis":"theme","value":"light","method":"PUT","status":200,"get_confirmed":true,"A8_get_status":200,"A8_unchanged":true}
+  ],
+  "persistence":{
+    "logout_ui_status":200,
+    "relogin_via_ui":true,
+    "get_status":200,
+    "persisted_after_relogin":{"ds_theme":"light","ds_accent":"violet","ds_bg":"abyss","ds_font":"inter","ds_radius":"soft","ds_iconfam":"lucide","ds_ambient":"off","ds_ambcolor":"gold"},
+    "html_attributes_after_relogin":{"data-theme":"light","data-accent":"violet","data-bg":"abyss","data-font":"inter","data-iconfam":"lucide","data-ambient":"off","data-ambcolor":"gold"},
+    "radius_attribute_omitted_intentionally":"soft omits data-radius per DESIGN_SYSTEM_APPEARANCE_ATTRIBUTE_OMISSION_VALUES in front/src/types/appearance.ts"
+  },
+  "restoration":{
+    "action":"Restablecer valores por defecto, por UI",
+    "method":"DELETE","status":204,
+    "A7_final_get_status":200,"A8_final_get_status":200,
+    "A7_final":{"ds_theme":"dark","ds_accent":"mint","ds_bg":"command","ds_font":"ibm-plex","ds_radius":"square","ds_iconfam":"phosphor","ds_ambient":"embers","ds_ambcolor":"accent"},
+    "A8_final":{"ds_theme":"dark","ds_accent":"mint","ds_bg":"command","ds_font":"ibm-plex","ds_radius":"square","ds_iconfam":"phosphor","ds_ambient":"embers","ds_ambcolor":"accent"},
+    "both_match_baseline":true
+  },
+  "limitations":[
+    "One alternative value per axis, not every catalog combination.",
+    "Isolation observed A7 to A8 within the same tenant, not cross-tenant nor all users.",
+    "Appearance persistence and DOM application are not proof of pixel-perfect fidelity.",
+    "An initial logout harness used role button, but the UI control has role menuitem. Corrected selector; logout200 recorded separately. No product defect inferred."
+  ]
+}

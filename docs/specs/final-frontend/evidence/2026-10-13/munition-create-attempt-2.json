@@ -1,0 +1,31 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "munition_consumption",
+  "actor_alias": "A1",
+  "tenant": "desarrollo-poligono-local",
+  "marker": "DCTMV7GZGB4MUN2",
+  "record_id": null,
+  "create_attempt": {
+    "source": "UI click after prior-state reconciliation",
+    "method": "POST",
+    "path": "/api/consumos-municion/",
+    "status": 500,
+    "request_body_sanitized": {
+      "ejercicio": 5,
+      "tipo_arma": "fusil",
+      "cantidad_tiros": 1,
+      "es_aproximado": false,
+      "observaciones": "DCTMV7GZGB4MUN2-OBS"
+    },
+    "optional_model_caliber_and_weapon_count_omitted": true
+  },
+  "reconcile_after_uncertain_response": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/consumos-municion/",
+    "status": 200,
+    "exact_marker_matches": 0
+  },
+  "no_retry": true
+}

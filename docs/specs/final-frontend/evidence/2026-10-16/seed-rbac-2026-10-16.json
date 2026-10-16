@@ -1,0 +1,127 @@
+{
+  "schema": "frontend-t11-seed-rbac/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Sembrar las filas RBAC necesarias (orden del operador: \"siembra todo\") para habilitar OP-OVR-003 y OP-PPR-003 de A1–A2.",
+  "neutrality": {
+    "override": "Sobre la cuenta de A1 (super_admin, bypass total): permisos efectivos sin cambio.",
+    "ppr": "Sobre el puesto 4 (admin_unidad, unidad 4) sin asignación activa (verificado por lectura ORM 2026-10-16): la fila no altera permisos efectivos de ninguna cuenta.",
+    "permission": "view_audit_logs"
+  },
+  "marker": "Contenido de desarrollo (seed 2026-10-16)",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    }
+  },
+  "resolution": {
+    "a1_account_resolved": true,
+    "permission_resolved": 33,
+    "memberships_read_status": 200,
+    "permissions_read_status": 200,
+    "position_target": 4,
+    "note": "RUT usado solo en memoria para emparejar; no se persiste"
+  },
+  "planned": [
+    {
+      "key": "override_A1_audit",
+      "path": "/api/authz/overrides/"
+    },
+    {
+      "key": "ppr_pos4_audit",
+      "path": "/api/authz/position-permissions/"
+    }
+  ],
+  "created": [
+    {
+      "key": "ppr_pos4_audit",
+      "resource": "/api/authz/position-permissions/",
+      "status": "EXISTENTE",
+      "id": 2,
+      "pre_existing": true,
+      "detail": "ya_existente_de_corrida_previa (no se duplica)"
+    }
+  ],
+  "failed": [
+    {
+      "key": "override_A1_audit",
+      "resource": "/api/authz/overrides/",
+      "status": 500,
+      "id": null,
+      "pre_existing": false,
+      "detail": "status 500"
+    }
+  ],
+  "verification": {
+    "A1:/api/authz/overrides/": {
+      "list_status": 200,
+      "count": 0,
+      "detail_status": null
+    },
+    "A1:/api/authz/position-permissions/": {
+      "list_status": 200,
+      "count": 1,
+      "detail_status": 200
+    },
+    "A2:/api/authz/overrides/": {
+      "list_status": 200,
+      "count": 0,
+      "detail_status": null
+    },
+    "A2:/api/authz/position-permissions/": {
+      "list_status": 200,
+      "count": 1,
+      "detail_status": 200
+    }
+  },
+  "page_errors": [],
+  "mutations": [
+    {
+      "key": "ppr_pos4_audit",
+      "id": 2
+    }
+  ],
+  "summary": {
+    "planned": 2,
+    "created_now": 0,
+    "pre_existing": 1,
+    "failed": 1,
+    "created_keys": [
+      "ppr_pos4_audit"
+    ],
+    "failed_keys": [
+      "override_A1_audit"
+    ]
+  }
+}

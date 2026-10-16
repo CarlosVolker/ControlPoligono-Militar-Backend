@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-10",
+  "kind": "current-observations-not-a-baseline",
+  "objective_status": "NOT_VERIFIED",
+  "source_observations": [
+    {
+      "path": "front/src/components/shared/DsModal.vue",
+      "lines": "389-394,496-576,629-781",
+      "observed": "Button disabled states, checkbox validation states, success feedback and valid/invalid controls are present in the current source.",
+      "runtime_modal_acceptance": false
+    },
+    {
+      "path": "front/src/components/ds/FormFeedback.vue",
+      "lines": "26-65",
+      "observed": "Scoped alert variants and a whole-selector page-content override are present in the current source."
+    },
+    {
+      "path": "front/src/views/identity/IdentityView.vue",
+      "lines": "2340,2392,2501,2642-2651,2977-2980",
+      "observed": "Three identity-facts groups use ul.list-group.list-group-flush; five password inputs retain their DS classes and label associations.",
+      "runtime_identity_acceptance": false
+    }
+  ],
+  "preservation": {
+    "historical_baseline_reconstructed": false,
+    "writer_relaunched": false,
+    "historical_out_of_scope_preservation_proven": false,
+    "expected_ui_controls_artifact_directory": "docs/specs/final-frontend/evidence/2026-10-10",
+    "expected_directory_before_this_record": "absent: glob returned Search path does not exist",
+    "this_record_is_not": "ui-controls-baseline.json, ui-controls-check.json or ui-controls-handoff.json"
+  },
+  "browser_observations": {
+    "path": "/contexto",
+    "tenant_form_present": true,
+    "unit_selector_present": false,
+    "login_form_present": false,
+    "visible_error": "Las credenciales de autenticación no se proveyeron.",
+    "network_request": {
+      "index": 94,
+      "method": "GET",
+      "url": "http://127.0.0.1:5174/api/auth/context/",
+      "status": 403,
+      "scope": "existing browser network log; no new submission in this continuation"
+    },
+    "authenticated_actor_18_observed": false,
+    "unit_selection_observed": false,
+    "dashboard_observed": false,
+    "feedback": {
+      "theme": "dark",
+      "inside_page_content": true,
+      "role": "alert",
+      "aria_live": "assertive",
+      "position": "relative",
+      "padding": "12px 20px 12px 20px",
+      "margin_bottom": "20px",
+      "border_widths": "0px 0px 0px 0px",
+      "border_radius": "0px",
+      "color": "rgb(234, 123, 105)",
+      "background_color": "rgba(215, 83, 65, 0.15)",
+      "token_danger_text": "#ea7b69",
+      "token_danger_rgb": "215,83,65",
+      "token_radius": "0",
+      "reference": "../../Inume Design System/assets/css/baseui.css:718-739; baseui-content.css:101",
+      "comparison_scope": "Computed values in this real error state against source declarations; not a rendered DS reference comparison or acceptance of other variants."
+    },
+    "loaded_style_observations": {
+      "FormFeedback_scoped_style": true,
+      "whole_selector_override": ".page-content .access-feedback",
+      "access_forms_style": true,
+      "dashboard_style": true,
+      "design_system_style": true,
+      "theme_customizer_style": true,
+      "external_stylesheet_cssom_readable": false,
+      "external_stylesheet_access_bypassed": false
+    }
+  },
+  "integration": {
+    "commands_run_once_each_after_current_source_reads": [
+      { "command": "pnpm --dir front typecheck", "exit_code": 0 },
+      { "command": "pnpm --dir front build", "exit_code": 0 }
+    ],
+    "build": {
+      "modules": 137,
+      "css_kb": 199.46,
+      "css_gzip_kb": 30.09,
+      "js_kb": 831.04,
+      "js_gzip_kb": 210.11,
+      "duration_ms": 698,
+      "warning": "chunk larger than 500 kB",
+      "functional_acceptance": false
+    }
+  },
+  "listeners": {
+    "command": "ss -ltnH '( sport = :8000 or sport = :5174 )'",
+    "observed": ["127.0.0.1:8000", "127.0.0.1:5174"],
+    "started_or_restarted_in_this_continuation": false
+  },
+  "limits": {
+    "new_account_created": false,
+    "credentials_recovered": false,
+    "password_reset": false,
+    "fabricated_session": false,
+    "database_operation": false,
+    "backend_change": false,
+    "application_source_change_in_this_continuation": false,
+    "historical_reviews_reopened": false,
+    "full_ds_fidelity_accepted": false,
+    "F10_closed": false,
+    "spec_closed": false
+  }
+}

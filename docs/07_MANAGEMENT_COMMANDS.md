@@ -122,6 +122,62 @@ python manage.py seed_org_tree --tenant-code ejercito-demo
 
 ---
 
+## Cuentas ficticias de desarrollo local
+
+### `provision_development_accounts`
+
+Crea ocho cuentas ficticias reservadas —una por rol canónico— para que el operador y el asistente inicien sesión de forma autónoma contra el backend local, sin pedir tokens, sesiones ni credenciales a mano.
+
+```bash
+# Preflight: valida destino, contexto, catálogo y colisiones. No escribe nada
+./.venv/bin/python manage.py provision_development_accounts --database default --tenant-code desarrollo-poligono-local --check
+
+# Aplicación (idempotente)
+./.venv/bin/python manage.py provision_development_accounts --database default --tenant-code desarrollo-poligono-local
+```
+
+Ambos argumentos son obligatorios y aceptan **un solo valor** cada uno. No existen opciones `force` ni bypass de desarrollo. Con `--check` el comando no crea directorios ni modifica archivos.
+
+**Destino y contexto** (constantes del comando, no configurables):
+
+| Elemento | Valor |
+|---|---|
+| Base de datos | archivo local `db.sqlite3` de la raíz del proyecto, alias `default` |
+| Tenant | `desarrollo-poligono-local` |
+| Unidad | `CIA-A` |
+| Armería | `ALM-CIA-A-DEV` |
+
+**Cuentas cubiertas** — una por rol. Los registros reservados llevan el prefijo `devrole_accounts_` en el usuario y `DEVROLE-ACCOUNTS-` en el código de puesto:
+
+| Rol | Etiqueta | Ámbito principal |
+|---|---|---|
+| `super_admin` | Administrador global | Global |
+| `tenant_admin` | Administrador de tenant | Todo el tenant |
+| `admin_unidad` | Administrador de unidad | `unidad_y_descendientes` |
+| `comandante_unidad` | Comandante de unidad | `unidad_y_descendientes` |
+| `oficial_tiro` | Oficial de tiro | `unidad_y_descendientes` |
+| `oficial_observador` | Oficial observador | `unidad_y_descendientes` |
+| `encargado_almacen` | Encargado de almacén | `unidad_propia`, con armería `ALM-CIA-A-DEV` |
+| `tirador` | Tirador | `solo_propio` |
+
+Resultado sobre el destino aprobado: 8 `Usuario`/`Person`/`Account`, 8 `Position`, 15 `Assignment` (ocho primarias más las siete secundarias del puesto `tirador`) y 8 `UnitMembership`.
+
+**Credenciales.** Viven únicamente en `.cache/development-role-accounts/credentials.json` —directorio `0700`, archivo `0600`, excluido de Git—; la base de datos solo guarda los hashes. Ese archivo es el punto de lectura del operador y del asistente autorizado: se leen sus entradas para autenticarse, en lugar de pedir tokens o sesiones al usuario.
+
+**Repetir el comando es seguro**: reutiliza registros y contraseñas existentes, no recrea cuentas, no rota secretos y no añade filas ni entradas de auditoría. Puede ejecutarse de nuevo tras cualquier preflight sin efectos colaterales.
+
+**Cuándo aborta**, sin adoptar, rotar ni sobrescribir nada: credenciales ausentes o divergentes para cuentas ya existentes, archivo de credenciales corrupto o incompleto, colisión de identidad o de puesto, holder incompatible, destino o contexto distintos del aprobado, o catálogo de roles distinto de los ocho soportados.
+
+> **Alcance verificado.** La protección del directorio y del archivo, y el bloqueo de aplicación concurrente, son POSIX y se comprobaron en Linux. No se ha probado Windows ni otros destinos: no se afirma compatibilidad con ellos. Las guardas son exclusivas de desarrollo (`DEBUG`).
+
+**Sesión de estas cuentas.** Login ordinario RUT/password contra `/api/auth/login/`, con cookies propias y `csrftoken` vigente tras el login; las operaciones llevan `X-Tenant-Code`. El aislamiento de sesión es **por cliente, no por cuenta**: aunque dos clientes usen la misma cuenta, cada uno necesita su cookie jar independiente, y cerrar sesión en uno no invalida la sesión del otro. Cada cliente cierra con su propio `csrftoken`, vigente desde su login.
+
+**Nunca publicar** contraseñas, RUT concretos, cookies, tokens ni hashes en chat, tickets o commits.
+
+Origen y evidencia completa: spec archivada [`docs/specs/archive/development-role-accounts.md`](specs/archive/development-role-accounts.md).
+
+---
+
 ## Diagnóstico
 
 ### `dump_user_assignments`

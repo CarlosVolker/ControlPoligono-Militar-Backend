@@ -1,0 +1,250 @@
+schema_version: "2.0"
+
+spec:
+  id: "spec-final-frontend-001"
+  title: "Frontend integral del producto final sobre el backend existente"
+  type: "full"
+  status: "approved"
+
+ownership:
+  created_by: "Lore Master"
+  created_at: "2026-10-01"
+  updated_at: "2026-10-02"
+  approved_at: "2026-10-02"
+  verified_at: null
+
+estimation:
+  complexity: "large"
+
+quality_gates:
+  tests: required
+  security_review: required
+  code_review: required
+  documentation: required
+
+specialist_reviews:
+  portal_warden: required
+  kobold_scholar: required
+  haste_halfling: n/a
+  arcane_architect: n/a
+  qa_goblin: required
+  hellknight_inspector: n/a
+
+risk:
+  level: "high"
+  flags:
+    - "auth"
+    - "permissions"
+    - "sensitive-data"
+    - "schema"
+    - "database"
+    - "migration"
+    - "new-api"
+
+traceability:
+  related_specs: []
+  related_decisions: []
+  related_bugs: []
+  related_audits: []
+
+closure:
+  superseded_by: null
+  abandoned_reason: null
+  consolidated_into: []
+
+# ---------------------------------------------------------------------------
+# Notas de trazabilidad (no normativas del schema; se conservan aquí porque
+# spec-meta.yaml es la única fuente de verdad de esta spec).
+#
+# Numeración: `docs/specs/` no contenía specs vigentes ni en `archive/`, por lo
+# que corresponde `max(existentes) + 1` = 001. Slug tomado del nombre de la
+# carpeta `final-frontend`.
+#
+# Estado: `approved` (2026-10-02). El operador aprobó el alcance de forma
+# explícita («Apruebo el alcance»: TypeScript, 36 pantallas, 99 flujos, 8 ejes)
+# y la orden de ejecución ya se había dado antes («Empieza con la construccion
+# del frontend»). Ni la aprobación ni esa orden superan gates automáticamente:
+# ningún gate está en `passed`, `verified_at` sigue en null, la revisión del
+# plan de implementación sigue pendiente y el inicio efectivo de la
+# implementación queda sujeto a esa revisión — no se concede autorización de
+# implementación (docs/sdd.md > Estados; la aprobación de alcance no equivale a
+# veredicto VALIDATED del gate de plan).
+#
+# Gates y reviewers:
+#   - `security_review: required` y `qa_goblin: required` derivan de los hard
+#     triggers activos `auth`, `permissions` y `sensitive-data`
+#     (docs/routing-triggers.md > Vocabulario risk.flags y gates).
+#   - `tests: required` porque el cliente tiene lógica testeable (cliente HTTP,
+#     validación de forma, anti-carrera, autosave de apariencia, guards).
+#   - `kobold_scholar: required` (dominio, obligatorio): revisión del modelo de
+#     datos y la migración de los ocho campos de preferencias. Entregada y
+#     aceptada; su diseño es el que figura en technical-design.md §5.1–§5.2.
+#   - `portal_warden: required` (dominio, obligatorio): revisión del contrato de
+#     la API de preferencias. Entregada y aceptada; su diseño figura en
+#     technical-design.md §5.3.
+#   - `arcane_architect` queda en `n/a`: la navegación se resolvió con
+#     `vue-router`, una dependencia ya aprobada por el operador y sin cambio
+#     estructural transversal en el backend.
+#   - El flag `new-api` está ACTIVO: la spec introduce el subrecurso
+#     `me/preferences/appearance/design-system/`. Es compatible con el contrato
+#     existente y no altera la ruta legacy.
+#   - Ningún gate está en `passed`. No se ejecutó build, lint, tests, navegador,
+#     servidor, instalación de dependencias ni escritura en base de datos.
+#     La migración de preferencias NO está aprobada ni aplicada.
+#
+# Decisiones (requirements.md §12):
+#   D-01  RETIRADA. La correspondencia `palette`/`density` → ejes del Design
+#         System ya no se plantea: el operador ordenó persistir las ocho
+#         opciones del personalizador del Design System. `palette` y `density`
+#         no tienen eje en la fuente, no se traducen ni se reinterpretan, y sus
+#         campos quedan intactos y sin uso visual.
+#   D-02  ABIERTA. Amplitud de backend para las capacidades de requirements §8
+#         (exportación, transferencia de stock, validación de resultados,
+#         edición de datos propios, comandantes, historial global, catálogo de
+#         permisos). No bloquea el alcance declarado.
+#   D-03  RESUELTA. Tenant inicial: selección manual de la institución real como
+#         parte del login. No se crea endpoint de bootstrap, no se pide lista de
+#         tenants al backend y no se hardcodea código de demostración.
+#   D-04  RESUELTA. Mapeo de los endpoints de soporte de authz en
+#         technical-design.md §8.
+#   D-05  RESUELTA. Navegación: `vue-router@5.3.1` con `createWebHistory` es
+#         obligatorio. La navegación por hash manual del borrador anterior queda
+#         derogada. La instalación de la dependencia es fase de implementación,
+#         posterior a la aprobación.
+#   D-06  RESUELTA. Persistencia de apariencia: ocho campos `ds_*` en `Usuario`,
+#         una migración y una ruta de preferencias propia. La persistencia del
+#         Design System en `localStorage` se sustituye por memoria + backend.
+#   D-08  RESUELTA. Lenguaje del código objetivo: TypeScript, por orden explícita
+#         del operador del 2026-10-02 («se tiene que usar TS, no JS»). Deroga la
+#         regla previa «JavaScript, no TypeScript» (sincronizada en AGENTS.md,
+#         front/AGENTS.md, docs/00_INDEX.md, requirements.md §1/§7/§12,
+#         technical-design.md §1/§13 e index.md). `<script setup lang="ts">` y
+#         módulos `.ts` para router/HTTP/stores/composables propuestos. Hechos
+#         conservados: el baseline actual de front/src/ es JavaScript y no se
+#         afirma migrado; el kit externo del DS sigue siendo HTML/CSS/JS como
+#         referencia. La migración y el tooling de tipos son fase de
+#         implementación y requieren orden explícita; un typecheck no acredita
+#         por sí solo el resultado de usuario. Detalle en requirements.md §12.
+#
+# Huellas de backend documentadas sin modificar el backend (requirements §9):
+#   B-01  `apipoligono/views.py:880` usa `primary_unit(usuario)`, definido sólo
+#         dentro de `reporte` (`views.py:954`). Sospecha de `NameError` NO
+#         comprobada en runtime: no se autorizó levantar el servidor. Permanece
+#         como hipótesis, y ningún cambio de esta spec la afecta.
+#   B-02  RETIRADO. `../../Inume Design System/` resuelve desde la raíz del
+#         repositorio y su contenido fue leído (46 entradas). No bloquea nada.
+#   B-03  `CORS/CSRF_TRUSTED_ORIGINS` por defecto incluyen `localhost:5173` y
+#         Vite sirve en 5175. Con el proxy de Vite las peticiones son
+#         same-origin y CORS/CSRF no aplican: escenario no verificado y no
+#         bloqueante. No se modifica `.env`.
+#   B-04  El proveedor de base de datos del entorno de ejecución NO está
+#         confirmado: no se leyó `.env` ni se abrió ninguna conexión. Por eso el
+#         diseño de migración es ORM y no incluye SQL por motor ni procedimiento
+#         de producción.
+#
+# Runtime del backend:
+#   El operador informó que el backend ya está en ejecución en
+#   `127.0.0.1:8000`. Esa información es **reportada por el operador y no
+#   verificada** por esta revisión. No se levantó, no se reinició y no se detuvo
+#   ningún proceso, y no se leyó la bitácora del servidor. La autorización para
+#   levantar el cliente o abrir el navegador sigue pendiente. Ningún PID se
+#   persiste como estado de la spec, porque es efímero.
+#
+# ---------------------------------------------------------------------------
+# Integración documental de trazabilidad (workstream
+# `full-frontend-integrate-trace`, 2026-10-02; sólo documentación, sin código):
+#
+#   Artefactos reescritos/creados en esta revisión:
+#   - `coverage.md` (NUEVO): matriz única de cobertura con una fila explícita
+#     por cada una de las 162 OP del manifest (set idéntico al inventario),
+#     más requisitos globales sin OP (incluida la ruta propuesta de apariencia
+#     de 8 ejes, que NO suma endpoint actual), cruce SCREEN→FL (36 SCREEN),
+#     FL sin pantalla propia, traducción de alias SCREEN/*/FL/* y conteos
+#     derivados de filas: 162 OP · 36 SCREEN (7 rutas «Propuesta») · 99 FL ·
+#     11 ST · 92 R-DOM · 25 R-SES · 23 R-APAR.
+#   - `tasks.md` (reescrito): 82 tareas (las 75 T-* anteriores se conservan —
+#     tabla de equivalencia incluida — más T-13, T-24, T-25, T-26, T-62, T-76,
+#     T-147), con dependencias, files probables (hipótesis), traza
+#     OP/R/SCREEN·FL/AC y definición observable de entrega. Ninguna tarea está
+#     iniciada; la documentación creada no acredita completitud; el baseline
+#     del dashboard parcial figura como entrada separada no runtime verificada.
+#   - `verification.md` (reescrito): 131 criterios AC-* observables (99 por FL
+#     + 32 transversales/de integración) con precondición/acción/resultado
+#     observable/datos reales/fallos (F-*)/fuente DS; equivalencia completa de
+#     los 71 V-* anteriores; escenarios propuestos NO ejecutados; tests/build/
+#     lint no son prueba de usuario; riesgo nuevo V-R11 (baseline JS vs stack
+#     TS aprobado). Los quality gates se preservan como previstos NO superados.
+#
+#   Stack del cliente: TypeScript por orden explícita del operador del
+#   2026-10-02 (registro canónico: D-08 en requirements.md §12, citado vía
+#   AGENTS.md); la regla previa «JavaScript, no TypeScript» queda derogada.
+#   El baseline actual en JS es hecho conservado, no migrado; la migración y
+#   el tooling de tipos son fase de implementación y requieren orden explícita
+#   (T-26). Las convenciones «JS, no TS» de experience/screens.md:27 y
+#   experience/navigation.md:7 quedan desactualizadas por esta orden: se
+#   reportan con ancla y no se editan (fuera del write set de integración).
+#
+#   Estado: esta integración documental no cambió estado ni fechas. Durante la
+#   tarea, este archivo registró por su carril de gobernanza la transición
+#   `status: approved` con `approved_at: 2026-10-02` (ver la nota «Estado» de
+#   estas mismas trazas): hecho ajeno a este write set documental, que se
+#   reporta y no se revierte. `verified_at` permanece null y ningún gate está
+#   en `passed`; la aprobación registrada no supera gates ni autoriza
+#   implementación por sí sola (inicio efectivo sujeto a la revisión del plan).
+#   La ruta canónica prevista del plan de implementación es
+#   `implementation-plan.md`, en persistencia por su propio carril: no leído
+#   ni verificado en la tarea de integración; no se afirma su veredicto.
+#
+#   Conflicto de concurrencia reportado (2026-10-02): sobre las mismas rutas
+#   de este write set operaron escritores paralelos — `coverage.md` +
+#   `coverage/*` (workstream `frontend-trace-matrix-resume`; convención de
+#   punteros `T-FL-*`/`T-CORE-*`/`AC-OP-*`/`AC-FL-*`/`AC-CORE-*`) y los
+#   subvolúmenes `tasks/*.md` y `acceptance/*.md` (aún en escritura al cierre
+#   de esta tarea) — frente a los roots `tasks.md`/`verification.md` de esta
+#   instancia (IDs `T-00…T-147` con equivalencia de los 75 anteriores, y
+#   `AC-<familia>-NN` con equivalencia de los 71 `V-*` anteriores). La matriz
+#   de 162 filas escrita por esta instancia en `coverage.md` fue sustituida
+#   por el índice del otro sistema; su matriz equivalente vive en
+#   `coverage/operations.md` (162 filas; set de OP verificado igual al
+#   manifest por búsqueda read-only de esta instancia). Existen dos sistemas
+#   de IDs de trazabilidad vigentes sobre el mismo write set: se requiere un
+#   lane de integración secuencial del orquestador con scope de unión para
+#   reconciliarlos. Esta instancia no negocia overlap con pares ni
+#   sobrescribe trabajo ajeno; se reporta sin resolver.
+#
+# ---------------------------------------------------------------------------
+# Actualización 2026-10-15 — sincronización de estado (solo documentación):
+#
+#   Se supera expresamente la nota «La migración de preferencias NO está
+#   aprobada ni aplicada» (bloque «Gates y reviewers»): la migración
+#   `apipoligono/migrations/0021_design_system_preferences.py` y los ocho
+#   campos `ds_*` existen (`apipoligono/models.py:152-159`; verificado
+#   2026-10-15), las rutas `apipoligono/urls.py:85-86`
+#   (`me/preferences/appearance/` y `me/preferences/appearance/design-system/`)
+#   están consumidas por el cliente, y la excepción acotada de preferencias ya
+#   se ejecutó; nada más del backend se tocó.
+#
+#   `completion-plan-2026-10-14.md`: **aprobado** (orden de implementación del
+#   operador del 2026-10-14) y `in-progress`; corte vigente 330 `OBSERVED_OK`
+#   / 38 `PARTIAL` / 952 `NOT_EXERCISED` sobre 1320 celdas; estado global
+#   `NOT_VERIFIED`; conclusión de producto `NO_CUMPLIDO`; `T12` (cierre)
+#   pendiente.
+#
+#   Sincronización documental del 2026-10-15: los tomos que citaban la spec
+#   como `draft` (o el baseline del cliente como JavaScript, o el dashboard de
+#   lectura como estado vigente, o la instalación de `vue-router` como no
+#   verificada) quedan corregidos en `AGENTS.md`, `front/AGENTS.md`,
+#   `docs/00_INDEX.md`, este directorio (`index.md`) y `experience/`
+#   (`navigation.md`, `screens.md`).
+#
+#   Las notas previas de este mismo archivo que presentan como pendientes la
+#   instalación de `vue-router` (D-05) o la migración del cliente a TypeScript
+#   (baseline JavaScript declarado, módulos `.ts` como futuros) quedan
+#   superadas como afirmaciones de estado —verificado 2026-10-15: `vue-router
+#   5.3.1` instalado y en uso, `front/src/` en TypeScript—; se conservan como
+#   corte histórico fechado.
+#
+#   No cambia: `status: approved`, `verified_at: null`, ningún gate en
+#   `passed`. Esta actualización es solo documental: no autoriza ni acredita
+#   por sí sola; la aceptación integral sigue `NOT_VERIFIED`.
+# ---------------------------------------------------------------------------

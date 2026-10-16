@@ -1,0 +1,214 @@
+{
+  "schema": "frontend-t11-writes-usr-retry/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Reintento de las celdas USR bloqueadas por el defecto de acumulación tirador (USR-008/011 A1; cadena A3) en descartables frescos.",
+  "method": "Llamada directa con sesión real + CSRF; setups separados de las celdas; cada celda como PRIMERA operación de su tipo sobre la posición tirador del descartable; limpieza A1 + barrido estricto.",
+  "excluded": "USR-016 A1/A2/A3: bloqueada por NameError AccessAttempt (views.py:715) — no se reintenta.",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "context_read": {
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "context_read": {
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    }
+  },
+  "steps": [
+    {
+      "op": "OP-USR-008",
+      "actor": "A1",
+      "verb": "PATCH",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/agregar-asignacion/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": "oficial_observador -> 404; reintento tirador"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "sin assignment_id (USR-010 no 2xx)"
+    },
+    {
+      "op": "OP-USR-013",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/cambiar-contrasena/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/resetear-contrasena/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    }
+  ],
+  "setup": [
+    {
+      "what": "dep2",
+      "status": 201,
+      "id": 48
+    },
+    {
+      "what": "dep2_asig_oficial_tiro",
+      "status": 201,
+      "assignment_id": 71
+    },
+    {
+      "what": "dep3",
+      "status": 201,
+      "id": 49
+    },
+    {
+      "what": "dep3_asig_oficial_tiro",
+      "status": 201,
+      "assignment_id": 72
+    },
+    {
+      "what": "dep4",
+      "status": 201,
+      "id": 50
+    },
+    {
+      "what": "dep4_asig_oficial_tiro",
+      "status": 201,
+      "assignment_id": 73
+    }
+  ],
+  "cleanup": {
+    "dep2": {
+      "id": 48,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "dep3": {
+      "id": 49,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "dep4": {
+      "id": 50,
+      "delete_status": 204,
+      "get_after": 404
+    }
+  },
+  "sweep_strict": {
+    "token": "T11A|T11RT",
+    "own_matches": 0,
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    }
+  },
+  "page_errors": [],
+  "summary": {
+    "steps": 9,
+    "match_2xx": 2,
+    "not_2xx": 6,
+    "no_response": 1,
+    "sweep_own_matches": 0
+  }
+}

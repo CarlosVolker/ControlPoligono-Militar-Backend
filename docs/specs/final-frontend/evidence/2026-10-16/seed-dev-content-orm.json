@@ -1,0 +1,33 @@
+{
+  "schema": "frontend-t11-seed-dev-content-orm/v1",
+  "date": "2026-10-16",
+  "reason": "La creación por API de consumos de munición es imposible: POST /api/consumos-municion/ responde 500 con sqlite3.IntegrityError 'NOT NULL constraint failed: apipoligono_consumomunicion.calibre_id' — el create() del serializer (apipoligono/serializers.py:500) inserta antes de resolver el calibre y el FK es NOT NULL (deuda docs/bugs/backend-debt.md §8 reproducida y ahora con traza completa). Orden del operador: sembrar contenido de desarrollo donde sea necesario.",
+  "method": "manage.py shell (ORM de desarrollo) — única vía posible; sin tocar código backend, sin arreglar el endpoint, sobre la base de desarrollo (tenant de desarrollo id 1).",
+  "action": "insert de dos registros con marcador de desarrollo",
+  "created": [
+    {
+      "resource": "consumos-municion",
+      "id": 1,
+      "fields_used": "tenant, ejercicio=19, tipo_arma=fusil, modelo_arma=FUSIL-DEV, calibre=5.56X45, cantidad_armas=2, cantidad_tiros=20, es_aproximado=false, observaciones='Contenido de desarrollo (seed 2026-10-16)'"
+    },
+    {
+      "resource": "consumos-arma",
+      "id": 1,
+      "fields_used": "tenant, consumo=1, arma=17, cantidad_tiros=20, observaciones='Contenido de desarrollo (seed 2026-10-16)'"
+    }
+  ],
+  "post_state": { "tenant_total_cmn": 1, "tenant_total_car": 1 },
+  "api_failure_captured": {
+    "endpoint": "POST /api/consumos-municion/",
+    "actor": "A1 (super_admin) vía sesión real",
+    "status": 500,
+    "root_cause_traceback": "sqlite3.IntegrityError: NOT NULL constraint failed: apipoligono_consumomunicion.calibre_id — en ConsumoMunicionSerializer.create(): pop('calibre_code_write') → super().create(validated_data) → INSERT sin calibre → IntegrityError (apipoligono/serializers.py:500). El calibre se asigna DESPUÉS con update_fields; con FK NOT NULL el INSERT inicial siempre falla.",
+    "note": "Segundo hallazgo del día: GET /api/lecciones/{id}/resultados/ (deuda §9) responde 500 por NameError: name 'primary_unit' is not defined (apipoligono/views.py:882; el nombre disponible es get_primary_unit). Solo crashea cuando hay resultados que renderizar en el bucle."
+  },
+  "reversible": "Sí: ambos registros se identifican por marcador 'Contenido de desarrollo (seed 2026-10-16)' y por ids fijos (1/1).",
+  "no_code_touched": true,
+  "mutations": [
+    { "resource": "consumos-municion", "id": 1 },
+    { "resource": "consumos-arma", "id": 1 }
+  ]
+}

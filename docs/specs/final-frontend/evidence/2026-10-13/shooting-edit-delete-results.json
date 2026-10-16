@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-13",
+  "actor": "A1",
+  "source_kind": "direct_orchestrator_playwright_ui",
+  "route": "/tiro/fracciones/1/resultados",
+  "scope": "Edicion y borrado de resultados de tiro; backend sin cambios",
+  "baseline": [
+    {"id_resultado":1,"tenant":1,"organization_unit":5,"id_fraccion":1,"id_usuario":27,"id_arma":1,"tiros_acertados":8,"total_tiros":10,"numero_carril":1},
+    {"id_resultado":2,"tenant":1,"organization_unit":5,"id_fraccion":1,"id_usuario":26,"id_arma":2,"tiros_acertados":7,"total_tiros":10,"numero_carril":2}
+  ],
+  "related_resource_reads": [
+    {"path":"/api/fracciones/1/","status":200,"organization_unit":1},
+    {"path":"/api/armas/1/","status":200,"organization_unit":12},
+    {"path":"/api/armas/2/","status":200,"organization_unit":12},
+    {"path":"/api/armas/3/","status":200,"organization_unit":12}
+  ],
+  "checks": [
+    {
+      "case":"Editor cargado desde GET real",
+      "path":"/api/resultados/1/","status":200,
+      "prefill":{"id_usuario":27,"id_arma":1,"tiros_acertados":8,"total_tiros":10,"numero_carril":1}
+    },
+    {
+      "case":"Tiros acertados requerido",
+      "empty_field":"tiros_acertados","write_requests":0,"native_invalid":true,
+      "visible_alert":"Revisa los campos señalados antes de enviar."
+    },
+    {
+      "case":"PUT de edicion emitido por UI; rechazado",
+      "path":"/api/resultados/1/","method":"PUT","status":400,
+      "request":{"id_fraccion":1,"id_usuario":27,"id_arma":1,"tiros_acertados":9,"total_tiros":10,"numero_carril":1},
+      "response":{"non_field_errors":["La fraccion no pertenece a la unidad organizacional del recurso."]},
+      "subsequent_get_status":200,"original_unchanged":true,
+      "note":"Se reconcilio por GET tras una espera de cierre del modal fallida; el PUT fue repetido una vez y volvio a 400. No se presupuso exito ni se repitio un POST incierto."
+    },
+    {
+      "case":"PATCH de edicion emitido por UI; rechazado",
+      "path":"/api/resultados/1/","method":"PATCH","status":400,
+      "request":{"tiros_acertados":9},
+      "response":{"non_field_errors":["La fraccion no pertenece a la unidad organizacional del recurso."]},
+      "subsequent_get_status":200,"original_unchanged":true
+    },
+    {
+      "case":"Intento de alta descartable por UI; rechazo de unicidad",
+      "path":"/api/resultados/","method":"POST","status":400,
+      "request":{"id_fraccion":1,"id_usuario":26,"id_arma":1,"tiros_acertados":1,"total_tiros":1,"numero_carril":99},
+      "response":{"non_field_errors":["Este tirador ya esta asignado a esta fraccion.","Esta arma ya esta asignada a otro tirador en esta fraccion."]},
+      "note":"Opciones UI derivadas de resultados existentes; todos los usuarios y armas seleccionables ya estaban ocupados. Este rechazo no acredita alta por UI."
+    },
+    {
+      "case":"Preparacion descartable por API publica, no alta por UI",
+      "source_kind":"direct_orchestrator_api_setup",
+      "path":"/api/resultados/","method":"POST","status":201,
+      "request":{"id_fraccion":1,"id_usuario":20,"id_arma":3,"tiros_acertados":1,"total_tiros":1,"numero_carril":99},
+      "created_id":3,"created_organization_unit":5,
+      "note":"Sesion obtenida mediante login UI y CSRF real; usuario y arma existentes sin ocupar en esta fraccion. Unico registro creado, luego eliminado."
+    },
+    {
+      "case":"Cancelar y confirmar borrado descartable por UI",
+      "path":"/api/resultados/3/","method":"DELETE",
+      "get_after_cancel_status":200,"status":204,"subsequent_get_status":404,
+      "row_removed":true,"row_selection":"Carril 99, exclusivo del descartable; respuesta DELETE confirma id 3"
+    }
+  ],
+  "final": [
+    {"id_resultado":1,"tenant":1,"organization_unit":5,"id_fraccion":1,"id_usuario":27,"id_arma":1,"tiros_acertados":8,"total_tiros":10,"numero_carril":1},
+    {"id_resultado":2,"tenant":1,"organization_unit":5,"id_fraccion":1,"id_usuario":26,"id_arma":2,"tiros_acertados":7,"total_tiros":10,"numero_carril":2}
+  ],
+  "originals_unchanged":true,
+  "final_ui_result_rows":2,
+  "disposable_remaining":false,
+  "edit_verdict":"BLOCKED_BACKEND_DATA_ALIGNMENT",
+  "delete_verdict":"OBSERVED_OK_A1_ONLY",
+  "global_acceptance":"NOT_VERIFIED",
+  "limitations":[
+    "PUT/PATCH exitosos no acreditados; rechazo documentado sobre resultado 1.",
+    "Borrado comprobado solo con A1; no certifica otros actores ni aislamiento.",
+    "POST descartable exitoso fue preparacion por API, no aceptacion de creacion UI.",
+    "Contexto de navegador previo tuvo transiciones bloqueadas; contexto nuevo permitio interacciones normales.",
+    "Captura de pantalla agoto timeout; no se entrega evidencia visual ni se atribuye causa al producto.",
+    "La UI mostro mensaje HTTP 400 generico y no el non_field_errors concreto; no se corrigio en este recorrido.",
+    "Sin cambios de codigo de producto, backend, schema o datos originales."
+  ]
+}

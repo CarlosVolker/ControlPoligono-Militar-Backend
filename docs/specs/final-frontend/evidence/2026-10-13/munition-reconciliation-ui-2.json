@@ -1,0 +1,16 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "munition_consumption",
+  "actor_alias": "A1",
+  "reconcile": {
+    "source": "UI button Consultar estado real",
+    "method": "GET",
+    "path": "/api/consumos-municion/",
+    "status": 200,
+    "exact_marker": "DCTMV7GZGB4MUN2",
+    "exact_marker_matches": 0
+  },
+  "visible_ui_outcome": "Leí el estado actual desde el servidor. La escritura anterior no se repitió.",
+  "pending_write_cleared": true
+}

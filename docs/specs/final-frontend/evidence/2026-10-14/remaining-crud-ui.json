@@ -1,0 +1,66 @@
+{
+  "schema": "frontend-remaining-crud-ui/v1",
+  "date": "2026-10-14",
+  "delivery_status": "DELIVERED",
+  "actor_alias": "A1",
+  "actor_source": "Existing legitimate super_admin session established by loginUI in persons-completion; no fabricated cookies",
+  "tenant": "desarrollo-poligono-local",
+  "reviewed_sources": [
+    "docs/specs/final-frontend/evidence/2026-10-14/persons-completion.json",
+    ".cache/frontend-acceptance/2026-10-13/crud-family-matrix.json",
+    ".cache/frontend-acceptance/2026-10-13/crud-batch.cjs"
+  ],
+  "source_contract": {
+    "UI": "Playwright clicks on real product controls; exact method/path/status captured from response events",
+    "GET harness": "Read-only fetch in authenticated page with X-Tenant-Code; no API writes",
+    "prefill": "Actual UI edit form inputValue comparisons against owned marker; not inferred from harness GET"
+  },
+  "families": {
+    "organization": {
+      "id": 16,
+      "marker": "DCT20261014ORG01",
+      "create": { "source": "UI Crear unidad > Guardar", "method": "POST", "path": "/api/organization-units/", "status": 201 },
+      "before_edit": { "source": "GET harness", "method": "GET", "path": "/api/organization-units/16/", "status": 200, "id_match": true, "marker_match": true },
+      "ui_detail": { "source": "UI owned table row link", "route": "/organizacion/unidades/16", "method": "GET", "path": "/api/organization-units/16/", "status": 200 },
+      "prefill": { "source": "UI Editar form", "code_match": true, "name_match": true },
+      "patch": { "source": "UI Guardar cambios (PATCH)", "method": "PATCH", "path": "/api/organization-units/16/", "status": 200, "changed_field": "name", "edited_marker": "DCT20261014ORG01-EDIT" },
+      "after_patch": { "source": "GET harness", "method": "GET", "path": "/api/organization-units/16/", "status": 200, "edited_name_match": true, "code_match": true },
+      "put": { "source": "UI Editar > Guardar native form submit", "method": "PUT", "path": "/api/organization-units/16/", "status": 200, "edited_marker": "DCT20261014ORG01-PUT", "source_anchor": "front/src/views/organization/OrganizationView.vue:1793" },
+      "after_put": { "source": "GET harness", "method": "GET", "path": "/api/organization-units/16/", "status": 200, "marker_match": true, "edited_name_match": true },
+      "delete": { "source": "UI Eliminar unidad (DELETE simple) > Eliminar unidad; dialog marker matched", "method": "DELETE", "path": "/api/organization-units/16/", "status": 204 },
+      "final_get": { "source": "GET harness after observed UI DELETE", "method": "GET", "path": "/api/organization-units/16/", "status": 404 }
+    },
+    "weapons": {
+      "id": 5,
+      "marker": "DCT20261014ARM01",
+      "create": { "source": "UI Registrar arma", "method": "POST", "path": "/api/armas/", "status": 201 },
+      "before_edit": { "source": "GET harness", "method": "GET", "path": "/api/armas/5/", "status": 200, "id_match": true, "marker_match": true },
+      "ui_detail": { "source": "UI owned row link", "route": "/almacen/armas/5", "method": "GET", "path": "/api/armas/5/", "status": 200 },
+      "prefill": { "source": "UI Editar form", "model_match": true, "serial_match": true },
+      "put": { "source": "UI Guardar con PUT", "method": "PUT", "path": "/api/armas/5/", "status": 200, "changed_field": "modelo_arma", "edited_marker": "DCT20261014ARM01-PUT" },
+      "after_put": { "source": "GET harness", "method": "GET", "path": "/api/armas/5/", "status": 200, "marker_match": true, "edited_model_match": true },
+      "delete": { "source": "UI Eliminar > Confirmar baja; model and serial markers matched in dialog", "method": "DELETE", "path": "/api/armas/5/", "status": 204 },
+      "final_get": { "source": "GET harness after observed UI DELETE", "method": "GET", "path": "/api/armas/5/", "status": 404 }
+    },
+    "exercises": {
+      "id": 6,
+      "marker": "DCT20261014EXC01",
+      "create": { "source": "UI Crear ejercicio > Crear", "method": "POST", "path": "/api/ejercicios/", "status": 201 },
+      "before_edit": { "source": "GET harness", "method": "GET", "path": "/api/ejercicios/6/", "status": 200, "id_match": true, "marker_match": true },
+      "ui_detail": { "source": "UI owned row Ver ficha", "route": "/tiro/ejercicios/6", "method": "GET", "path": "/api/ejercicios/6/", "status": 200 },
+      "prefill": { "source": "UI Editar form", "name_match": true, "observations_match": true },
+      "put": { "source": "UI Guardar completo · PUT", "method": "PUT", "path": "/api/ejercicios/6/", "status": 200, "changed_field": "observaciones", "edited_marker": "DCT20261014EXC01-PUT" },
+      "after_put": { "source": "GET harness", "method": "GET", "path": "/api/ejercicios/6/", "status": 200, "marker_match": true, "edited_observations_match": true },
+      "delete": { "source": "UI Eliminar > Confirmar baja; id and marker matched in dialog", "method": "DELETE", "path": "/api/ejercicios/6/", "status": 204 },
+      "final_get": { "source": "GET harness after observed UI DELETE", "method": "GET", "path": "/api/ejercicios/6/", "status": 404 }
+    }
+  },
+  "cleanup": { "owned_record_ids": [16, 5, 6], "each_UI_DELETE_status": 204, "each_final_detail_GET_status": 404, "owned_records_remaining_via_detail": 0 },
+  "limitations": ["I do not certify integral acceptance or other actors.", "I do not infer physical database deletion from HTTP results.", "Weapons and exercises PATCH variants were not repeated; POSTs were disposable prerequisites for pending detail and PUT cells."],
+  "product_files_changed": [],
+  "prior_artifacts_modified": false,
+  "servers_restarted": false,
+  "dependencies_installed": false,
+  "credentials_or_personal_data_retained": false,
+  "persons_or_munition_exercised": false
+}

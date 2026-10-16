@@ -1,0 +1,30 @@
+{
+  "date":"2026-10-13",
+  "actor":"A7",
+  "source_kind":"direct_orchestrator_playwright_ui",
+  "route":"/almacen/armerias",
+  "theme":"light",
+  "before":[
+    {"width":320,"document_scroll_width":858},
+    {"width":390,"document_scroll_width":858},
+    {"width":768,"document_scroll_width":1108},
+    {"width":1024,"document_scroll_width":1108}
+  ],
+  "diagnostic_at_390":{"before":858,"temporary_wrapper_position_relative":390,"after_removing_diagnostic_inline_style":858},
+  "fix":{"file":"front/src/views/armory/ArmoryView.vue","selector":".table-responsive","property":"position","value":"relative","global_overflow_hidden_added":false},
+  "after":[
+    {"width":320,"document_client_width":320,"document_scroll_width":320,"table_client_width":290,"table_scroll_width":929},
+    {"width":390,"document_client_width":390,"document_scroll_width":390,"table_client_width":361,"table_scroll_width":929},
+    {"width":768,"document_client_width":768,"document_scroll_width":768,"table_client_width":489,"table_scroll_width":929},
+    {"width":1024,"document_client_width":1024,"document_scroll_width":1024,"table_client_width":745,"table_scroll_width":929},
+    {"width":1152,"document_client_width":1152,"document_scroll_width":1152,"table_client_width":873,"table_scroll_width":929},
+    {"width":1280,"document_client_width":1280,"document_scroll_width":1280,"table_client_width":1000,"table_scroll_width":1000},
+    {"width":1440,"document_client_width":1440,"document_scroll_width":1440,"table_client_width":1160,"table_scroll_width":1160},
+    {"width":1920,"document_client_width":1920,"document_scroll_width":1920,"table_client_width":1640,"table_scroll_width":1640}
+  ],
+  "cause":"Absolutely positioned visually-hidden sort labels escaped the static scrolling wrapper; positioning the wrapper establishes their containing block.",
+  "screenshots":{"screens":["armerias","cuenta","personalizador"],"widths":[320,390,768,1024,1152,1280,1440,1920],"height":900,"count":24,"desktop_folder":"~/Desktop/capturas-frontend-2026-10-13-actualizadas/","format":"current-state light snapshots; not before-after pairs"},
+  "other_screen_measurements":{"account_document_client_equals_scroll_at_all_eight_widths":true,"account_vertical_scrollbar_width":15,"personalizer_document_client_equals_scroll_at_all_eight_widths":true},
+  "cleanup":{"theme_restored_to_dark_via_ui_put_status":200,"final_get_status":200,"test_context_closed":true},
+  "limits":["Only these three surfaces and selected widths measured; no claim of full responsive or DS acceptance.","Existing working copy used; no clean commit baseline or branch switch.","A heading selector initially matched h1 and h2; corrected to level1. Another wait used link instead of actual table content; corrected. These were harness errors, not product failures."]
+}

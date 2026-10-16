@@ -1,0 +1,43 @@
+{
+  "actor": "NOT_VERIFIED",
+  "before": {
+    "source": "orchestrator_runtime_observation",
+    "transitionFinished": true,
+    "activeIsDialog": true,
+    "activeIsFirst": false,
+    "activeIsLast": false,
+    "firstShiftTabInside": false
+  },
+  "cause": {
+    "source": "front/src/components/shared/DsModal.vue:123-134",
+    "description": "He localizado la ausencia de activeElement === modal en ambas ramas: contains devuelve true para el propio contenedor y no se intercepta Tab desde ese foco."
+  },
+  "after": {
+    "source": "focused_unit_tests_jsdom",
+    "shiftTabFromContainerPrevented": true,
+    "shiftTabFromContainerFocusesLast": true,
+    "tabFromContainerPrevented": true,
+    "tabFromContainerFocusesFirst": true,
+    "directedTestCount": 9,
+    "directedTestsExitStatus": 0,
+    "typecheckExitStatus": 0,
+    "browserRuntime": "OBSERVED_OK",
+    "orchestratorRuntime": {
+      "source": "Playwright UI interaction on existing organization editor; no form submission",
+      "transitionFinished": true,
+      "initialActiveIsDialog": true,
+      "afterShiftTabActiveTag": "BUTTON",
+      "afterShiftTabInside": true,
+      "afterTabActiveTag": "BUTTON",
+      "afterTabInside": true,
+      "escapeClosed": true,
+      "observedBusinessWriteCount": 0
+    }
+  },
+  "limits": {
+    "description": "El test simula visibilidad con getClientRects. El orquestador comprobó posteriormente Tab y Shift+Tab desde el contenedor en el editor real. No se acredita fidelidad visual integral ni identidad A1.",
+    "businessWritesPerformed": false,
+    "browserInvoked": true,
+    "visualParity": "NOT_VERIFIED"
+  }
+}

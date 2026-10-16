@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-08T17:24:55.545Z",
+  "kind": "BEFORE",
+  "compiler": "3.5.43",
+  "snapshot_hashes_only": {
+    "source_sha": "b7f0557fec238451c741cba9462eb9c112caaf631ea9b0e2ca53ac3d8f8f502d",
+    "script_sha": "6a9dd5ab1869993a095abc12b8ae2e0f2ccb22c1203ee9c4a77eea67cce3b590",
+    "template_sha": "e4f6e61bde3c5499207177eea36813de062298958a453342a1dce6232bb9dc87",
+    "style_sha": "85d9d3b0ce5ba4abd03def7d51a3385caea6ca053dc0f69e1311cf4651318dd5",
+    "outofscope_sha": "7c47d8e17719fa5e70eb2506a8bb04c7ab97c6bad4938a383a272168e926971f",
+    "forms": {
+      "EXERCISE": {
+        "present": true,
+        "contract": "6acf0e11e81bbe5fb581c7193cc9afb5da8cbd05be5e723dd967bf6c4fd3e248",
+        "wrappers": 8
+      },
+      "MUNITION": {
+        "present": true,
+        "contract": "83a06965b2f1289d3f8dc245efe7aa0fb22ffe6c03d65f95d7211e5dd06b6eeb",
+        "wrappers": 7
+      },
+      "WEAPON": {
+        "present": true,
+        "contract": "c11ba515e4c7412650a8adb70010cbe848efd296ff8e8bfbdb91f6d96dbf97a8",
+        "wrappers": 4
+      }
+    },
+    "style_scoped_blocks": 1
+  },
+  "note": "hashes/metadata only; no source content"
+}

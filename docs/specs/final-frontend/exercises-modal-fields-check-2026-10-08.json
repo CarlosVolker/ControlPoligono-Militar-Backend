@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-10-08T17:25:46.510Z",
+  "compiler": "3.5.43",
+  "before_hashes": {
+    "source": "b7f0557fec238451c741cba9462eb9c112caaf631ea9b0e2ca53ac3d8f8f502d",
+    "script": "6a9dd5ab1869993a095abc12b8ae2e0f2ccb22c1203ee9c4a77eea67cce3b590",
+    "template": "e4f6e61bde3c5499207177eea36813de062298958a453342a1dce6232bb9dc87",
+    "style": "85d9d3b0ce5ba4abd03def7d51a3385caea6ca053dc0f69e1311cf4651318dd5",
+    "outofscope": "7c47d8e17719fa5e70eb2506a8bb04c7ab97c6bad4938a383a272168e926971f"
+  },
+  "after_hashes": {
+    "source": "1122865afdfd68a6d5bde7a0bbb68db9c8973b89ff63966ae149a1d3a55bb69b",
+    "script": "6a9dd5ab1869993a095abc12b8ae2e0f2ccb22c1203ee9c4a77eea67cce3b590",
+    "template": "ed0c0599d9a6d6079b3c2142c9817215d49d3d7e6d84a45f6c6c53df4a8eb976",
+    "style": "c3fcf580b38c33e0c4a982b9859ec9817b8ae46e77cc6335b369148f78acc735",
+    "outofscope": "7c47d8e17719fa5e70eb2506a8bb04c7ab97c6bad4938a383a272168e926971f"
+  },
+  "static_changes": {
+    "expected": [
+      "exercises-form-grid -> exercises-editor-fields x3",
+      "form-group/form-wide -> mb-3 exercises-editor-field x19",
+      "exercise-participants -> form-control",
+      "scoped CSS block appended"
+    ],
+    "observed_template_sha_changed": true,
+    "editor_fields": 3,
+    "editor_field_wrappers": 19,
+    "participants_form_control": true,
+    "script_same": true,
+    "outofscope_same": true,
+    "old_style_intact": true
+  },
+  "editor_selectors": [
+    ".exercises-editor-fields[data-v-exf]",
+    ".exercises-editor-field[data-v-exf]"
+  ],
+  "defects": [],
+  "ok": true
+}

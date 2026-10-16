@@ -1,8 +1,8 @@
 # PoligonoTiro — Backend
 
 Backend Django REST para gestión de polígonos de tiro de Fuerzas Armadas.
-Multi-tenant, RBAC con puestos (Position) y permisos individuales, autenticación
-JWT en cookies HttpOnly.
+Multi-tenant, RBAC con puestos (Position) y permisos atómicos, autenticación
+por sesiones Django + CSRF (cookies HttpOnly).
 
 ## Docs
 
@@ -12,11 +12,10 @@ Setup rápido: [`docs/01_QUICKSTART.md`](docs/01_QUICKSTART.md).
 
 ## Stack
 
-- Python 3.12+
-- Django 5.1.3
+- Python 3.14+
+- Django 5.2.15
 - DRF 3.15.2
-- djangorestframework-simplejwt 5.3.1
-- PostgreSQL (prod) / SQLite (dev)
+- PostgreSQL (prod) / SQLite (dev local)
 
 ## Estructura
 
@@ -28,8 +27,8 @@ Backend/
 │   │   ├── tenants/             # Tenant (institución)
 │   │   ├── organizations/       # OrganizationUnit (árbol)
 │   │   ├── armory/              # Armory (almacén)
-│   │   ├── identity/            # Person, Account, Position, Assignment
-│   │   └── authorization/       # Role, ScopePolicy, PermissionRule, Override
+│   │   ├── identity/            # Person, Account, Position, Assignment, UnitMembership
+│   │   └── authorization/       # Role, ScopePolicy, RolePermission, PositionPermission, Override
 │   ├── control_poligono/        # settings.py, urls.py, wsgi.py
 │   ├── manage.py
 │   └── .env.example

@@ -1,0 +1,35 @@
+# Configuración de Ruff — backend ControlPoligono-Militar-Backend.
+# Django 5.2 + DRF 3.15 sobre Python 3.14. El proyecto no usa pyproject.toml,
+# por lo que este archivo es la fuente única de configuración del linter.
+#
+# Criterios aplicados:
+# - line-length = 120: el código existente usa naturalmente el rango 100-120
+#   (131 líneas entre 101-120 vs. solo 52 líneas >120, la mayoría strings en
+#   tests). Imponer 100 marcaría 183 líneas ajenas al estilo real del proyecto.
+# - target-version = "py314": el runtime del proyecto es Python 3.14.
+# - Exclusiones: migraciones autogeneradas, frontend e Inume Design System
+#   (tooling JS propio con sus linters) y entornos virtuales.
+
+line-length = 120
+target-version = "py314"
+
+extend-exclude = [
+    "**/migrations",
+    ".venv",
+    "venv",
+    "node_modules",
+    "frontend",
+    "Inume Design System",
+]
+
+[lint]
+select = [
+    "E",   # pycodestyle: errores
+    "F",   # Pyflakes
+    "W",   # pycodestyle: advertencias
+    "I",   # isort: orden de imports
+]
+
+[lint.isort]
+# Paquetes propios del backend para clasificar imports correctamente.
+known-first-party = ["apipoligono", "apps", "control_poligono"]

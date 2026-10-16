@@ -1,0 +1,46 @@
+{
+  "artifact": ".cache/frontend-acceptance/2026-10-15/runtime-family-evidence.json",
+  "schema": "frontend-runtime-family-sweep/v1",
+  "actors": [
+    {
+      "actor": "A1",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A2",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A3",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A4",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A5",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A6",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A7",
+      "status": "observed",
+      "families": 19
+    },
+    {
+      "actor": "A8",
+      "status": "observed",
+      "families": 19
+    }
+  ]
+}

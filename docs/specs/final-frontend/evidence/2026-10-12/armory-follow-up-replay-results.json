@@ -1,0 +1,82 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/armory-follow-up-replay-results.json. Sin secretos ni datos privados: sólo estados HTTP, conteos y nombres de campo. Sobrevive a la caché.",
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "actor": "A7",
+  "role": "encargado_almacen",
+  "harness": ".cache/frontend-acceptance/2026-10-12/run-live-armory-follow-up.cjs",
+  "status": "ok",
+  "dataset": "Armería existente y asignada; UI y backend locales reales, sin mocks ni cookies inyectadas",
+  "ficha": {
+    "GET_status": 200,
+    "opened_by_code": true,
+    "closed_by_UI": true
+  },
+  "editor": {
+    "GET_status": 200,
+    "fields_equal_DTO": {
+      "code": true,
+      "name": true,
+      "descripcion": true,
+      "organization_unit_code": true,
+      "is_active": true
+    }
+  },
+  "required_name_validation": {
+    "PATCH_app_message_visible": true,
+    "PATCH_aria_invalid": true,
+    "PUT_native_invalid": true,
+    "armory_write_requests": 0,
+    "modal_stayed_open": true,
+    "draft_restored_without_saving": true,
+    "closed_by_UI": true,
+    "editor_reopened_GET_status": 200,
+    "reopened_name_matches_original": true
+  },
+  "PUT": {
+    "op": "OP-ARM-004",
+    "method": "PUT",
+    "path": "/api/armorias/{id}/",
+    "status": 200,
+    "pre_GET_equals_original": true,
+    "editor_and_client_mapping_checked_before_send": true,
+    "body_keys": [
+      "code",
+      "name",
+      "descripcion",
+      "is_active",
+      "organization_unit_code_write"
+    ],
+    "exactly_five_body_keys": true,
+    "response_business_fields_equal_original": true,
+    "fresh_GET_status": 200,
+    "fresh_GET_business_fields_equal_original": true,
+    "modal_closed_by_UI": true,
+    "note": "PUT real con los mismos valores de negocio; no se declara ausencia de mutación ni reemplazo con valores distintos"
+  },
+  "logout": {
+    "op": "OP-AUT-005",
+    "method": "POST",
+    "path": "/api/logout/",
+    "status": 200,
+    "pathname": "/login",
+    "rut_empty": true,
+    "password_empty": true,
+    "authenticated_actor_menu_removed": true
+  },
+  "data_state": "GET posterior al PUT confirma code, name, descripcion, is_active y organization_unit_code idénticos al DTO original",
+  "records_created": 0,
+  "records_deleted": 0,
+  "product_source_changed": false,
+  "recovery_needed": false,
+  "controlled_context_closed": true,
+  "limitations": [
+    "Sólo A7 y una armería existente; no certifica otros actores, tenants ni unidades",
+    "Altas, bajas y PUT con valores distintos siguen sin ejercitarse",
+    "El cierre normal del modal funcionó; no establece la causa de los timeouts históricos del sidebar",
+    "Logout observado por POST y UI; no incluye una sonda autenticada posterior para probar revocación de sesión en el servidor",
+    "No se encontró un defecto de producto en este recorrido; los ajustes fueron al harness de comprobación",
+    "La aceptación integral permanece sin verificar"
+  ],
+  "global": "NOT_VERIFIED"
+}

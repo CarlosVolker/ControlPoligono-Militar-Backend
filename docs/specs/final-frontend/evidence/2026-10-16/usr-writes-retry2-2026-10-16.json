@@ -1,0 +1,182 @@
+{
+  "schema": "frontend-t11-writes-usr-retry2/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Reintento 2: solo la cadena USR de A3, con la unidad resuelta desde el listado del alias destino (corrige el defecto del reintento 1).",
+  "method": "Llamada directa con sesión real + CSRF; descartables frescos; setup de visibilidad con rol no-tirador en la unidad compartida de A3; cada celda como PRIMERA operación de su tipo.",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "context_read": {
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "context_read": {
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    }
+  },
+  "unit_resolved_from": "A3",
+  "unit_code_len": 5,
+  "steps": [
+    {
+      "op": "OP-USR-007",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/agregar-asignacion/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-013",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/cambiar-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/resetear-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    }
+  ],
+  "setup": [
+    {
+      "what": "dep5",
+      "status": 201,
+      "id": 51
+    },
+    {
+      "what": "dep5_asig_oficial_tiro",
+      "status": 201,
+      "assignment_id": 74
+    },
+    {
+      "what": "dep6",
+      "status": 201,
+      "id": 52
+    },
+    {
+      "what": "dep6_asig_oficial_tiro",
+      "status": 201,
+      "assignment_id": 77
+    }
+  ],
+  "cleanup": {
+    "dep5": {
+      "id": 51,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "dep6": {
+      "id": 52,
+      "delete_status": 204,
+      "get_after": 404
+    }
+  },
+  "sweep_strict": {
+    "token": "T11A|T11RT|T11R2",
+    "own_matches": 0,
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    }
+  },
+  "page_errors": [],
+  "summary": {
+    "steps": 7,
+    "match_2xx": 7,
+    "not_2xx": 0,
+    "no_response": 0,
+    "sweep_own_matches": 0
+  }
+}

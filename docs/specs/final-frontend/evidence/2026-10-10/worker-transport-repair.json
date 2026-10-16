@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-10",
+  "scope": "inume-worker api response transport only",
+  "authorization": "Operator ordered to do what is necessary, continue and resolve the blocked original channel.",
+  "source": "~/.local/bin/inume-worker:api",
+  "reproduction": {
+    "resource": "/api/session/ses_code-transmuter-1791659686/message",
+    "original_cli_pipe": { "exit_code": 0, "bytes": 262144, "valid_json": false, "json_error_position": 251535 },
+    "anonymous_memory_descriptor": { "exit_code": 0, "bytes": 409914, "valid_json": true, "message_count": 13, "idle_outcomes": ["succeeded"] }
+  },
+  "change": {
+    "files": ["~/.local/bin/inume-worker"],
+    "description": "Capture the same opencode api GET stdout into an anonymous RAM descriptor, then drain and flush it to the unchanged jq .data // . normalization.",
+    "persistent_raw_response_file": false,
+    "guard_changed": false,
+    "agent_config_changed": false,
+    "model_selection_changed": false,
+    "application_changed": false,
+    "api_path_or_authentication_changed": false
+  },
+  "direct_check_after_patch": {
+    "executed_function_from_installed_helper": true,
+    "complete_document": true,
+    "message_count": 13,
+    "idle_outcomes": ["succeeded"],
+    "session_found": true,
+    "idle_observed": true,
+    "exit_code": 0
+  },
+  "original_worker_last_reply_recovered": {
+    "session_id": "ses_code-transmuter-1791659686",
+    "terminal_state": "BLOCKED",
+    "blocker": "A confidential credential-entry path was missing before the account creation.",
+    "database_not_queried_in_that_attempt": "reported in the recovered reply, not a new database measurement"
+  },
+  "continuation": {
+    "same_agent": "Code-Transmuter",
+    "same_session": "ses_code-transmuter-1791659686",
+    "same_channel": "inume-worker",
+    "brief": "/tmp/opencode/dev-additional-account-own-position-oct10-continue.md",
+    "started": true,
+    "delivery_confirmed_at_recording": false
+  },
+  "acceptance_scope": "The reproduced JSON transport defect is directly checked; account creation, login and integral frontend acceptance are not established by this record.",
+  "F10_closed": false,
+  "spec_closed": false
+}

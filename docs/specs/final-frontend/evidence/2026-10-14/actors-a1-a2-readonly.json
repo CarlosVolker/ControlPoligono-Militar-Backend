@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-14",
+  "delivery_scope": "C11 bounded readonly observation; not acceptance verdict",
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-12/run-actor.cjs",
+    ".cache/frontend-acceptance/2026-10-12/matrix-f2.json",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "expected_by_actor": "NOT_VERIFIED",
+  "initial_session": {"untouched": true, "alias_promoted": false, "restore_needed": false},
+  "actors": [
+    {
+      "alias": "A1",
+      "aliasMatchedPrivateContext": true,
+      "role_assignment_present": true,
+      "assignments": [
+        {"role": "super_admin", "scope": null, "is_primary": true, "unit_ref_present": true},
+        {"role": "tirador", "scope": "solo_propio", "is_primary": false, "unit_ref_present": true}
+      ],
+      "scopes": ["solo_propio"],
+      "scope_count": 1,
+      "permissions_ref": "observed_permissions_identical_for_both",
+      "read_observations_ref": "observed_routes_identical_for_both",
+      "login": {"method": "POST", "path": "/api/auth/login/", "status": 200, "source": "UI"},
+      "logout": {"method": "POST", "path": "/api/logout/", "status": 200, "source": "UI"}
+    },
+    {
+      "alias": "A2",
+      "aliasMatchedPrivateContext": true,
+      "role_assignment_present": true,
+      "assignments": [
+        {"role": "tenant_admin", "scope": null, "is_primary": true, "unit_ref_present": true},
+        {"role": "tirador", "scope": "solo_propio", "is_primary": false, "unit_ref_present": true}
+      ],
+      "scopes": ["solo_propio"],
+      "scope_count": 1,
+      "permissions_ref": "observed_permissions_identical_for_both",
+      "read_observations_ref": "observed_routes_identical_for_both",
+      "login": {"method": "POST", "path": "/api/auth/login/", "status": 200, "source": "UI"},
+      "logout": {"method": "POST", "path": "/api/logout/", "status": 200, "source": "UI"}
+    }
+  ],
+  "observed_permissions_identical_for_both": [
+    "assign_commanders", "assign_positions", "assign_shooters", "create_exercises",
+    "create_shooting_lessons", "create_unit", "create_users", "create_warehouse_records",
+    "delete_exercises", "delete_shooting_lessons", "delete_unit", "delete_warehouse_records",
+    "disable_users", "edit_self", "inventory_warehouse", "manage_calibre", "manage_permissions",
+    "manage_personnel", "manage_recinto", "manage_roles", "manage_system_settings", "remove_shooters",
+    "revoke_commanders", "revoke_positions", "score_shooters", "transfer_warehouse_material",
+    "update_exercises", "update_shooting_lessons", "update_unit", "update_users",
+    "update_warehouse_records", "validate_scores", "view_audit_logs", "view_exercises",
+    "view_personnel_basic", "view_personnel_full", "view_recinto", "view_self", "view_unit",
+    "view_unit_hierarchy", "view_warehouse"
+  ],
+  "observed_routes_identical_for_both": {
+    "context": {"method": "GET", "path": "/api/auth/context/", "status": 200},
+    "ui": [
+      {"path": "/organizacion/unidades", "landed": true, "main_present": true, "table_present": false, "detail_available": true, "alert_present": false},
+      {"path": "/organizacion/unidades/:id", "detail_visited": true, "main_present": true},
+      {"path": "/cuenta", "landed": true, "main_present": true, "table_present": true, "alert_present": false},
+      {"path": "/personas/roles", "landed": true, "main_present": true, "table_present": true, "alert_present": false},
+      {"path": "/personas/permisos", "landed": true, "main_present": true, "table_present": true, "alert_present": false}
+    ],
+    "requests": [
+      {"method": "GET", "path": "/api/organization-units/", "status": 200},
+      {"method": "GET", "path": "/api/organization-units/:id/", "status": 200},
+      {"method": "GET", "path": "/api/recintos/", "status": 200},
+      {"method": "GET", "path": "/api/usuarios/:id/", "status": 200, "own_identity": true},
+      {"method": "GET", "path": "/api/authz/role-categories/", "status": 200},
+      {"method": "GET", "path": "/api/authz/roles/", "status": 200},
+      {"method": "GET", "path": "/api/authz/permissions/", "status": 200}
+    ],
+    "automatic_reads_during_login": [
+      {"method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200},
+      {"method": "GET", "path": "/api/poligonos/", "status": 200},
+      {"method": "GET", "path": "/api/lecciones/", "status": 200},
+      {"method": "GET", "path": "/api/lecciones/:id/resultados-resumen/", "status": 200}
+    ],
+    "authorization_sources": {
+      "override_link_available": true,
+      "override_read_exercised": false,
+      "role_permission_dedicated_link_observed": false,
+      "position_permission_dedicated_link_observed": false,
+      "role_permission_read_exercised": false,
+      "position_permission_read_exercised": false,
+      "state_counts": null,
+      "availability_is_not_access_denial": true
+    },
+    "http_403_observed": false,
+    "business_writes_observed": false
+  },
+  "limits": [
+    "No expected authorization verdict derived from auth context; override and permission-source review remains with Dhampir.",
+    "Only two aliases; no matrix sweep, no business writes, no direct API calls, no backend/client changes.",
+    "Table absence on organization list is a DOM observation, not absence of list data or HTTP denial.",
+    "Organization detail presence is structural; body values and record counts were not retained.",
+    "Authorization role detail, overrides, RolePermission and PositionPermission state counts were not exercised.",
+    "First traversal attempt timed out on UI navigation after organization list for each actor; its isolated contexts were closed without observed logout. Subsequent isolated traversals ended with observed UI logout 200.",
+    "One initial Playwright snippet had a parse error before execution; no UI action resulted from it.",
+    "No screenshots, HAR, raw contexts, credentials, cookies, names, identity identifiers or tenant/unit values persisted."
+  ]
+}

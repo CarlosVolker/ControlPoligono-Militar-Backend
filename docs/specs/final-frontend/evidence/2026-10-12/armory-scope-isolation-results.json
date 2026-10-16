@@ -1,0 +1,32 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/armory-scope-isolation-results.json. Alias de rol; sin secretos ni datos de cuentas.",
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "action": "observación de aislamiento de scope por conteo de catálogo",
+  "observations": [
+    {
+      "actor": "A1",
+      "role": "super_admin",
+      "scope": "global",
+      "login": 200,
+      "armory_rows_visible": 4,
+      "logout": 200
+    },
+    {
+      "actor": "A7",
+      "role": "encargado_almacen",
+      "scope": "unidad_propia",
+      "login": 200,
+      "armory_rows_visible": 1,
+      "logout": 200
+    }
+  ],
+  "interpretation": "Dentro del mismo tenant, el catálogo de armerías difiere según el scope del actor: el super_admin ve las 4 armerías del tenant y el encargado de almacén sólo la de su unidad. Es evidencia de filtrado por scope de unidad, no de aislamiento entre tenants.",
+  "writes": 0,
+  "limitations": [
+    "Un solo tenant observado; el aislamiento entre tenants no se ejercitó",
+    "No se observaron escrituras cruzadas entre actores (A→B) en esta corrida",
+    "Las preferencias de apariencia A→B siguen sin ejercitarse"
+  ],
+  "global": "NOT_VERIFIED"
+}

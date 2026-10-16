@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-10",
+  "source_artifact": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-observation-correction.json",
+  "source_observed_at_utc": "2026-10-10T21:19:06.154Z",
+  "source_read_by_orchestrator": true,
+  "writer_session": "ses_code-transmuter-1791659686",
+  "delivery": "BLOCKED",
+  "diagnostic_assessment": "ACCEPTED_WITH_RESERVATIONS",
+  "objective_verdict": "NOT_VERIFIED",
+  "observed_artifact_fields": {
+    "launch_diagnostic": "browser_process_exit",
+    "launch_attempts": 1,
+    "error_name": "Error",
+    "error_code": "not_exposed",
+    "exit_code": 0,
+    "signal": null,
+    "browser_executable_exists": true,
+    "browser_executable_is_executable": true,
+    "display_present": true,
+    "wayland_display_present": true,
+    "diagnostic_gap": "process_exit_observed_but_startup_reason_not_exposed",
+    "profile_locked": false,
+    "owner_proven": false,
+    "normal_close_attempted": false,
+    "ui": {},
+    "reset_attempted": false,
+    "reset_performed": false,
+    "reset_commit": "not_attempted",
+    "api": {},
+    "target_rows": null,
+    "disposition": "blocked"
+  },
+  "limits": [
+    "Artifact read is not independent browser or database observation",
+    "Process exit code0 does not establish successful browser/UI opening",
+    "Startup cause remains unknown; no attribution to lock, sandbox or permissions",
+    "A false profile_locked classification is not independent proof of absence of a lock",
+    "No current login, context, Unit12, dashboard or reusable session observed"
+  ],
+  "action": "No further automatic correction or browser retry; preserve the intact guard and the conditional single reset authorization",
+  "post_implementation_review": {
+    "agent": "Dhampir-Slayer",
+    "session": "ses_ed84d623dffeeDEfH5gjz5Ud0i",
+    "scope": "Frozen recovery helper only; read-only, no browser/DB/process execution",
+    "state_at_recording": "in_progress"
+  },
+  "blocking_condition": "The own local browser must open and provide a legitimate UI before any password reset can be performed",
+  "F10_closed": false,
+  "spec_closed": false
+}

@@ -21,10 +21,11 @@ from .views import (UsuarioViewSet,
                     ProtectedView,
                     UserPreferencesView,
                     AuthzCatalogView,
-                    RoleCategoriesView,
-                    PersonasPorUnidadView,
-                    EligibleTargetUnitsView,
-                    iniciar_recuperacion,
+                     RoleCategoriesView,
+                     PersonasPorUnidadView,
+                     EligibleTargetUnitsView,
+                     DesignSystemAppearanceView,
+                     iniciar_recuperacion,
                     crea_codigo,
                     comprobar_codigo,
                     cambiar_contrasena
@@ -82,6 +83,7 @@ urlpatterns = [
 
     # Preferencias de usuario
     path('me/preferences/appearance/', UserPreferencesView.as_view(), name='user_preferences'),
+    path('me/preferences/appearance/design-system/', DesignSystemAppearanceView.as_view(), name='design_system_appearance'),
 
     # Unidades a las que el usuario actual puede asignar a otros (su rama)
     path('me/assignable-units/', AssignableUnitsView.as_view(), name='assignable_units'),

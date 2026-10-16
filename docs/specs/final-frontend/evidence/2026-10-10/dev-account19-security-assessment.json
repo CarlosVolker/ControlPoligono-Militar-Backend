@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-10",
+  "scope": "Focused post-implementation review of the additional development account runner and own IDs 19/36; not a global security audit",
+  "reviewer": "Dhampir-Slayer",
+  "review_session": "ses_ed8923b13ffe1yV5q61XpMcexH",
+  "review_delivery": "DELIVERED",
+  "review_acceptance": "ACCEPTED_WITH_RESERVATIONS",
+  "security_review_for_access_continuity": "BLOCKED",
+  "evidence_layers": {
+    "runner_source_review": "Local code read without executing or importing helpers/project",
+    "current_database_state": "Reviewer direct SELECTs using mode=ro and query_only=ON before queries; IDs/counts/links/non-sensitive flags only",
+    "login_change_context_statuses": "Executor report, not an independent response capture by reviewer",
+    "historical_preservation": "No complete pre-write snapshot; current existence is not historical equality"
+  },
+  "observed_database_state_by_reviewer": {
+    "counts": { "users": 10, "accounts": 10, "positions": 34, "assignments": 11, "memberships": 9 },
+    "max_ids": { "user": 19, "account": 19, "position": 36 },
+    "user19": { "active": true, "staff": false, "superuser": false, "temporary": false, "must_change_password": false, "password_change_recorded": true },
+    "account19": { "user": 19, "person": 19, "tenant": 1, "active": true },
+    "position31": { "tenant": 1, "unit": 12, "role": 10, "scope": 3, "active": true, "shareable": true, "scope_own": true, "active_holders": 3 },
+    "position36": { "tenant": 1, "unit": 12, "role": 8, "role_code": "tirador", "scope": 3, "active": true, "single_holder": true, "scope_own": true, "active_holders": 1 },
+    "own_assignment_ids": [32, 33],
+    "own_assignment_positions": [31, 36],
+    "primary_assignment": 32,
+    "own_primary_membership": { "id": 21, "tenant": 1, "unit": 12 },
+    "prior_rows_exist": ["User18", "Account18", "Position24", "Position35"],
+    "account18_current_links": { "assignments": 2, "memberships": 1 }
+  },
+  "source_anchors": {
+    "helper_directory": "/tmp/opencode/dev-additional-account-own-position-oct10/",
+    "sqlite_destination_guard": "runner.cjs:36-47",
+    "state_and_sharing_guards": "runner.cjs:65-113",
+    "single_transaction_and_exact_deltas": "runner.cjs:248-250",
+    "generation_in_memory": "runner.cjs:139-154,296-304",
+    "anonymous_stdin_transfer": "runner.cjs:160-182",
+    "network_tracking_status_only": "runner.cjs:215-230",
+    "persistent_browser_open": "runner.cjs:233-245",
+    "credentials_references_discarded": "runner.cjs:338-339,350-352,418-423",
+    "post_failure_wait": "runner.cjs:414-425",
+    "password_handler": "apipoligono/views.py:643-653",
+    "login_handler": "apipoligono/views.py:1393-1395",
+    "context_permissions": "apipoligono/views.py:1414-1417",
+    "context_contract": "docs/specs/final-frontend/contracts/auth-context.md:20-27"
+  },
+  "orchestrator_focal_check": {
+    "method": "Read runner.cjs:287-436 after frozen review",
+    "confirmed": "The new-password reference is set to null immediately after password response, and all credential references are cleared in finally; no re-login continuation is implemented in this flow",
+    "physical_memory_erasure_claimed": false,
+    "secrets_retrieved": false
+  },
+  "context403": {
+    "cause": "UNKNOWN",
+    "code_based_hypothesis": "Session invalidation after password change; handler has no update_session_auth_hash or reauthentication call",
+    "alternative_not_excluded": "Tenant missing or tenant access rejection",
+    "unit_selection_pending_is_confirmed_cause": false,
+    "response_body_or_headers_observed_by_review": false
+  },
+  "limitations": [
+    "Persistent browser profile may retain authentication state; profile contents were not inspected",
+    "No historical equality baseline for all prior rows",
+    "Current IDs and links do not establish all historical effects",
+    "Credentials are no longer legitimately available to re-login; no extraction or reset authorized",
+    "Context, unit selection, dashboard and reusable session remain unverified"
+  ],
+  "accepted_claims": ["Current own IDs and links as directly observed by reviewer", "Code guards and lack of re-login credential continuity within reviewed runner"],
+  "rejected_claims": ["Context403 alone establishes session expiration", "Current existence proves historical preservation", "Account creation and build establish integral frontend acceptance"],
+  "continuation": "Same writer/session via original inume-worker channel, normal browser/profile and native institution/context UI only; no further account or database write",
+  "objective": "NOT_VERIFIED",
+  "F10_closed": false,
+  "spec_closed": false
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "exercises",
+  "actor_alias": "A1",
+  "tenant": "desarrollo-poligono-local",
+  "active_unit": "CIA-A",
+  "marker": "DCTMV7GUDU6EXC",
+  "record_id": 5,
+  "create": {
+    "source": "UI click",
+    "method": "POST",
+    "path": "/api/ejercicios/",
+    "status": 201,
+    "request_body_sanitized": {
+      "nombre": "DCTMV7GUDU6EXC-EJERCICIO",
+      "fecha": "2026-10-13",
+      "zona": "DCTMV7GUDU6EXC-ZONA",
+      "tipo_ejercicio": "mixto",
+      "observaciones": "DCTMV7GUDU6EXC-OBS"
+    },
+    "response_fields_sanitized": {
+      "id_ejercicio": 5,
+      "nombre": "DCTMV7GUDU6EXC-EJERCICIO",
+      "fecha": "2026-10-13",
+      "zona": "DCTMV7GUDU6EXC-ZONA",
+      "tipo_ejercicio": "mixto",
+      "observaciones": "DCTMV7GUDU6EXC-OBS",
+      "unidades_participantes_codes": ["CIA-A"]
+    }
+  },
+  "reconcile_after_create": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/ejercicios/5/",
+    "status": 200,
+    "expected_fields_match": true
+  },
+  "cleanup": "pending"
+}

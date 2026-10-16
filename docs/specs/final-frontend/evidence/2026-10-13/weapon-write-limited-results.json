@@ -1,0 +1,18 @@
+{
+  "date":"2026-10-13",
+  "actor":"A1",
+  "source_kind":"direct_orchestrator_playwright_ui",
+  "route":"/almacen/armas/1",
+  "baseline":{"id_arma":1,"tenant":1,"organization_unit":12,"armory":2,"armory_code":"DEV-AUTO-13B257-ARM","armory_name":"Desarrollo DEV-AUTO-13B257 armería editada","organization_unit_code":"DEV-AUTO-X3XICW-U1","calibre_code":"5.56X45","tipo_arma":"fusil","modelo_arma":"DEV-DEV-AUTO-13B257-MOD","numero_serie":"DEV-DEV-AUTO-13B257-SN"},
+  "observations":[
+    "Weapon list links to detail; no row Editar button. Initial row-button selector was wrong, then corrected to detail link.",
+    "Detail editor exposes weapon-type/model/serial/armory/calibre and PUT/PATCH controls.",
+    "Harness used nonexistent baseline.modelo instead of actual modelo_arma. A UI write changed modelo_arma to undefined-TEMP.",
+    "Modal-close selector matched two Cerrar buttons and aborted; the initial compensation check also referenced the wrong DTO field and did not restore the model.",
+    "A later GET exposed the unintended temporary value. Immediate compensating public API PATCH with correct modelo_arma restored the original value; response200 and GET200 confirmed all DTO fields identical to baseline.",
+    "Stopped further mutation attempts. No successful UI edit-and-restore roundtrip certified and no product defect inferred from harness mistakes."
+  ],
+  "cleanup":{"compensation_method":"PATCH","compensation_path":"/api/armas/1/","compensation_status":200,"final_get_status":200,"correct_field":"modelo_arma","all_dto_fields_match_baseline":true,"context_closed":true},
+  "verdict":"PARTIAL_HARNESS_FAILURE_RESTORED",
+  "limits":["No weapon create/delete exercised.","Do not promote unknown UI mutation status to an assumed HTTP200.","Harness requires DTO-field validation before further writes; original weapon is restored."]
+}

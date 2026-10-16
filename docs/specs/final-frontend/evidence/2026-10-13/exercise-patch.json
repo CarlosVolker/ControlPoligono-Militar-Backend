@@ -1,0 +1,33 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "exercises",
+  "actor_alias": "A1",
+  "marker": "DCTMV7GUDU6EXC",
+  "record_id": 5,
+  "patch": {
+    "source": "UI click",
+    "method": "PATCH",
+    "path": "/api/ejercicios/5/",
+    "status": 200,
+    "request_body_sanitized": {
+      "observaciones": "DCTMV7GUDU6EXC-OBS-EDIT"
+    },
+    "response_fields_sanitized": {
+      "id_ejercicio": 5,
+      "nombre": "DCTMV7GUDU6EXC-EJERCICIO",
+      "fecha": "2026-10-13",
+      "observaciones": "DCTMV7GUDU6EXC-OBS-EDIT",
+      "tipo_ejercicio": "mixto"
+    }
+  },
+  "reconcile_after_patch": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/ejercicios/5/",
+    "status": 200,
+    "expected_fields_match": true,
+    "unidades_participantes_codes": ["CIA-A"]
+  },
+  "cleanup": "pending"
+}

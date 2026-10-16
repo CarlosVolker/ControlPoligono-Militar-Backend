@@ -1,0 +1,70 @@
+{
+  "workstream_id": "dev-additional-account-normal-access-oct10",
+  "status": "BLOCKED",
+  "date": "2026-10-10",
+  "result": "Me detuve antes de cualquier escritura: no hay una Position de tirador compatible y reutilizable en la misma unidad.",
+  "database_guard": {
+    "checked_with": ".venv/bin/python",
+    "engine": "django.db.backends.sqlite3",
+    "database_location": "project-local",
+    "write_performed": false
+  },
+  "existing_positions": [
+    {
+      "position_id": 31,
+      "active": true,
+      "role": "tenant_admin",
+      "scope": "solo_propio",
+      "is_unique_holder": false,
+      "active_assignment_count": 2,
+      "assessment": "La comprobé compartible para el vínculo principal autorizado."
+    },
+    {
+      "position_id": 24,
+      "active": true,
+      "role": "tirador",
+      "scope": "solo_propio",
+      "is_unique_holder": true,
+      "active_assignment_count": 1,
+      "assessment": "La comprobé ocupada; no la reutilicé ni desplacé a su titular."
+    },
+    {
+      "position_id": 35,
+      "active": true,
+      "role": "tirador",
+      "scope": "solo_propio",
+      "is_unique_holder": true,
+      "active_assignment_count": 1,
+      "assessment": "La comprobé ocupada y no reutilizable bajo el guard indicado."
+    }
+  ],
+  "tirador_position_search": {
+    "tenant_id": 1,
+    "organization_unit_id": 12,
+    "active_compatible_position_count": 2,
+    "reusable_position_count": 0,
+    "assessment": "Encontré únicamente las Positions 24 y 35; ambas son únicas y tienen una asignación activa."
+  },
+  "created_rows": {
+    "Usuario": 0,
+    "Person": 0,
+    "Account": 0,
+    "Assignment": 0,
+    "UnitMembership": 0,
+    "Position": 0
+  },
+  "preserved": "No modifiqué la cuenta 18, ninguna cuenta previa, ninguna asignación existente ni las Positions 24, 31 o 35.",
+  "stages": {
+    "plan_files_read": true,
+    "database_target_guard_checked": true,
+    "existing_link_occupancy_checked_read_only": true,
+    "browser_preflight": "No inicié: el prerrequisito de vínculo falló antes de generar credenciales o crear la cuenta.",
+    "login_ui": "No iniciado.",
+    "password_change_ui": "No iniciado.",
+    "tenant_context_ui": "No iniciado.",
+    "unit_selection_ui": "No iniciado.",
+    "dashboard": "No observado."
+  },
+  "credentials": "No generé ni almacené credenciales.",
+  "pending": "Hace falta una Position existente de tirador, activa, compatible y reutilizable en la unidad, o una nueva decisión explícita que cambie ese prerrequisito. No creé Positions ni desplacé titulares."
+}

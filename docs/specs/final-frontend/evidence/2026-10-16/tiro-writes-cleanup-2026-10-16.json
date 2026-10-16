@@ -1,0 +1,64 @@
+{
+  "schema": "frontend-t11-tiro-cleanup/v1",
+  "date": "2026-10-16",
+  "deletions": [
+    {
+      "what": "armoria_A3",
+      "id": 9,
+      "status": 204,
+      "detail": null
+    }
+  ],
+  "sweep_strict": {
+    "token": "T11A",
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    },
+    "own_matches": 0
+  },
+  "page_errors": [],
+  "accreditation": {
+    "context_status": 200,
+    "active_role": "super_admin",
+    "alias_matched": true
+  }
+}

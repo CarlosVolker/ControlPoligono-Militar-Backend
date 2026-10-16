@@ -1,0 +1,354 @@
+{
+  "schema": "frontend-t11-writes-usr/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Fichas de escritura del lote USR (22 celdas NE esperadas ALLOW): alta formal, asignaciones y credenciales sobre descartables.",
+  "method": "Llamada directa con la sesión real del actor + CSRF; RUT sintético válido no persistido; marcadores T11<ALIAS>USR-01; limpieza por A1 y barrido estricto T11A.",
+  "parked": "USR-013 A4–A7 (camino «sobre sí mismo»): parked por diseño (tesorería de credenciales de los alias).",
+  "known_residue": "Person (patrón deuda §10): la baja de cuenta no elimina la fila Person; se declara, no se limpia.",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    }
+  },
+  "steps": [
+    {
+      "op": "OP-USR-002",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/usuarios/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A1",
+      "verb": "PUT",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A1",
+      "verb": "PATCH",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 500,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/agregar-asignacion/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 500,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-013",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/cambiar-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/resetear-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desbloquear/",
+      "status": 500,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/usuarios/{id}/asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/agregar-asignacion/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": "oficial_tiro -> 404; reintento con oficial_observador"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "sin assignment_id (USR-010 no 2xx)"
+    },
+    {
+      "op": "OP-USR-013",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/cambiar-contrasena/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/resetear-contrasena/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desbloquear/",
+      "status": 404,
+      "verdict": "NOT_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-013",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/cambiar-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/resetear-contrasena/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/usuarios/{id}/desbloquear/",
+      "status": 500,
+      "verdict": "NOT_2XX",
+      "note": null
+    }
+  ],
+  "cleanup": {
+    "user_A1": {
+      "id": 45,
+      "delete_status": 204,
+      "get_after": 404,
+      "relay": false
+    },
+    "user_A3": {
+      "id": 46,
+      "delete_status": 204,
+      "get_after": 404,
+      "relay": true
+    },
+    "user_A5": {
+      "id": 47,
+      "delete_status": 204,
+      "get_after": 404,
+      "relay": true
+    }
+  },
+  "sweep_strict": {
+    "token": "T11A",
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    },
+    "own_matches": 0
+  },
+  "page_errors": [],
+  "unit_code_len": 5,
+  "summary": {
+    "steps": 22,
+    "match_2xx": 10,
+    "not_2xx": 11,
+    "no_response": 1,
+    "sweep_own_matches": 0
+  }
+}

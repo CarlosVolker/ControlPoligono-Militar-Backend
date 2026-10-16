@@ -1,0 +1,578 @@
+{
+  "schema": "frontend-authorization-surfaces-readonly/v1",
+  "date": "2026-10-14",
+  "ac": [
+    "AC-6"
+  ],
+  "block": "C5 (T5)",
+  "delivery_scope": "Runtime read-only observation of authorization surfaces with an existing high administrative role; no permissions/roles/overrides written; not an acceptance verdict",
+  "source_mapping_paths": [
+    "front/src/views/authorization/AuthorizationView.vue",
+    "front/src/features/authorization/api.ts",
+    "front/src/router/routes.ts",
+    "front/src/router/visibility.ts",
+    "front/src/App.vue"
+  ],
+  "alias": "NOT_VERIFIED",
+  "actor": {
+    "role_exercised": "tenant_admin",
+    "role_class": "existing_high_administrative_role_isTenantAdmin_predicate",
+    "used_super_admin_bypass": false,
+    "account_identifier_persisted": false,
+    "tenant_identifier_persisted": false,
+    "alias": "NOT_VERIFIED"
+  },
+  "session": {
+    "method": "UI login (isolated fresh browser context)",
+    "isolated_context": true,
+    "existing_operator_session_touched": false,
+    "must_change_password_redirect": false,
+    "login_request": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200
+    },
+    "landed_after_login": "/"
+  },
+  "required_gets": {
+    "/api/authz/roles/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "roles",
+        "matriz_rol"
+      ],
+      "count": 2
+    },
+    "/api/authz/role-categories/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "roles"
+      ],
+      "count": 1
+    },
+    "/api/authz/permissions/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "permisos_catalog",
+        "matriz_rol",
+        "matriz_puesto"
+      ],
+      "count": 3
+    },
+    "/api/authz/scopes/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "scopes"
+      ],
+      "count": 1
+    },
+    "/api/authz/role-permissions/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "matriz_rol"
+      ],
+      "count": 1
+    },
+    "/api/authz/position-permissions/": {
+      "observed": true,
+      "statuses": [
+        200
+      ],
+      "phases": [
+        "matriz_puesto"
+      ],
+      "count": 1
+    },
+    "/api/authz/overrides/": {
+      "observed": false,
+      "statuses": [],
+      "phases": [],
+      "count": 0
+    }
+  },
+  "routes": [
+    {
+      "id": "/personas/roles",
+      "surface_kind": "roles",
+      "requested_path": "/personas/roles",
+      "landed_path": "/personas/roles",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Roles",
+      "table_present": true,
+      "tables_count": 1,
+      "rows_by_table": [
+        8
+      ],
+      "detail_region": {
+        "sections": {
+          "roles_list": true,
+          "role_categories": true,
+          "scopes_list": false,
+          "permissions": false,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 0,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 0,
+        "categories_count": 4,
+        "category_role_items": 7
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET /api/authz/roles/ + /api/authz/role-categories/"
+    },
+    {
+      "id": "/personas/scopes",
+      "surface_kind": "scopes",
+      "requested_path": "/personas/scopes",
+      "landed_path": "/personas/scopes",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Scopes",
+      "table_present": true,
+      "tables_count": 1,
+      "rows_by_table": [
+        5
+      ],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": true,
+          "permissions": false,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 0,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 0,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET /api/authz/scopes/"
+    },
+    {
+      "id": "/personas/permisos?tab=catalogo",
+      "surface_kind": "permissions_catalog",
+      "requested_path": "/personas/permisos?tab=catalogo",
+      "landed_path": "/personas/permisos?tab=catalogo",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Permisos",
+      "table_present": true,
+      "tables_count": 1,
+      "rows_by_table": [
+        41
+      ],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": false,
+          "permissions": true,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 0,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 0,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET /api/authz/permissions/"
+    },
+    {
+      "id": "/personas/permisos?tab=matriz-rol",
+      "surface_kind": "role_permission_matrix",
+      "requested_path": "/personas/permisos?tab=matriz-rol",
+      "landed_path": "/personas/permisos?tab=matriz-rol",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Permisos",
+      "table_present": true,
+      "tables_count": 1,
+      "rows_by_table": [
+        8
+      ],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": false,
+          "permissions": true,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 328,
+        "matrix_rule_badges": 131,
+        "matrix_row_headers": 8,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET /api/authz/catalog/, /api/authz/roles/, /api/authz/permissions/, /api/authz/role-permissions/"
+    },
+    {
+      "id": "/personas/permisos?tab=matriz-puesto",
+      "surface_kind": "position_permission_matrix",
+      "requested_path": "/personas/permisos?tab=matriz-puesto",
+      "landed_path": "/personas/permisos?tab=matriz-puesto",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Permisos",
+      "table_present": true,
+      "tables_count": 1,
+      "rows_by_table": [
+        42
+      ],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": false,
+          "permissions": true,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 1722,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 42,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET /api/authz/catalog/, positions, /api/authz/permissions/, /api/authz/position-permissions/"
+    },
+    {
+      "id": "/personas/permisos?tab=personas-unidad",
+      "surface_kind": "people_by_unit",
+      "requested_path": "/personas/permisos?tab=personas-unidad",
+      "landed_path": "/personas/permisos?tab=personas-unidad",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": true,
+      "header_label": "Permisos",
+      "table_present": false,
+      "tables_count": 0,
+      "rows_by_table": [],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": false,
+          "permissions": true,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 0,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 0,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": false,
+      "alerts": [],
+      "shortcuts_present": [
+        "/personas/roles",
+        "/personas/scopes",
+        "/personas/permisos?tab=catalogo",
+        "/personas/overrides",
+        "/auditoria"
+      ],
+      "note": "GET organization-units lookup + /api/usuarios/ (no query submitted)"
+    },
+    {
+      "id": "/personas/overrides",
+      "surface_kind": "overrides_closed_surface",
+      "requested_path": "/personas/overrides",
+      "landed_path": "/personas/overrides",
+      "spa_navigation": true,
+      "landed": true,
+      "main_present": true,
+      "authorization_view_present": false,
+      "header_label": "Acceso denegado",
+      "table_present": false,
+      "tables_count": 0,
+      "rows_by_table": [],
+      "detail_region": {
+        "sections": {
+          "roles_list": false,
+          "role_categories": false,
+          "scopes_list": false,
+          "permissions": false,
+          "overrides_list": false,
+          "audit_list": false
+        },
+        "matrix_cells": 0,
+        "matrix_rule_badges": 0,
+        "matrix_row_headers": 0,
+        "categories_count": 0,
+        "category_role_items": 0
+      },
+      "empty_states": 0,
+      "alert_present": false,
+      "denial_present": true,
+      "alerts": [],
+      "shortcuts_present": [],
+      "note": "Fail-closed: neutral denial container; no /api/authz/overrides/ request expected"
+    }
+  ],
+  "overrides_link_check": {
+    "sidebar_link_present": false,
+    "authorization_shortcuts_link_present": true,
+    "read_link_available_not_equal_read_exercised": true
+  },
+  "network": {
+    "api_calls": [
+      {
+        "phase": "login",
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/poligonos/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/lecciones/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/usuarios/{id}/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/lecciones/{id}/resultados-resumen/",
+        "status": 200
+      },
+      {
+        "phase": "roles",
+        "method": "GET",
+        "path": "/api/authz/roles/",
+        "status": 200
+      },
+      {
+        "phase": "roles",
+        "method": "GET",
+        "path": "/api/authz/role-categories/",
+        "status": 200
+      },
+      {
+        "phase": "scopes",
+        "method": "GET",
+        "path": "/api/authz/scopes/",
+        "status": 200
+      },
+      {
+        "phase": "permisos_catalog",
+        "method": "GET",
+        "path": "/api/authz/permissions/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_rol",
+        "method": "GET",
+        "path": "/api/authz/catalog/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_rol",
+        "method": "GET",
+        "path": "/api/authz/role-permissions/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_rol",
+        "method": "GET",
+        "path": "/api/authz/roles/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_rol",
+        "method": "GET",
+        "path": "/api/authz/permissions/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_puesto",
+        "method": "GET",
+        "path": "/api/authz/catalog/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_puesto",
+        "method": "GET",
+        "path": "/api/authz/permissions/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_puesto",
+        "method": "GET",
+        "path": "/api/authz/position-permissions/",
+        "status": 200
+      },
+      {
+        "phase": "matriz_puesto",
+        "method": "GET",
+        "path": "/api/posiciones/",
+        "status": 200
+      },
+      {
+        "phase": "personas_unidad",
+        "method": "GET",
+        "path": "/api/organization-units/lookup/",
+        "status": 200
+      },
+      {
+        "phase": "personas_unidad",
+        "method": "GET",
+        "path": "/api/usuarios/",
+        "status": 200
+      }
+    ],
+    "business_mutation_count": 0,
+    "business_mutations": [],
+    "auth_calls_excluded_from_mutation_count": [
+      {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200
+      }
+    ],
+    "http_403_observed": false,
+    "chunk_load_errors": false
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "harness": null,
+    "stage": null
+  },
+  "policy": {
+    "mutations_expected": 0,
+    "read_only": true,
+    "no_business_writes": true,
+    "no_permission_role_override_writes": true,
+    "no_api_cookie_fabrication": true,
+    "no_backend_db_deps_changes": true,
+    "no_synthetic_records": true,
+    "excluded": [
+      "writing permissions, roles, overrides, holders or positions",
+      "executing deletions or confirmations",
+      "reading response bodies",
+      "persisting person or unit identifiers",
+      "other acceptance families"
+    ]
+  },
+  "limits": [
+    "Read link availability (shortcuts/sidebar/menu) is NOT read exercised, and table absence is NOT an HTTP denial; both are recorded separately.",
+    "No expected-authorization verdict is derived from the auth context; expected_by_actor remains NOT_VERIFIED and the alias is NOT_VERIFIED.",
+    "Tenant-admin predicate was exercised; the super_admin bypass was intentionally not used, so super_admin-only paths are not covered.",
+    "Overrides route is fail-closed in the client; it was exercised only through its rendered shortcut when available, producing no request.",
+    "Row/rule counts are DOM counts of rendered rows; no row content, person, unit, code or identifier was retained.",
+    "Actors derived only from a fresh isolated UI session; no matrix sweep, no business writes, no direct API calls, no backend/client changes.",
+    "The /auditoria surface (session-access / AUT family) is outside the requested GET set and was not exercised."
+  ]
+}

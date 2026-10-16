@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-10-09T11:44:47.668Z",
+  "compiler": "3.5.43",
+  "before_hashes": {
+    "source": "240f235fc2533eea8516297df79bf484eb1c0765437a08985e933230ac5c1620",
+    "script": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+    "style": "d7fdeab4ed24f0530dc193ffd30d268c95bb1b2c27de77094ce6ec8359287b89",
+    "outofscope": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0"
+  },
+  "after_hashes": {
+    "source": "a4342aaf11f676dd249b4677b3e47040ca49f0ca846a3589b34dfeec96736ddf",
+    "script": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+    "style": "7c84f5be7614070d250e3c3f4344fbf35f9fc4dc2378307f9a73062d18bac15f",
+    "outofscope": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0"
+  },
+  "expected_after_sha256": "a4342aaf11f676dd249b4677b3e47040ca49f0ca846a3589b34dfeec96736ddf",
+  "identities": {
+    "current_equals_expected_after": true,
+    "script_unchanged": true,
+    "outofscope_unchanged": true,
+    "old_style_intact": true,
+    "form_contracts_unchanged": true
+  },
+  "wrappers_by_form": {
+    "armory-editor-form": 5,
+    "weapon-editor-form": 5,
+    "calibre-editor-form": 3
+  },
+  "grid_renames": 3,
+  "for_id_pair_ok": true,
+  "new_scoped_selectors": [
+    ".armory-editor-fields[data-v-amf]",
+    ".armory-editor-field[data-v-amf]"
+  ],
+  "compile": {
+    "template_errors": [],
+    "style_errors": []
+  },
+  "defects": [],
+  "ok": true
+}

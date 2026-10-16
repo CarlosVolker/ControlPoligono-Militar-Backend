@@ -1,0 +1,66 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/preferences-isolation-results.json. Alias de rol; sin secretos ni datos de cuentas.",
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "action": "persistencia y aislamiento A→B de preferencias de apariencia (8 ejes DS)",
+  "actors": [
+    {
+      "alias": "A7",
+      "role": "encargado_almacen"
+    },
+    {
+      "alias": "A8",
+      "role": "tirador"
+    }
+  ],
+  "sequence": [
+    {
+      "step": "A7 cambia acento Mint→Violet por UI",
+      "op": "OP-PRF-004",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200
+    },
+    {
+      "step": "A8 entra y lee su propio acento",
+      "op": "OP-PRF-003",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "accent_observed": "Mint",
+      "conclusion": "no afectado por el cambio de A7"
+    },
+    {
+      "step": "A7 re-entra en otra sesión y lee su preferencia",
+      "op": "OP-PRF-003",
+      "method": "GET",
+      "status": 200,
+      "accent_observed": "Violet",
+      "conclusion": "persistida por usuario en el backend, no en el navegador"
+    },
+    {
+      "step": "A7 restablece valores por defecto por UI",
+      "op": "OP-PRF-005",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "accent_after_reset": "Mint"
+    }
+  ],
+  "isolation_a_to_b_preferences": true,
+  "persistence_across_sessions": true,
+  "reset_to_ds_defaults": true,
+  "logouts": [
+    200,
+    200,
+    200
+  ],
+  "records_left_behind": 0,
+  "limitations": [
+    "Sólo el eje accent se varió; los otros siete ejes no se ejercitaron como escritura",
+    "Sólo A7 y A8; el resto de actores queda sin ejercitar en preferencias",
+    "El aislamiento entre tenants no se ejercitó",
+    "No se certifica la aceptación integral"
+  ],
+  "global": "NOT_VERIFIED"
+}

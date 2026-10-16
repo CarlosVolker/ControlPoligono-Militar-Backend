@@ -1,0 +1,19 @@
+{
+  "workstream_id": "dev-additional-account-normal-access-oct10",
+  "status": "BLOCKED",
+  "evidence_path": "docs/specs/final-frontend/evidence/2026-10-10/dev-additional-account-access.json",
+  "changed": "Solo escribí los dos JSON de evidencia y handoff indicados. No creé una identidad: los conteos nuevos de Usuario, Person, Account, Assignment, UnitMembership y Position son cero.",
+  "verification": "Leí los planes indicados, confirmé con .venv/bin/python que el destino ORM es SQLite local del proyecto y consulté en modo lectura las Positions 24, 31 y 35 y las Positions activas tirador de la misma unidad. Position 31 admite asignaciones compartidas; las únicas dos candidatas tirador (24 y 35) tienen is_unique_holder=true y una asignación activa cada una.",
+  "risks": "Sin una Position tirador reutilizable no puedo crear los vínculos mínimos sin crear una Position o desplazar a un titular, ambas acciones fuera de la autorización.",
+  "branch_scope_guard": {
+    "out_of_scope_findings": "No registré hallazgos ajenos al prerrequisito de vínculo.",
+    "out_of_scope_changes": "No toqué cuentas anteriores, permisos, datos de negocio, Positions ni código de aplicación.",
+    "authorization": "Me mantuve en la lectura ORM local y en la evidencia autorizada; no extendí la orden para crear Positions ni desplazar titulares.",
+    "pending_debt": "Queda pendiente una Position de tirador compatible y reutilizable, o una decisión explícita del operador que cambie el prerrequisito."
+  },
+  "permissions_mcp_browser": "No abrí navegador ni invoqué MCP; no generé credenciales. La única conexión a datos fue consulta ORM de lectura desde el .venv del proyecto.",
+  "unverified": "No observé login 200, cambio obligatorio de contraseña, GET contexto 200, selección de unidad, contexto coherente ni dashboard porque no creé la cuenta ni inicié el navegador.",
+  "documentation_handoff": "No modifiqué Markdown ni YAML documental. Escribí únicamente los dos artefactos JSON solicitados; no dejé documentación de producto que requiera Lore Master.",
+  "new_identity_id": null,
+  "blocker": "No existe una Position activa de tirador reutilizable en tenant 1 / unidad 12: Position 24 y Position 35 son únicas y están ocupadas."
+}

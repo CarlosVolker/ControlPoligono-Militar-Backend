@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-09T12:02:27.358Z",
+  "compiler": "3.5.43",
+  "dsmodal": {
+    "before": "384135717650b2a4be5d2ecdf4ee83f08e49b0023fc8877b4c7166e2e1594409",
+    "expected_after": "9b5e62e98fd4606c5e00d4cd0f28873a76b8add90eeddda1941704210874933b",
+    "current": "9b5e62e98fd4606c5e00d4cd0f28873a76b8add90eeddda1941704210874933b",
+    "script_unchanged": true,
+    "template_unchanged": true,
+    "inserted_block_exact": true,
+    "style_errors": []
+  },
+  "shooting_readonly": {
+    "expected": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+    "current": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+    "unchanged": true
+  },
+  "seam_selectors_compiled": [],
+  "property_map": {
+    "specificity": "seam uses `.ds-modal .modal-body :deep(...)` => `.ds-modal .modal-body[data-v] .form-control` (0,4,0), which beats the view-local `.armory-editor-field .form-select[data-v-view]` (0,3,0); invalid rules are (0,5,0)+ so the normal layer cannot drop them.",
+    "form-control.is-invalid": "border-color var(--buf-invalid); padding-right calc(1.5em + 1rem); background-image invalid icon; background-position right calc(.375em + .25rem) center; background-size calc(.75em + .5rem) (baseui-forms.css:405-413)",
+    "form-control.is-invalid:focus": "border-color var(--buf-invalid); box-shadow 0 0 0 .15rem rgba(215,83,65,.25) (baseui-forms.css:414-417)",
+    "textarea.form-control.is-invalid": "padding-right calc(1.5em + 1rem); background-position top calc(.375em + .25rem) right calc(.375em + .25rem) (baseui-forms.css:418-422)",
+    "form-select normal": "min-height:initial (source declares none); --buf-select-chevron set to the source chevron URL explicitly; border-radius var(--bui-radius); border var(--buf-input-border) (baseui-forms.css:159-179)",
+    "form-select.is-invalid": "border-color var(--buf-invalid) (baseui-forms.css:437-438)",
+    "form-select.is-invalid:not(multiple/size)": "--buf-select-icon = source invalid icon; padding-right 132px; background-image chevron,icon; background-position right 24px center, center right 72px; background-size 14px 10px, calc(...) (baseui-forms.css:439-446)",
+    "form-select.is-invalid:focus": "border-color var(--buf-invalid); box-shadow 0 0 0 .15rem rgba(215,83,65,.25) (baseui-forms.css:447-450)"
+  },
+  "defects": [],
+  "ok": true
+}

@@ -1,0 +1,391 @@
+/* ============================================================
+   Inume - authentication surfaces
+   ============================================================ */
+
+body.authentication-bg{
+  min-height: 100vh;
+  height: auto;
+  position: relative;
+  isolation: isolate;
+  background: var(--bg);
+}
+
+/* Static base layer keeps auth surfaces aligned with the active theme. */
+body.authentication-bg::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+/* Deterministic inline SVG grain; opacity is adjusted per theme below. */
+body.authentication-bg::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 160px 160px;
+  opacity: .05;
+}
+
+[data-theme="light"] body.authentication-bg::after{ opacity: .025; }
+
+.authentication-bg .account-pages{
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: 72px 0;
+}
+
+.authentication-bg .auth-container{
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+.authentication-bg .auth-row{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+  justify-content: center;
+}
+
+.authentication-bg .auth-column{
+  position: relative;
+  width: 100%;
+  padding: 0 12px;
+}
+
+.authentication-bg .auth-card{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 0;
+  border-radius: var(--card-radius);
+  box-shadow: 0 5px 10px rgba(30, 32, 37, .12);
+}
+
+.authentication-bg .auth-card-body{
+  padding: 72px;
+}
+
+.authentication-bg .auth-header{
+  text-align: center;
+}
+
+.authentication-bg .auth-logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  margin: 0 0 36px;
+  text-align: center;
+}
+
+/* Vertical logo lockup: the auth card content column is narrow
+   (card-body padding 72px), so a horizontal 19-char wordmark would
+   overflow at tablet/mobile. Stacking the mark over the wordmark is the
+   operator-sanctioned alternative ("imagen centrada sobre el texto") and
+   fits every width while reading as a deliberate brand lockup. */
+.authentication-bg .auth-brand{
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* 44px box: the cropped sprite (91.7% fill) reads ~40px — the auth card is
+   the one surface where the lockup gets hero presence. */
+.authentication-bg .auth-brand-logo{
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.authentication-bg .auth-brand-text{
+  display: block;
+}
+
+.authentication-bg .auth-header h1,
+.authentication-bg .auth-header h4{
+  margin: 0 0 12px;
+  color: var(--heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 19.8px;
+}
+
+.authentication-bg .auth-description{
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.authentication-bg .auth-form{
+  margin-top: 36px;
+}
+
+.authentication-bg .auth-field{
+  margin-bottom: 24px;
+}
+
+.authentication-bg .auth-field-label,
+.authentication-bg .auth-check-label{
+  display: inline-block;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.authentication-bg .auth-field-label{
+  margin: 0 0 6.4px;
+}
+
+.authentication-bg .auth-field-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 27.4px;
+}
+
+.authentication-bg .auth-field-row .auth-field-label{
+  margin-bottom: 6.4px;
+}
+
+.authentication-bg .auth-link-muted{
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.authentication-bg .auth-control{
+  display: block;
+  width: 100%;
+  height: 39px;
+  padding: 8px 24px;
+  color: var(--text);
+  font: 400 14px / 21px var(--font);
+  appearance: none;
+  background-color: var(--surface);
+  background-clip: padding-box;
+  border: 1px solid #616f81;
+  border-radius: var(--card-radius);
+  outline: 0;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.authentication-bg .auth-control::placeholder{
+  color: var(--muted);
+  opacity: 1;
+}
+
+.authentication-bg .auth-control:focus-visible{
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+.authentication-bg .auth-check-wrap{
+  min-height: 21px;
+  padding-left: 22.568px;
+}
+
+.authentication-bg .auth-check{
+  float: left;
+  width: 15.568px;
+  height: 15.568px;
+  margin: 2px 0 0 -22.568px;
+  appearance: none;
+  flex-shrink: 0;
+  vertical-align: top;
+  background-color: var(--surface);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 1px solid var(--muted);
+  border-radius: 3.5px;
+}
+
+.authentication-bg .auth-check:focus-visible{
+  border-color: var(--primary);
+  outline: 0;
+  box-shadow: 0 0 0 .15rem rgba(var(--primary-rgb,126,103,254), .25);
+}
+
+.authentication-bg .auth-check:checked{
+  background-color: var(--primary);
+  border-color: var(--primary);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+.authentication-bg .auth-submit{
+  display: grid;
+  width: 100%;
+}
+
+.authentication-bg .auth-submit.with-bottom-gap{
+  margin-bottom: 6px;
+}
+
+.authentication-bg .auth-button{
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 42px;
+  color: rgb(36, 43, 51);
+  font: 500 16px / 24px var(--font);
+  background: rgb(241, 241, 241);
+  border: 1px solid rgb(241, 241, 241);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.authentication-bg .auth-button:hover{
+  color: rgb(36, 43, 51);
+  background: #fff;
+  border-color: #fff;
+}
+
+.authentication-bg .auth-button:focus-visible,
+.authentication-bg .auth-link-muted:focus-visible,
+.authentication-bg .auth-footer a:focus-visible,
+.authentication-bg .auth-brand:focus-visible{
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* light theme: the auth card is white in light mode, so the white
+   wordmark + focus ring above would be invisible — re-ink the brand. */
+[data-theme="light"] .authentication-bg .auth-brand{ color: var(--heading); }
+[data-theme="light"] .authentication-bg .auth-brand:focus-visible{ outline-color: var(--heading); }
+
+/* light theme CTA: the dark-theme button (light grey on white card) has no
+   presence in light — invert to heading-on-white. White on #1f2937 = 14.7:1;
+   hover steps to gray-900 (#111827) = 17.7:1. */
+[data-theme="light"] .authentication-bg .auth-button{
+  background: var(--heading);
+  color: #fff;
+  border-color: var(--heading);
+}
+[data-theme="light"] .authentication-bg .auth-button:hover{
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+/* white focus rings vanish on the white card — re-ink to heading */
+[data-theme="light"] .authentication-bg .auth-button:focus-visible,
+[data-theme="light"] .authentication-bg .auth-link-muted:focus-visible{
+  outline-color: var(--heading);
+}
+
+.authentication-bg .auth-footer{
+  margin: 36px 0 16px;
+  color: rgba(255, 255, 255, .5);
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+}
+
+.authentication-bg .auth-footer a{
+  color: #fff;
+  font-weight: 700;
+}
+
+/* light theme: white-on-light footer is unreadable — re-ink the muted
+   line (~4.2-4.3:1, the deliberate dimmed register of the original's
+   50%-white) and give the actionable link full heading contrast (13.6:1
+   on #f4f6f8) */
+[data-theme="light"] .authentication-bg .auth-footer{ color: rgba(31, 41, 55, .62); }
+[data-theme="light"] .authentication-bg .auth-footer a{ color: var(--heading); }
+
+@media (min-width: 576px){
+  .authentication-bg .auth-container{ max-width: 540px; }
+}
+
+@media (min-width: 768px){
+  .authentication-bg .auth-container{ max-width: 720px; }
+  .authentication-bg .auth-column{ width: 50%; }
+}
+
+@media (min-width: 992px){
+  .authentication-bg .auth-container{ max-width: 960px; }
+  .authentication-bg .auth-column{ width: 41.66666667%; }
+}
+
+@media (min-width: 1200px){
+  .authentication-bg .auth-container{ max-width: 1140px; }
+}
+
+@media (min-width: 1400px){
+  .authentication-bg .auth-container{ max-width: 1320px; }
+}
+
+@media (min-width: 3200px) and (min-height: 1600px){
+  body.authentication-bg{
+    height: calc(100vh / var(--dashboard-scale));
+    min-height: calc(100vh / var(--dashboard-scale));
+  }
+
+  .authentication-bg .account-pages{
+    min-height: calc(100vh / var(--dashboard-scale));
+  }
+}
+
+@media (max-width: 575px){
+  .authentication-bg.auth-reset .auth-description{
+    max-width: 320px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  /* touch targets: 48px inputs, 44px rows, 20px checkbox,
+     roomier card padding rhythm for small screens */
+  .authentication-bg .auth-card-body{ padding: 40px 24px; }
+  .authentication-bg .auth-control{ min-height: 48px; }
+  .authentication-bg .auth-link-muted{ padding: 12px 0; }
+  .authentication-bg .auth-check{
+    width: 20px;
+    height: 20px;
+    /* desktop positions the check with float + negative margin into the
+       wrap's left padding; inside a flex row that mechanism collapses the
+       label gap to zero, so it is reset here in favor of flex gap */
+    float: none;
+    margin: 0;
+  }
+  .authentication-bg .auth-check-wrap{
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .authentication-bg .auth-control,
+  .authentication-bg .auth-button{
+    transition: none;
+  }
+}

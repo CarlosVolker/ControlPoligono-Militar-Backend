@@ -1,0 +1,178 @@
+{
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "scope": "C6 readonly runtime observation of shooting surfaces (polygons, lessons, fractions, capture). Read-only: only GET + UI navigation; no business writes.",
+  "actor": {
+    "role_code": "super_admin",
+    "alias": "NOT_VERIFIED",
+    "note": "Sesion creada por UI contra el backend real (mecanismo privado de cuentas de rol de desarrollo). El alias de actor NO se promueve."
+  },
+  "mutations": 0,
+  "mutations_definition": "Escrituras de negocio (POST/PUT/PATCH/DELETE a recursos de dominio). Excluye el POST de autenticacion, registrado aparte.",
+  "authentication": {
+    "method": "POST",
+    "path": "/api/auth/login/",
+    "status": 200,
+    "source": "UI"
+  },
+  "servers_reused": {
+    "frontend": "http://127.0.0.1:5175 (Vite ya en marcha; no se levanto ni reinicio)",
+    "backend": "http://127.0.0.1:8000 (Django runserver ya en marcha; no se levanto ni reinicio)"
+  },
+  "traversal": [
+    { "route": "/tiro/poligonos", "landed": "/tiro/poligonos", "header_h1": "Poligonos de tiro", "breadcrumb": "Inicio > Tiro > Poligonos de tiro", "tables": 1, "rows": 1, "state": "table" },
+    { "route": "/tiro/lecciones", "landed": "/tiro/lecciones", "header_h1": "Lecciones de tiro", "breadcrumb": "Inicio > Tiro > Lecciones de tiro", "tables": 1, "rows": 1, "state": "table" },
+    { "route": "/tiro/lecciones/1", "landed": "/tiro/lecciones/1", "header_h1": "Ficha de leccion", "tabs": 5 },
+    { "route": "/tiro/lecciones/1/fracciones/1", "landed": "/tiro/lecciones/1/fracciones/1", "header_h1": "Ficha de fraccion", "tables": 1, "rows": 2, "state": "table" },
+    { "route": "/tiro/fracciones/1/resultados", "landed": "/tiro/fracciones/1/resultados", "header_h1": "Captura de resultados", "tables": 1, "rows": 2, "state": "table" }
+  ],
+  "lesson_tabs": {
+    "surface": "/tiro/lecciones/1",
+    "count": 5,
+    "contractual_five_present": true,
+    "default_selected": "Fracciones",
+    "tabs": [
+      { "label": "Fracciones", "id": "lesson-tab-fractions-tab" },
+      { "label": "Tiradores", "id": "lesson-tab-shooters-tab" },
+      { "label": "Resultados", "id": "lesson-tab-results-tab" },
+      { "label": "Resumen", "id": "lesson-tab-summary-tab" },
+      { "label": "Reporte", "id": "lesson-tab-report-tab" }
+    ],
+    "per_tab_observation": [
+      { "tab": "Fracciones", "panel_title": "Fracciones de la leccion", "rows": 1, "state": "table", "note": "carga por defecto al montar la ficha" },
+      { "tab": "Tiradores", "panel_title": "Tiradores con resultados", "rows": 2, "state": "table" },
+      { "tab": "Resultados", "panel_title": "Resultados detallados", "rows": 0, "state": "error", "detail": "alerta de error visible: el backend respondio HTTP 500; boton 'Reintentar pestana' ofrecido. NO es denegacion (no 403) ni ausencia (no 200 vacio)." },
+      { "tab": "Resumen", "panel_title": "Resumen de la leccion", "rows": 0, "state": "metrics", "note": "grilla de metricas, no tabla de personas" },
+      { "tab": "Reporte", "panel_title": "Reporte de la leccion", "rows": 8, "tables": 5, "state": "report", "note": "desglose por fraccion/unidad/tirador/arma/armas por unidad" }
+    ]
+  },
+  "requests": {
+    "login_auto_reads": [
+      { "method": "POST", "path": "/api/auth/login/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/poligonos/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/", "status": 200 },
+      { "method": "GET", "path": "/api/usuarios/<self>/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/1/resultados-resumen/", "status": 200 }
+    ],
+    "polygons": [
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/poligonos/", "status": 200 }
+    ],
+    "lessons": [
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/", "status": 200 }
+    ],
+    "lesson_detail": [
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/1/", "status": 200 },
+      { "method": "GET", "path": "/api/lecciones/1/fracciones/", "status": 200 }
+    ],
+    "tabs": {
+      "Fracciones": [],
+      "Tiradores": [{ "method": "GET", "path": "/api/lecciones/1/usuarios/", "status": 200 }],
+      "Resultados": [{ "method": "GET", "path": "/api/lecciones/1/resultados/", "status": 500 }],
+      "Resumen": [{ "method": "GET", "path": "/api/lecciones/1/resultados-resumen/", "status": 200 }],
+      "Reporte": [{ "method": "GET", "path": "/api/lecciones/1/reporte/", "status": 200 }]
+    },
+    "fraction_detail": [
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/fracciones/1/", "status": 200 },
+      { "method": "GET", "path": "/api/fracciones/1/tiradores/", "status": 200 },
+      { "method": "GET", "path": "/api/fracciones/1/resultados/", "status": 200 }
+    ],
+    "capture": [
+      { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      { "method": "GET", "path": "/api/me/preferences/appearance/design-system/", "status": 200 },
+      { "method": "GET", "path": "/api/fracciones/1/", "status": 200 },
+      { "method": "GET", "path": "/api/resultados/", "status": 200 },
+      { "method": "GET", "path": "/api/fracciones/1/tiradores/", "status": 200 }
+    ]
+  },
+  "capture_control": {
+    "surface": "/tiro/fracciones/1/resultados",
+    "control_present": true,
+    "control_label": "Capturar resultado",
+    "disabled": false,
+    "reason_observed": "El actor tiene score_shooters concedido Y OP-FRC-007 (GET /api/fracciones/1/tiradores/) devolvio opciones reales no vacias; las listas estan en estado READY, por lo que el control queda habilitado.",
+    "eligible_options": {
+      "shooters": 2,
+      "weapons": 2,
+      "source": "GET /api/fracciones/1/tiradores/ 200",
+      "note": "Conteo de items; no se persiste contenido"
+    },
+    "absence_of_eligible": {
+      "shooters_empty_notice": false,
+      "weapons_empty_notice": false,
+      "warning_alert_present": false
+    },
+    "disabled_on_absence_observed": false,
+    "disabled_on_absence_note": "La rama 'sin tiradores/armas elegibles => boton deshabilitado' NO fue ejercitada por este conjunto de datos (habia elegibles reales). No se inventa la ausencia ni se afirma ese estado.",
+    "refresh_control": { "label": "Actualizar desde el backend", "disabled": false },
+    "existing_results_rows": 2,
+    "interaction": "El control se observo sin hacer click en el: no se abrio modal, no se envio alta/edicion de resultado."
+  },
+  "counts": {
+    "polygons_list_rows": 1,
+    "lessons_list_rows": 1,
+    "lesson_fraction_rows": 1,
+    "lesson_shooters_with_results_rows": 2,
+    "lesson_report_tables": 5,
+    "lesson_report_rows": 8,
+    "fraction_detail_results_rows": 2,
+    "fraction_detail_eligible_shooter_items": 2,
+    "fraction_detail_eligible_weapon_items": 2,
+    "capture_existing_result_rows": 2
+  },
+  "http_status_summary": {
+    "get_200": 29,
+    "get_500": 1,
+    "get_403": 0,
+    "get_404": 0,
+    "post_login_200": 1,
+    "note": "Un solo GET no-200: /api/lecciones/1/resultados/ (error de backend). Cero denegaciones HTTP (403) observadas en el recorrido. El unico POST es el login (autenticacion, 200)."
+  },
+  "client_signals": {
+    "page_errors": [],
+    "console_errors": ["Failed to load resource: the server responded with a status of 500 (Internal Server Error)"]
+  },
+  "findings": [
+    {
+      "kind": "observed_defect",
+      "severity": "reported_not_fixed",
+      "surface": "Ficha de leccion > pestana 'Resultados'",
+      "detail": "GET /api/lecciones/1/resultados/ respondio 500 en runtime; la pestana muestra alerta de error y ofrece 'Reintentar pestana'. No es denegacion ni ausencia de datos.",
+      "action": "report_only",
+      "owner_hint": "backend (fuera del alcance de C6; no se toca)"
+    }
+  ],
+  "data_absence_vs_denial": {
+    "absence_examples_observed": [
+      "Pestana 'Resultados' muestra error de backend (500): es error, no ausencia.",
+      "El resto de los endpoints respondio 200 con contenido; no se observo ningun 200-vacio en esta corrida."
+    ],
+    "denials_observed": [],
+    "note": "En una corrida previa con rol oficial_tiro (contexto sin poligonos/lecciones en su scope) las listas /tiro/poligonos y /tiro/lecciones devolvieron 200 con mensaje 'No hay ... devueltos para este contexto' (ausencia, no denegacion). No forma parte del recorrido con leccion existente."
+  },
+  "limits": [
+    "Verificacion de solo lectura: no se ejecuto alta/edicion/eliminacion de leccion, fraccion ni resultado.",
+    "No se hizo click en 'Capturar resultado'; su estado se observo sin disparar el modal.",
+    "Sesion aislada en contexto nuevo del navegador; la pagina inicial del navegador MCP no se toco.",
+    "Los conteos son de filas de tabla; NO se persisten nombres, RUT, unidades ni identificadores de personas.",
+    "No se persisten tenant, unidad, credenciales, cookies ni valores de contexto.",
+    "mutations=0 para escrituras de negocio; el unico request no-GET es el POST de autenticacion (login 200).",
+    "El conjunto de datos disponible es limitado: 1 poligono, 1 leccion, 1 fraccion; no hay escenario con ausencia de elegibles, por lo que el estado 'boton deshabilitado por ausencia' no se ejercito.",
+    "El alias de actor no se promueve: alias=NOT_VERIFIED.",
+    "No se ejercieron rutas de poligono en detalle (/tiro/poligonos/1) mas alla del enlace ofrecido.",
+    "El 500 de la pestana 'Resultados' se reporta, no se corrige (fuera de alcance)."
+  ],
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-14/shooting-surfaces-readonly.cjs",
+    ".cache/development-role-accounts/credentials.json"
+  ]
+}

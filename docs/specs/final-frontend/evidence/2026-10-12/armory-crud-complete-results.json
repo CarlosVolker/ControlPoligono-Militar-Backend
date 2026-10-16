@@ -1,0 +1,55 @@
+{
+  "_note": "Copia fiel de .cache/frontend-acceptance/2026-10-12/armory-crud-complete-results.json. Alias de rol e identificadores numéricos ya presentes en el origen; sin secretos ni datos de cuentas.",
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "execution": "Reejecución de run-live-armory-crud-complete.cjs por el orquestador",
+  "actor": "A7",
+  "role": "encargado_almacen",
+  "status": "ok",
+  "dataset": "Registro descartable creado y eliminado en la misma corrida; ningún registro preexistente tocado",
+  "operations": [
+    {
+      "op": "OP-ARM-002",
+      "method": "POST",
+      "path": "/api/armorias/",
+      "status": 201,
+      "body_keys": [
+        "code",
+        "name",
+        "organization_unit_code_write"
+      ]
+    },
+    {
+      "op": "OP-ARM-006",
+      "method": "DELETE",
+      "path": "/api/armorias/{id}/",
+      "status": 204
+    }
+  ],
+  "create": {
+    "temp_id": 5,
+    "rows_before": 1,
+    "rows_after_create": 2,
+    "unit_selected": "CIA-A"
+  },
+  "delete": {
+    "rows_after_delete": 1,
+    "temp_row_gone": true,
+    "detail_get_after_delete": 404
+  },
+  "logout": {
+    "method": "POST",
+    "path": "/api/logout/",
+    "status": 200
+  },
+  "recovery_needed": false,
+  "controlled_context_closed": true,
+  "records_left_behind": 0,
+  "limitations": [
+    "Sólo A7 y un registro descartable; no certifica altas/bajas de otros actores ni de otras familias",
+    "La creación por UI depende de las opciones de unidad devueltas por el backend; se seleccionó CIA-A explícitamente",
+    "PUT con valores distintos y edición de otros campos siguen sin ejercitarse",
+    "La aceptación integral permanece sin verificar"
+  ],
+  "global": "NOT_VERIFIED"
+}

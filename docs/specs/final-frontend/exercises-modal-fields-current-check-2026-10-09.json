@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-10-09T11:35:53.901Z",
+  "phase": "CURRENT/2026-10-09",
+  "source_sha256": "1122865afdfd68a6d5bde7a0bbb68db9c8973b89ff63966ae149a1d3a55bb69b",
+  "durable_after_source_sha": "1122865afdfd68a6d5bde7a0bbb68db9c8973b89ff63966ae149a1d3a55bb69b",
+  "identity_with_after_snapshot": true,
+  "anatomy": {
+    "forms": {
+      "EXERCISE": {
+        "present": true,
+        "wrappers_expected": 8,
+        "wrappers_found": 8
+      },
+      "MUNITION": {
+        "present": true,
+        "wrappers_expected": 7,
+        "wrappers_found": 7
+      },
+      "WEAPON": {
+        "present": true,
+        "wrappers_expected": 4,
+        "wrappers_found": 4
+      }
+    },
+    "forms_by_condition_ok": true,
+    "editor_fields": 3,
+    "editor_field_wrappers": 19,
+    "participants": {
+      "present": true,
+      "class": "form-control",
+      "multiple": true,
+      "change_event": true,
+      "value_binding": true
+    },
+    "legacy_class_in_three_forms": false
+  },
+  "compile_ok": true,
+  "editor_selectors": [
+    ".exercises-editor-fields[data-v-exc]",
+    ".exercises-editor-field[data-v-exc]"
+  ],
+  "defects": [],
+  "ok": true,
+  "note": "hashes/metadata/locators only; no source content; BEFORE/check 2026-10-08 preserved as HISTORICAL"
+}

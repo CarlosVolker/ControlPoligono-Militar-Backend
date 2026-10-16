@@ -1,0 +1,22 @@
+{
+  "date":"2026-10-13",
+  "actor":"A1",
+  "source_kind":"direct_orchestrator_playwright_ui",
+  "route":"/organizacion/unidades/5",
+  "baseline":{"id":5,"tenant":1,"parent":4,"parent_code":"BAT-1","code":"CIA-A","name":"Compania A","unit_type":"company","is_active":true},
+  "observations":[
+    "Table view displayed12 existing units, plus header row.",
+    "Editor prefilled code, name, parent4, unit_type company and active state after asynchronous loading completed.",
+    "First UI PATCH name-change returned success (response.ok checked) and UI status 'Unidad actualizada' showed the temporary name.",
+    "Harness wrongly waited for modal to close after PATCH. The editor remains open after saving; no product failure established.",
+    "A finally block issued a compensating API PATCH restoring original name. Final GET matched baseline exactly.",
+    "Subsequent harness attempt filled before loading finished; no PATCH response observed and GET stayed original.",
+    "Another attempt assumed editor-open always emits detailGET; expectation timed out. No successful second mutation claimed. Stopped further attempts under no-progress rule."
+  ],
+  "final_get_status":200,
+  "final":{"id":5,"tenant":1,"parent":4,"parent_code":"BAT-1","code":"CIA-A","name":"Compania A","unit_type":"company","is_active":true},
+  "fully_restored":true,
+  "test_context_closed":true,
+  "verdict":"PARTIAL_HARNESS_LIMITATION",
+  "limits":["Not accepted as completed UI edit-and-restore roundtrip.","No exact mutation status promoted from response.ok to an assumed200 in this evidence.","No organization create/delete exercised; no original record deleted."]
+}

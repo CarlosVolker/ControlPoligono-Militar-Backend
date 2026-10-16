@@ -1,0 +1,110 @@
+schema_version: "2.0"
+
+spec:
+  id: "spec-development-context-001"
+  title: "Contexto de desarrollo: institución, árbol y puestos faltantes"
+  type: "lightweight"
+  status: "approved"
+
+ownership:
+  created_by: "Lore Master"
+  created_at: "2026-10-05"
+  updated_at: "2026-10-05"
+  approved_at: "2026-10-05"
+  verified_at: null
+
+estimation:
+  complexity: "medium"
+
+quality_gates:
+  tests: required
+  security_review: required
+  code_review: required
+  documentation: required
+
+specialist_reviews:
+  portal_warden: n/a
+  kobold_scholar: n/a
+  haste_halfling: n/a
+  arcane_architect: n/a
+  qa_goblin: n/a
+  hellknight_inspector: n/a
+
+risk:
+  level: "medium"
+  flags:
+    - "multi-tenant"
+    - "permissions"
+    - "data-integrity"
+
+traceability:
+  related_specs:
+    - "spec-private-master-helper-001"
+  related_decisions: []
+  related_bugs: []
+  related_audits: []
+
+closure:
+  superseded_by: null
+  abandoned_reason: null
+  consolidated_into: []
+
+# ---------------------------------------------------------------------------
+# Notas de trazabilidad (no normativas del schema; se conservan porque
+# spec-meta.yaml es la única fuente de verdad de esta spec).
+#
+# Numeración: el slug es el nombre de la carpeta `development-context`; no
+# existía ninguna spec con ese slug, de modo que corresponde
+# `max(existentes con ese slug) + 1` = 001.
+#
+# Registro canónico: `docs/specs/development-context/` es la ubicación
+# canónica. No se modificó `docs/specs/final-frontend/spec-meta.yaml`, ni su
+# `index.md`, ni los planes del helper privado y de promoción.
+#
+# Estado: `approved` (2026-10-05) por una **orden humana ya emitida**, no por
+# mera aprobación de diseño. Pregunta del checkpoint: «¿Autorizas un paso nuevo
+# y acotado para crear el contexto de la receta sólo donde falte, sin
+# reinicializar RBAC ni alterar usuarios o titulares existentes?»; respuesta
+# literal del operador: «Dale con todo, no existe produccion ni datos reales»
+# (spec.md §1.2, A-1). Esa orden **sí autoriza** crear, en DBdev y sólo donde
+# falte, las filas de contexto de la receta (institución, árbol, puestos), una
+# vez cumplidos los requisitos y gates aplicables. No requiere una segunda
+# confirmación para el mismo paso, y este registro no crea permisos nuevos.
+#
+# Lo que sigue **no** autorizado, en los mismos términos que antes (spec.md §8,
+# `DC-X-02..07`): `init_access_model`, `init_permissions`, `--reset`, RBAC
+# global, usuarios, titulares, `Assignment`, `UnitMembership`, datos de
+# negocio simulados, ejecución del auxiliar privado por agentes y manejo de
+# credenciales. Y esta spec **por sí sola no habilita la ejecución**: el
+# constructor acotado de `spec.md` §1.3 debe planificarse, implementarse y
+# revisarse antes de ejecutar esa preparación (`DC-X-01`).
+#
+# `verified_at` sigue en null y ningún gate está en `passed`: los criterios
+# `DC-V-01..05` sólo puede observarlos el orquestador tras la ejecución del
+# constructor, ya planificada, implementada y revisada. Ninguna acción sobre
+# base de datos se afirma efectuada.
+#
+# Gates y reviewers (evidencia en el propio documento):
+#   - `security_review: required` por el par `role` / `scope_policy` que
+#     `Position` fija por puesto (`seed_positions.py:54-69`). Es la hard #3
+#     (campos rol/scope), no la de schema: no hay schema ni migración, sólo se
+#     pueblan modelos existentes (spec.md §7).
+#   - `code_review: required` por tratarse de un constructor nuevo con
+#     decisiones de escritura, reutilización y reversión (spec.md §4, §5).
+#   - `tests: required` por los criterios observables `DC-V-01..05`; los tests
+#     aislados de Django pueden planificarse en el plan, y planificarlos no
+#     autoriza ningún comando nuevo (spec.md §7).
+#   - `documentation: required`: este documento es la entrega.
+#   - Sin gate de arquitectura (comando pequeño, sin decisión estructural) y
+#     sin gate de schema/migración (spec.md §7).
+#   - Los `specialist_reviews` quedan en `n/a`: no hay API nueva, ni schema,
+#     ni plano caliente, ni decisión transversal, ni código escrito que auditar.
+#     El mapa `ses_ef17a434effeaEbIxoJVC91iHN` es insumo factual del
+#     especialista de mapa, no veredicto de seguridad ni autorización.
+#
+# Estado de datos: histórico y **no reconsultado**. El conteo `8/5/41` de
+# catálogos es referencia previa y no prueba el estado actual (spec.md §3.6).
+#
+# Workstream: independiente del auxiliar privado. Cuentas, contraseñas,
+# titulares, `Assignment` y `UnitMembership` quedan fuera (spec.md §8).
+# ---------------------------------------------------------------------------
