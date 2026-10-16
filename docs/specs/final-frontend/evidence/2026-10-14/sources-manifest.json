@@ -1,0 +1,599 @@
+{
+  "schema": "frontend-acceptance-sources-manifest/v1",
+  "date": "2026-10-14",
+  "scope": "Familia persons del recorrido CRUD por UI (actor A1)",
+  "purpose": "Relación unívoca entre cada copia durable de este directorio y su archivo de origen. Las copias se hicieron desde `.cache/frontend-acceptance/` y no se alteró ningún origen.",
+  "pii_policy": "Cero PII y cero secretos. Sólo se conservan alias de actor, identificadores de registro propios de la corrida, marcadores de turno `DCTMV7…`, rutas de API, métodos, estados HTTP y nombres de campo. Ningún nombre de persona, RUT, correo, contraseña ni cookie.",
+  "copies": [
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/persons-prerequisite.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-13/persons-prerequisite.json",
+      "origin_date": "2026-10-13",
+      "identical_to_origin": true,
+      "sha256": "61b94a27a799c1faedfdf4a539e44a3cc4fff7bec30658a197ca2186383d37cb",
+      "redactions_applied": [],
+      "contributes": "Alta UI POST /api/usuarios/crear-temporal/ 201 (id 28) y edición UI PATCH /api/usuarios/28/ 200, con sus reconciliaciones por GET de detalle.",
+      "status_of_record_at_that_date": "DELETE no enviado; limpieza pendiente."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/crud-family-matrix-persons-extract.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-13/crud-family-matrix.json",
+      "origin_date": "2026-10-13",
+      "identical_to_origin": false,
+      "relation": "extract",
+      "extract_rule": "Se conserva `families[persons]` y los metadatos de cabecera. Las otras cinco familias del archivo de origen NO se copian: no son pertinentes a este encargo y su evidencia ya vive en `evidence/2026-10-13/`.",
+      "origin_sha256": "c7f0ed722280229905b1616ac25b628adffd0b9563631b83cb613e21b5f54258",
+      "redactions_applied": [],
+      "additions": [
+        "`schema` propio de extracto",
+        "`extract_of` con ruta de origen, esquema, sha256 y alcance del extracto",
+        "`superseded_by`, que declara qué artefacto cierra la baja pendiente y por qué no se funden"
+      ],
+      "contributes": "Estado de la familia persons al cierre de la corrida del 2026-10-13, previo a la baja."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/persons-completion.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-14/persons-completion.json",
+      "origin_date": "2026-10-14",
+      "identical_to_origin": true,
+      "sha256": "8cbf142739773e37e337bb5fa0e1010f6307ab6623d8369e6d3bd97bd9a0cd0b",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `delivery_status: DELIVERED`. No contiene credenciales: la referencia al login es 'existing local credential mechanism' y `cookies_fabricated: false`. Registra rutas de arranque de servidor, sin host de producción ni secretos.",
+      "contributes": "Login de A1 por UI, GET de detalle 200 previo a la baja, confirmación de UI «Confirmar baja de usuario», DELETE UI 204, GET de detalle 404 posterior y cero filas de marcador exacto en la UI."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/remaining-crud-ui.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-14/remaining-crud-ui.json",
+      "origin_date": "2026-10-14",
+      "identical_to_origin": true,
+      "sha256": "f246fe9c957ba9ad26244faa7be7eebef542d3f378ea0ba8e7457b9273379827",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `delivery_status: DELIVERED`. Distingue tres orígenes de observación —clic de UI, GET de sólo lectura del harness y comparación de `inputValue` del formulario— y no los fusiona. Sin credenciales ni datos de personas: sólo alias, id de registro, marcador de turno, rutas, estados HTTP y una ancla de código de frontend.",
+      "contributes": "Alta UI 201, detalle UI 200, prefill de formulario, PATCH 200 y PUT 200 por UI, y baja UI 204 con GET 404, en unidades organizativas (id 16), armas (id 5) y ejercicios (id 6). Cero registros propios remanentes."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/persons-calibres-ui.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-14/persons-calibres-ui.json",
+      "origin_date": "2026-10-14",
+      "identical_to_origin": true,
+      "sha256": "abf7d7c304f39a715baa54db4fecd2b9690a9a6831cda57a70d412664d4370eb",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `delivery_status: DELIVERED`. Distingue clic de UI, GET de sólo lectura del harness y comparación de `inputValue` del formulario. Registra explícitamente que el GET de calibre se observó a través del editor y no como navegación a una ruta de detalle independiente, y que el calibre 7 era un registro descartable e inactivo. Menciona una contraseña temporal como parte de la descripción del flujo excluido, sin consignar su valor: no hay credencial en el artefacto.",
+      "contributes": "PUT por UI de persona temporal (id 29) con 200 y limpieza 204/404; alta, edición y baja de calibre descartable e inactivo (id 7) con 201, 200 de editor, 200 de PATCH, 200 de PUT, 204 de baja y 404 posterior; registro del alta genérica de persona como no ejercitada."
+    }
+  ],
+  "second_batch_exec_plan": {
+    "date": "2026-10-14",
+    "scope": "Ejecución del plan maestro completion-plan-2026-10-14: medición de performance, división de chunks por ruta, recorrido runtime de rutas y modal, y corrección de foco de DsModal. Ninguna de estas copias promueve celdas de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre las copias durables de esta segunda tanda y sus archivos de origen en `.cache/frontend-acceptance/2026-10-14/`. Las cuatro copias son byte a byte idénticas a su origen; no se alteró ningún origen. La primera tanda de este manifiesto se conserva sin modificación.",
+    "pii_policy": "Cero PII y cero secretos. Sólo alias de actor cuando existe, estados y métodos HTTP, dominios de ruta de API, rutas de código, nombres de archivo, hashes SHA-256, conteos de bytes, chunks y códigos de salida. Sin cookies, credenciales, cuerpos de respuesta, capturas ni datos de personas.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/performance-baseline.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/performance-baseline.json",
+        "identical_to_origin": true,
+        "sha256": "e6507a5a0f0688e0aa75ccfa61b188fd13607f010bd976a5cd78c471e8b1f437",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Baseline en modo DEV, 2 recorridos de 7 pasos, caché caliente y sin throttling. Declara explícitamente que NO acredita el alias A1 de la sesión reutilizada. Sin credenciales ni cookies; sólo agregados, rutas sin query y dominios de API.",
+        "contributes": "Baseline de navegación de lectura: tiempo hasta contenido útil como proxy observado, filas, bytes transferidos, solicitudes y duración de API por paso, y tamaño estático de la compilación de producción. No es T10 completo.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/router-splitting-results.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/router-splitting-results.json",
+        "identical_to_origin": true,
+        "sha256": "e48c549afa636e3db78bf6a4dffbc99a818e346c7d8619d091386fb4e6019b89",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Compara dos compilaciones con lockfile, configuración, Node y pnpm idénticos, y con SHA-256 normalizado de routes.ts igual. Conserva por separado los tamaños redondeados que muestra Vite y sus propios conteos gzip con zlib nivel 6. Registra un comando fallido con código 127 y su repetición exitosa. La única ruta local citada es un script de medición en directorio temporal del sistema, sin identidad de usuario ni secreto; se conserva por faithfulness.",
+        "contributes": "Antes y después de la división de rutas por carga diferida: bytes y gzip del entry, del entry con preloads, totales y número de chunks, con los códigos de salida de build, typecheck y pruebas dirigidas.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/modal-router-runtime.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/modal-router-runtime.json",
+        "identical_to_origin": true,
+        "sha256": "1ab1737dcaba9898a3fe7da6f9782686d16aaffe668f8fdfe81af7cf232d76e5",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara el alias A1 como NOT_VERIFIED y actorCellsPromoted false. Consigna 403 sin cabecera de tenant y 200 con la cabecera existente, sin conservar el contexto. Sin cuerpos de respuesta, sin valores de formulario, sin capturas y sin mutaciones de negocio.",
+        "contributes": "Recorrido runtime de tres rutas con encabezado visible y GET 200 de dominio, cero errores de chunk y de consola en el periodo observado; y comparación de estilos calculados de DsModal contra los valores del Design System en el estado abierto asentado.",
+        "matrix_effect": "Ninguno. El alias queda NOT_VERIFIED y no se promueve ninguna fila."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/modal-focus-fix.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/modal-focus-fix.json",
+        "identical_to_origin": true,
+        "sha256": "7fe708db242e440ec98567889b96924412e27b3a7caecc8f4318e4f997ce9977",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara actor NOT_VERIFIED, visualParity NOT_VERIFIED y businessWritesPerformed false. La causa se ancla a archivo y rango de líneas. No contiene credenciales ni datos de personas.",
+        "contributes": "Defecto de foco del primer Shift+Tab en el diálogo y su corrección, con prueba de regresión que falla antes y pasa después, y verificación runtime posterior del orquestador con cero escrituras de negocio observadas.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos."
+      }
+    ],
+    "not_copied": [],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia; los cuatro pares coinciden byte a byte."
+    }
+  },
+  "third_batch_readonly_surfaces": {
+    "date": "2026-10-14",
+    "scope": "Verificaciones runtime read-only de superficies de producto: previsualización de eliminación con migración (C3/AC-4), apariencia y no-localStorage (C8), superficies de autorización (C5/AC-6) y superficies de tiro (C6). Ninguna promueve celdas de la matriz de aceptación ni promueve alias de actor.",
+    "purpose": "Relación unívoca entre las copias durables de esta tercera tanda y sus archivos de origen en `.cache/frontend-acceptance/2026-10-14/`. Las cuatro copias son byte a byte idénticas a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero PII y cero secretos. Sólo alias/rol de actor, rutas y métodos HTTP, estados de respuesta, nombres de campo y de clave de almacenamiento (sin valores), conteos de DOM, etiquetas de control y plantillas de valor. Sin cookies con valor, credenciales, cuerpos de respuesta con identificadores, tenant, RUT ni correos.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/organization-deletion-preview.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/organization-deletion-preview.json",
+        "identical_to_origin": true,
+        "sha256": "50c63ef71188fcc7053a9f5941eed60b1af1324478e2e3acc7e2f1be437b5fa4",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `alias.value: NOT_VERIFIED`. Registra un `GET` de previsualización 200 y 0 mutaciones de negocio (login excluido). Reduce los valores de destino a plantillas (`unit_code` / vacío) y no persiste código ni nombre de unidad ni el valor de tenant. Sin capturas, HAR ni cookies.",
+        "contributes": "Verificación read-only de AC-4: 8/8 contadores de destino renderizados, destino exigido antes de confirmar y previsualización como `GET` de sólo lectura. La mitad «refresco sólo tras éxito confirmado» quedó NO ejercitada.",
+        "matrix_effect": "Ninguno. El alias queda `NOT_VERIFIED` y no se promueve ninguna fila ni celda."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/appearance-persistence-readonly.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/appearance-persistence-readonly.json",
+        "identical_to_origin": true,
+        "sha256": "b44565640610201cd8a0d6c099d9035468ea6eeb143e2edffe8a196ede21fdd7",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y modo read-only. Sólo se registran NOMBRES de clave de almacenamiento (caché de Iconify y `csrftoken`), sin valores; el artefacto declara explícitamente que no contiene credenciales, cookies con valor, tokens, RUT ni correos. Cita la biblioteca externa del DS por ruta relativa. Conserva que el aislamiento entre cuentas ya acreditado el 2026-10-13 NO se repite.",
+        "contributes": "Lectura de apariencia desde el backend (`GET design-system` 200 con las ocho claves `ds_*`), cero claves de apariencia en el almacenamiento del navegador, y conteos de catálogo por eje medidos en runtime con coincidencia de fuente (Design System / `theme-customizer.js` y `types/appearance.ts`). Cero PUT/PATCH/DELETE.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos; no repite promociones ya acreditadas."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/authorization-surfaces-readonly.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/authorization-surfaces-readonly.json",
+        "identical_to_origin": true,
+        "sha256": "642d09088daeb4490d00c8c954882d54ff9e8a6f5123bde9dfd1ae66b32f5953",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `alias: NOT_VERIFIED` y `used_super_admin_bypass: false`. No persiste identificador de cuenta ni de tenant. Los conteos son de filas/reglas renderizadas en el DOM; no se conserva contenido de fila, persona, unidad, código ni identificador.",
+        "contributes": "Observación read-only de las superficies de autorización con rol administrativo existente: rutas y estados de `GET`, superficies de roles, categorías, scopes, permisos, matrices de rol y puesto, y cierre fail-closed de overrides. Cero mutaciones de negocio y cero `403` observados.",
+        "matrix_effect": "Ninguno. `expected_by_actor` sigue `NOT_VERIFIED` y el alias queda `NOT_VERIFIED`; no se promueve ninguna fila."
+      },
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/shooting-surfaces-readonly.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/shooting-surfaces-readonly.json",
+        "identical_to_origin": true,
+        "sha256": "1e9ab58926f997a03d73aaf8cba7ee5e0a086e74efc872cc4a625aa9632700bd",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED`, `alias: NOT_VERIFIED` y 0 mutaciones de negocio (login excluido). Los conteos son de filas de tabla; no se persisten nombres, RUT, unidades ni identificadores de personas. Registra un único `GET` no-`200` de backend (500) y su lectura como error, no como denegación.",
+        "contributes": "Observación read-only de superficies de tiro: cinco pestañas contractuales de la ficha de lección, `GET` con sus estados, y control de captura HABILITADO con elegibles reales. Registra la rama «sin elegibles» como NO ejercitada. Fuente de la nueva deuda §9 de `docs/bugs/backend-debt.md`.",
+        "matrix_effect": "Ninguno. El alias no se promueve y no se inventa la rama no ejercitada."
+      }
+    ],
+    "not_copied": [],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte para las cuatro copias declaradas idénticas."
+    }
+  },
+  "fourth_batch_t4_identity_formal_create": {
+    "date": "2026-10-14",
+    "scope": "T4 (identidad y acceso) del plan maestro completion-plan-2026-10-14: alta formal de cuenta por UI y sus asignaciones, desactivación de la principal, alta y baja de la secundaria, baja de la cuenta y limpieza trazable. La copia de esta tanda no promueve celdas ni alias de actor de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre la copia durable de esta cuarta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero PII y cero secretos. Sólo rol de actor, nombres de campo, rutas y métodos HTTP, estados de respuesta, marcador de turno propio y hashes SHA-256. Sin nombres de persona, RUT, correo, contraseña, cookie ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/persons-formal-create-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/persons-formal-create-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "658a889cca73809047925ecf10bc01ab29a0ae72c7e02b1a522759061614c7e4",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `delivery_status: DELIVERED`, `alias: NOT_VERIFIED` y `global_acceptance_certified: false`. El rol ejercido es `tenant_admin` sin usar el bypass `super_admin`. No se imprime, persiste ni usa ninguna credencial, y la cuenta creada nunca inició sesión. El residuo inferido se declara como inferencia estática de fuente, no verificada en runtime.",
+        "contributes": "Alta formal de cuenta por UI (`POST /api/usuarios/` 201, distinta del alta temporal), desactivación de asignación principal (`POST .../desactivar-asignacion-principal/` 200), alta de secundaria (`POST .../agregar-asignacion/` 201), baja de secundaria (`POST .../quitar-asignacion/{assignment_id}/` 200), baja de cuenta (`DELETE /api/usuarios/{id}/` 204) y limpieza trazable —tres `DELETE /api/posiciones/{id}/` 204, `DELETE /api/organization-units/{id}/` 204, `GET` de usuario 200→404— con barrido de residuo propio en cero.",
+        "matrix_effect": "Ninguno. El alias queda `NOT_VERIFIED`, `expected_by_actor` sigue `NOT_VERIFIED` y no se promueve ninguna fila ni celda."
+      }
+    ],
+    "not_copied": [],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "fifth_batch_a1_borders_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A1 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo super_admin) y ejercicio por UI de los bordes pendientes de A1 en apariencia, eliminación de unidad con migración y recintos, sobre registros descartables propios. Esta tanda SÍ promueve 8 celdas de la matriz de aceptación (todas de A1, NOT_EXERCISED -> OBSERVED_OK).",
+    "purpose": "Relación unívoca entre la copia durable de esta quinta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero PII y cero secretos. Sólo alias de actor, rol, identificadores de registro descartable propios, marcador de turno, rutas y métodos HTTP, estados de respuesta, nombres de eje y clave de apariencia, etiquetas de contador y hashes SHA-256. Sin nombres de persona, RUT, correo, contraseña, cookie con valor ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a1-borders-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a1-borders-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "06651cf8054c9a7643ffbc528dfc17d53ece601227bc09789e2ad979c5b4f459",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, landed /dashboard) y GET /api/auth/context/ 200 con rol activo `super_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A1 (`runtime-family-sweep.cjs` A1->super_admin; `actors-a1-a2-readonly.json` primary assignment super_admin), con `cookies_fabricated` no usado: las cookies no se fabricaron. No contiene credenciales, cookies con valor, RUT ni correos: sólo alias, ids de registros descartables propios, marcador de turno, rutas, estados HTTP, nombres de eje y etiquetas de contador.",
+        "contributes": "Ocho celdas de A1 (OP-PRF-003/004/005, OP-UNT-007/008, OP-RCT-002/004/006) movidas de `NOT_EXERCISED` a `OBSERVED_OK`; detalle en `observations.a1_borders_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 8 celdas de A1. Nuevos conteos: 206 OBSERVED_OK / 19 PARTIAL / 1095 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a1-borders-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      },
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a1-appearance-restore.run.cjs",
+        "reason": "Script de restauración de apariencia del harness; su efecto queda registrado en el JSON de salida copiado (bloque cleanup.appearance_restore)."
+      },
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a1-residue-check.run.cjs",
+        "reason": "Script de barrido de residuo; su resultado (0 unidades y 0 recintos propios) queda en el JSON de salida copiado (bloque cleanup.residue_sweep)."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "sixth_batch_a2_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A2 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo tenant_admin) y ejercicio por UI de las familias núcleo pendientes de A2 —unidades, recintos, puestos, membresías, usuarios temporales, armas, ejercicios, apariencia propia y superficies de autorización— sobre registros descartables propios. Esta tanda SÍ promueve 44 celdas de la matriz de aceptación: 43 NOT_EXERCISED -> OBSERVED_OK y 1 NOT_EXERCISED -> PARTIAL.",
+    "purpose": "Relación unívoca entre la copia durable de esta sexta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, identificadores de registros descartables propios, marcador de turno, rutas y métodos HTTP, estados de respuesta, etiquetas de control, rutas de API y hashes SHA-256. El artefacto declara el RUT temporal como marcador descartable propio de la corrida (`harness.temp_rut_marker`), no como dato de una persona real; su valor no se reproduce en este manifiesto ni en la matriz.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a2-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a2-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "766cea8255d2d64971d107954e4508478345012e0fc45fc637cf6015c2aaf5ea",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `tenant_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A2 (`runtime-family-sweep.cjs` A2->tenant_admin; `actors-a1-a2-readonly.json` asignación primaria tenant_admin), sin cookies fabricadas. Sin credenciales, cookies con valor, cuerpos de respuesta con identificadores ni tenant: sólo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP y etiquetas de control. El RUT temporal es un marcador descartable propio, no de una persona real.",
+        "contributes": "43 celdas de A2 (OP-UNT-002/003/004/005/006, OP-RCT-002/003/004/005/006, OP-POS-002/003/004/005/007/008/009, OP-MEM-002/004/005/006, OP-USR-004/005/006/012, OP-WPN-002/003/004/005/006, OP-EJR-002/003/004/005/006, OP-PRF-003/004/005, OP-ROL-003, OP-SCP-002, OP-PRM-002, OP-RPR-001, OP-PPR-001) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 1 celda (OP-POS-006, DELETE /api/posiciones/{id}/) movida de `NOT_EXERCISED` a `PARTIAL` por rechazo de servidor observado (500 ProtectedError). Detalle en `observations.a2_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 44 celdas de A2. Nuevos conteos: 249 OBSERVED_OK / 20 PARTIAL / 1051 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a2-core-families-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "seventh_batch_a3_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditacion del alias A3 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo admin_unidad) y ejercicio por UI de las familias nucleo pendientes de A3 —recintos, puestos, membresias, usuarios temporales, armas, ejercicios, apariencia propia y superficies de autorizacion— sobre registros descartables propios. Esta tanda SI promueve 33 celdas de la matriz de aceptacion: 28 NOT_EXERCISED -> OBSERVED_OK y 5 NOT_EXERCISED -> PARTIAL (denegacion real de backend observada).",
+    "purpose": "Relacion univoca entre la copia durable de esta septima tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte identica a su origen; no se altero ningun origen. Las tandas previas de este manifiesto se conservan sin modificacion.",
+    "pii_policy": "Cero secretos. Solo alias y rol de actor, identificadores de registros descartables propios, marcador de turno, rutas y metodos HTTP, estados de respuesta, etiquetas de control, rutas de API y hashes SHA-256. El artefacto declara el RUT temporal como marcador descartable propio de la corrida (`harness.temp_rut_marker`), no como dato de una persona real; su valor no se reproduce en este manifiesto ni en la matriz.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a3-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a3-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "399710b6315f48aa5e165c075fbecf5ed5e83728b4c3d5150ce194af4c395317",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `admin_unidad` (primario `admin_unidad` con scope, secundario `tirador` con scope), correspondiente al registro privado de A3 (`runtime-family-sweep.cjs` mapea A3->admin_unidad; mismo archivo privado de credenciales de desarrollo usado por las tandas del 2026-10-14), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: solo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP y etiquetas de control. El RUT temporal es un marcador descartable propio, no de una persona real.",
+        "contributes": "28 celdas de A3 (OP-RCT-002/003/004/005/006, OP-POS-002/003/004/005/006/009, OP-MEM-002/006, OP-USR-012, OP-WPN-002/003/004/005, OP-EJR-002/003/004/005, OP-PRF-003/004/005, OP-ROL-003, OP-SCP-002, OP-PRM-002) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 5 celdas (OP-UNT-002, OP-WPN-006, OP-EJR-006, OP-RPR-001, OP-PPR-001) movidas de `NOT_EXERCISED` a `PARTIAL` por denegacion real de backend observada (403). Detalle en `observations.a3_core_families_2026_10_14` de la matriz de aceptacion.",
+        "matrix_effect": "Promueve 33 celdas de A3. Nuevos conteos: 277 OBSERVED_OK / 25 PARTIAL / 1018 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a3-core-families-ui.run.cjs",
+        "reason": "Script de ejecucion del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es identica a su origen."
+    }
+  },
+  "eighth_batch_a4_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A4 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo comandante_unidad) y ejercicio por UI de las familias núcleo pendientes de A4 —apariencia propia y superficies de autorización— sobre registros descartables propios. Esta tanda SÍ promueve 9 celdas de la matriz de aceptación: 6 NOT_EXERCISED -> OBSERVED_OK y 3 NOT_EXERCISED -> PARTIAL (denegación real de backend observada).",
+    "purpose": "Relación unívoca entre la copia durable de esta octava tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, marcador de turno, rutas y métodos HTTP, estados de respuesta, etiquetas de control, rutas de API y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant. El artefacto declara el RUT temporal como marcador descartable propio de la corrida (`harness.temp_rut_marker`), no como dato de una persona real; su valor no se reproduce en este manifiesto ni en la matriz.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a4-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a4-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "aa9997ea7dc28d92a3a4119cc77db19c1fe3701839d6cf5bd6eb030ca5f37d73",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `comandante_unidad` (primario `comandante_unidad` con scope, secundario `tirador` con scope), correspondiente al registro privado de A4 (`runtime-family-sweep.cjs` mapea A4->comandante_unidad), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, marcador de turno, rutas, estados HTTP y etiquetas de control. El RUT temporal es un marcador descartable propio, no de una persona real.",
+        "contributes": "6 celdas de A4 (OP-PRF-003/004/005, OP-ROL-003, OP-SCP-002, OP-PRM-002) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 3 celdas (OP-WPN-002, OP-RPR-001, OP-PPR-001) movidas de `NOT_EXERCISED` a `PARTIAL` por denegación real de backend observada (403). Registra como no ofrecidas las altas de unidades, recintos, puestos, membresías y usuarios temporales (botones ausentes del DOM), el alta de ejercicio (botón presente pero deshabilitado), las mutaciones y el detalle de calibre (no ofrecidos) y el holder (no ejercido por el gate). Detalle en `observations.a4_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 9 celdas de A4. Nuevos conteos: 283 OBSERVED_OK / 28 PARTIAL / 1009 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "ninth_batch_a3_residue_cleanup": {
+    "date": "2026-10-14",
+    "scope": "Limpieza del residuo de la corrida A3 (admin_unidad) con el alias A1 acreditado por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo super_admin), por UI, sobre registros descartables propios. Esta tanda NO promueve celdas de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre la copia durable de esta novena tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, identificadores de registros descartables propios, marcador de turno, rutas y métodos HTTP, estados de respuesta y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a3-residue-cleanup.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a3-residue-cleanup.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "9e08ce4e3d8acb9b3c5b351d818069218f2da04704d7c45292f710cff8968094",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `super_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A1 (`runtime-family-sweep.cjs` mapea A1->super_admin), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, ids de registros descartables propios, marcador de turno, rutas y estados HTTP.",
+        "contributes": "Baja por UI de tres registros descartables propios de la corrida A3 —arma id 14 (GET 200 -> DELETE UI 204 -> GET 404), ejercicio id 15 (200 -> 204 -> 404) y usuario temporal id 40 (200 -> 204 -> 404)— y barrido final por marcador A3CF en 7 familias con 0 coincidencias propias. El 204/404 documentan ausencia en la respuesta del servidor; no acreditan borrado físico en base y no se reparó por base. Cierra el residuo que observations.a3_core_families_2026_10_14 dejaba como pendiente. Detalle en `observations.a3_residue_cleanup_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos; `expected_by_actor` sigue `NOT_VERIFIED`."
+      }
+    ],
+    "not_copied": [],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "tenth_batch_a5_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A5 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo oficial_tiro) y ejercicio por UI de las familias núcleo pendientes de A5 —unidades, puestos, membresías, usuarios temporales, calibres, armas, ejercicios, apariencia propia y superficies de autorización— sobre registros descartables propios. Esta tanda SÍ promueve 21 celdas de la matriz de aceptación: 18 NOT_EXERCISED -> OBSERVED_OK y 3 NOT_EXERCISED -> PARTIAL (denegación real de backend observada).",
+    "purpose": "Relación unívoca entre la copia durable de esta décima tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, identificadores de registros descartables propios, marcador de turno, rutas y métodos HTTP, estados de respuesta, etiquetas de control y hashes SHA-256. El artefacto declara el RUT temporal como marcador descartable propio de la corrida (`harness.temp_rut_marker`), no como dato de una persona real; su valor no se reproduce en este manifiesto ni en la matriz.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a5-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a5-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "05522e41da02d82503043721418303f0d73b347d2be4131c43fe125d4af016b3",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `oficial_tiro` (primario `oficial_tiro` con scope, secundario `tirador` con scope), correspondiente al registro privado de A5 (`runtime-family-sweep.cjs` mapea A5->oficial_tiro), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP y etiquetas de control. El RUT temporal es un marcador descartable propio, no de una persona real.",
+        "contributes": "18 celdas de A5 (OP-USR-012, OP-WPN-002/003/004/005, OP-EJR-002/003/004/005, OP-PRF-003/004/005, OP-ROL-003, OP-SCP-002, OP-PRM-002, OP-UNT-003, OP-POS-003, OP-POS-009) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 3 celdas (OP-WPN-006, OP-RPR-001, OP-PPR-001) movidas de `NOT_EXERCISED` a `PARTIAL` por denegación real de backend observada (403). Registra como no ofrecidas las altas/ediciones/bajas de unidades, recintos, puestos, membresías y calibres, y el holder (no ejercido por el gate). Detalle en `observations.a5_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 21 celdas de A5. Nuevos conteos tras esta tanda y la de A6: 311 OBSERVED_OK / 33 PARTIAL / 976 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a5-core-families-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      },
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a5-readonly-detail-probe.json",
+        "reason": "Sonda de lectura de detalle que alimentó la corrida A5; su efecto queda registrado en `read_only_probe` del JSON de salida copiado y no es una copia independiente de esta tanda."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "eleventh_batch_a6_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A6 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo oficial_observador) y ejercicio por UI de las familias núcleo pendientes de A6 —lecturas, detalles y denegaciones reales— sobre registros descartables propios. Esta tanda SÍ promueve 12 celdas de la matriz de aceptación: 10 NOT_EXERCISED -> OBSERVED_OK y 2 NOT_EXERCISED -> PARTIAL (denegación real de backend observada).",
+    "purpose": "Relación unívoca entre la copia durable de esta undécima tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, marcador de turno, rutas y métodos HTTP, estados de respuesta, etiquetas de control y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a6-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a6-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "f4f0494b9060df190fb4899ec3175c37c87f5da51a976083b3465f37aedb3f9e",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `oficial_observador` (primario `oficial_observador` con scope, secundario `tirador` con scope), correspondiente al registro privado de A6 (`runtime-family-sweep.cjs` mapea A6->oficial_observador), sin cookies fabricadas. El contexto reporta 4 permisos efectivos: view_unit, view_self, view_personnel_basic, view_exercises. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, marcador de turno, rutas, estados HTTP y etiquetas de control.",
+        "contributes": "10 celdas de A6 (OP-UNT-003, OP-POS-003, OP-POS-009, OP-EJR-003, OP-PRF-003/004/005, OP-ROL-003, OP-SCP-002, OP-PRM-002) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 2 celdas (OP-RPR-001, OP-PPR-001) movidas de `NOT_EXERCISED` a `PARTIAL` por denegación real de backend observada (403). Registra además que las rutas de recintos y armas se resolvieron fail-closed en el cliente (contenedor neutral de acceso denegado, SIN request): denegación neutral de UI que NO es un 403 de backend y no se convierte en denegación. Registra como no ofrecidas las altas/ediciones/bajas de unidades, recintos, puestos, membresías, usuarios temporales, calibres, armas y ejercicios, y el holder (no ejercido por el gate). Detalle en `observations.a6_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 12 celdas de A6. Nuevos conteos: 311 OBSERVED_OK / 33 PARTIAL / 976 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a6-core-families-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "twelfth_batch_a5_a6_residue_cleanup": {
+    "date": "2026-10-14",
+    "scope": "Limpieza del residuo de las tandas A5 y A6 con el alias A1 acreditado por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo super_admin), por UI, sobre registros descartables propios. Esta tanda NO promueve celdas de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre la copia durable de esta duodécima tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, identificadores de registros descartables propios, marcador de turno, rutas y métodos HTTP, estados de respuesta y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a5-a6-residue-cleanup.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a5-a6-residue-cleanup.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "364787d00d27fa70365fbdecfc611e2b73db7b58b711b38ee9614bb1f247f84f",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `super_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A1 (`runtime-family-sweep.cjs` mapea A1->super_admin), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, ids de registros descartables propios, marcador de turno, rutas y estados HTTP. El RUT temporal del residuo es un marcador descartable propio, no de una persona real; su valor no se reproduce en este manifiesto ni en la matriz.",
+        "contributes": "Baja por UI de tres registros descartables propios de la tanda A5 —arma id 15 (GET 200 -> DELETE UI 204 -> GET 404), ejercicio id 16 (200 -> 204 -> 404) y usuario temporal id 41 (200 -> 204 -> 404)— y barrido final por marcadores A5CF y A6CF en 7 familias con 0 coincidencias propias. El 204/404 documentan ausencia en la respuesta del servidor; no acreditan borrado físico en base y no se reparó por base. Cierra el residuo que observations.a5_core_families_2026_10_14 dejaba como pendiente. Detalle en `observations.a5_a6_residue_cleanup_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos; `expected_by_actor` sigue `NOT_VERIFIED`."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a5-a6-residue-cleanup.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "thirteenth_batch_a7_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A7 por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo encargado_almacen) y ejercicio por UI de las familias núcleo y de almacén pendientes de A7 —lecturas, detalles, mutaciones de arma y ejercicio, y denegaciones reales— sobre registros descartables propios. Esta tanda SÍ promueve 14 celdas de la matriz de aceptación: 11 NOT_EXERCISED -> OBSERVED_OK y 3 NOT_EXERCISED -> PARTIAL (denegación real de backend observada).",
+    "purpose": "Relación unívoca entre la copia durable de esta decimotercera tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, marcador de turno, rutas y métodos HTTP, estados de respuesta, etiquetas de control y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a7-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a7-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "7cbcaff8985a3efbcfde1a8a104260f5cb75a930ed9c5e86b7f7f418462521d7",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `encargado_almacen` (primario `encargado_almacen` con scope, secundario `tirador` con scope), correspondiente al registro privado de A7 (`runtime-family-sweep.cjs` mapea A7->encargado_almacen), sin cookies fabricadas. El contexto reporta 10 permisos efectivos: create_exercises, create_warehouse_records, delete_warehouse_records, update_exercises, update_warehouse_records, view_exercises, view_personnel_basic, view_self, view_unit, view_warehouse. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, marcador de turno, rutas, estados HTTP y etiquetas de control.",
+        "contributes": "11 celdas de A7 (OP-POS-003, OP-POS-009, OP-WPN-002/003/004/005/006, OP-EJR-002, OP-ROL-003, OP-SCP-002, OP-PRM-002) movidas de `NOT_EXERCISED` a `OBSERVED_OK`, y 3 celdas (OP-RPR-001, OP-PPR-001, OP-EJR-006) movidas de `NOT_EXERCISED` a `PARTIAL` por denegación real de backend observada (403). Registra el hallazgo de asimetría de A7: puede crear y editar ejercicios (create_exercises/update_exercises) pero no borrarlos (sin delete_exercises); la UI no ofrece la baja y la API responde 403 — asimetría de permisos del rol, no de gating de UI —, anotado como caso observado en `docs/bugs/backend-debt.md` §12 sin proponer arreglo ni decidir qué parte debe cambiar. Registra además que la ruta /organizacion/recintos se resolvió fail-closed en el cliente (contenedor neutral de acceso denegado, SIN request) por no incluir view_recinto: denegación neutral de UI que NO es un 403 de backend y no se convierte en denegación. Registra como no ofrecidas las altas/ediciones/bajas de unidades, puestos, membresías, usuarios temporales y calibres, el holder (no ofrecido por el gate) y el detalle de membresía y de calibre (no existen rutas). Detalle en `observations.a7_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 14 celdas de A7. Nuevos conteos: 322 OBSERVED_OK / 36 PARTIAL / 962 NOT_EXERCISED sobre 1320. No cambia `expected_by_actor` ni el estado global."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a7-core-families-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "fourteenth_batch_a7_residue_cleanup": {
+    "date": "2026-10-14",
+    "scope": "Limpieza del residuo de la tanda A7 con el alias A1 acreditado por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo super_admin), por UI, sobre el registro descartable propio. Esta tanda NO promueve celdas de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre la copia durable de esta decimocuarta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, identificador del registro descartable propio, marcador de turno, rutas y métodos HTTP, estados de respuesta y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a7-residue-cleanup.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a7-residue-cleanup.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "94be3bb675bc5723bc038ae66d0bb26b7db4c256b4e0b2e16124141fd26a196c",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `super_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A1 (`runtime-family-sweep.cjs` mapea A1->super_admin), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, id del registro descartable propio, marcador de turno, rutas y estados HTTP.",
+        "contributes": "Baja por UI del residuo descartable propio de A7 —ejercicio id 17 (GET 200 -> DELETE UI 204 -> GET 404)— y barrido final por marcador A7CF en 8 familias (unidades, recintos, puestos, membresías, usuarios, armas, armerías y ejercicios) con 0 coincidencias propias. El 204/404 documentan ausencia en la respuesta del servidor; no acreditan borrado físico en base y no se reparó por base. Cierra el residuo que observations.a7_core_families_2026_10_14 dejaba como pendiente. Detalle en `observations.a7_residue_cleanup_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos; `expected_by_actor` sigue `NOT_VERIFIED`."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a7-residue-cleanup.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "fifteenth_batch_a8_core_families_ui": {
+    "date": "2026-10-14",
+    "scope": "Acreditación del alias A8 (tirador, el rol más restringido) por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo tirador) y ejercicio por UI de las familias núcleo pendientes: lecturas de detalle, histórico de puesto, apariencia propia y denegaciones reales de backend. Esta tanda SÍ promueve celdas de la matriz de aceptación (10: 8 a OBSERVED_OK y 2 a PARTIAL).",
+    "purpose": "Relación unívoca entre la copia durable de esta decimoquinta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, rutas y métodos HTTP, estados de respuesta, marcadores de turno, etiquetas de control y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a8-core-families-ui.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a8-core-families-ui.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "2dee3905350eec4792a6d0b2478f3db9ab1e60bb14ed437ad7d5a7175cf47455",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `tirador` (única asignación, primaria con scope), correspondiente al registro privado de A8 (`runtime-family-sweep.cjs` mapea A8->tirador), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos: sólo alias, rol, rutas, métodos y estados HTTP.",
+        "contributes": "Ocho celdas de A8 de NOT_EXERCISED a OBSERVED_OK —detalle de unidad 200, detalle de puesto 200, histórico de puesto 200, PUT de apariencia propia 200, DELETE de reset 204, detalle de rol 200, de scope 200 y de permiso 200— y dos de NOT_EXERCISED a PARTIAL por denegación real de backend 403 (matriz de rol a permiso y de puesto a permiso). Detalle en `observations.a8_core_families_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Promueve 10 celdas de A8: 8 a OBSERVED_OK y 2 a PARTIAL. `expected_by_actor` sigue `NOT_VERIFIED`."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a8-core-families-ui.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "sixteenth_batch_a8_residue_cleanup": {
+    "date": "2026-10-14",
+    "scope": "Limpieza del residuo de la tanda A8 con el alias A1 acreditado por correspondencia privada (login de UI y GET /api/auth/context/ 200 con rol activo super_admin), por UI, y barrido final por marcador A8CF. A8 no creó registros (el rol más restringido no ofreció altas), de modo que no hubo residuo propio. Esta tanda NO promueve celdas de la matriz de aceptación.",
+    "purpose": "Relación unívoca entre la copia durable de esta decimosexta tanda y su archivo de origen en `.cache/frontend-acceptance/2026-10-14/`. La copia es byte a byte idéntica a su origen; no se alteró ningún origen. Las tandas previas de este manifiesto se conservan sin modificación.",
+    "pii_policy": "Cero secretos. Sólo alias y rol de actor, marcador de turno, rutas y métodos HTTP, estados de respuesta, conteos por familia y hashes SHA-256. Sin credenciales, cookies con valor, RUT, correos ni valor de tenant.",
+    "copies": [
+      {
+        "copy_path": "docs/specs/final-frontend/evidence/2026-10-14/a8-residue-cleanup.json",
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a8-residue-cleanup.json",
+        "origin_date": "2026-10-14",
+        "identical_to_origin": true,
+        "sha256": "14e3f3c72e9c5ce25f5124eea70a0e4e1a06451fd6f5325d1f05099e180a65eb",
+        "redactions_applied": [],
+        "reviewed_before_copy": true,
+        "review_notes": "Declara `status: DELIVERED` y `aliasAcreditado: true`. Acredita el alias por login de UI (POST /api/auth/login/ 200, aterriza en /dashboard) y GET /api/auth/context/ 200 con rol activo `super_admin` (primario sin scope, secundario `tirador` con scope), correspondiente al registro privado de A1 (`runtime-family-sweep.cjs` mapea A1->super_admin), sin cookies fabricadas. Sin credenciales, cookies con valor, RUT ni correos.",
+        "contributes": "Barrido final por marcador A8CF en 8 familias (unidades, recintos, puestos, membresías, usuarios, armas, armerías y ejercicios) con 0 coincidencias propias. A8 no pudo crear nada, de modo que no hubo residuo que dar de baja. Un intento previo de la misma tanda se interrumpió por reinicio y no dejó artefacto: el barrido por prefijo no halló residuo atribuible y así se declara. Detalle en `observations.a8_residue_cleanup_2026_10_14` de la matriz de aceptación.",
+        "matrix_effect": "Ninguno. No promueve filas ni altera conteos; `expected_by_actor` sigue `NOT_VERIFIED`."
+      }
+    ],
+    "not_copied": [
+      {
+        "origin_path": ".cache/frontend-acceptance/2026-10-14/a8-residue-cleanup.run.cjs",
+        "reason": "Script de ejecución del harness, no evidencia de resultado; la evidencia es el JSON de salida copiado."
+      }
+    ],
+    "integrity": {
+      "origins_modified": false,
+      "product_files_modified": false,
+      "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte: la copia es idéntica a su origen."
+    }
+  },
+  "not_copied": [
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-13/crud-family-matrix.json",
+      "reason": "Copiado sólo el extracto de la familia persons. El archivo completo cubre otras familias, fuera del alcance de este encargo."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-13/runtime-family-evidence.json",
+      "reason": "Barrido de rutas del 2026-10-13, ya incorporado en `evidence/2026-10-13/family-route-sweep-orchestrator.json` y en la matriz de aceptación."
+    }
+  ],
+  "integrity": {
+    "origins_modified": false,
+    "product_files_modified": false,
+    "verification_method": "sha256 del origen y de la copia, y `cmp` byte a byte para las copias declaradas idénticas."
+  }
+}

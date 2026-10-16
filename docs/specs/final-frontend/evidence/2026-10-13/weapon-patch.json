@@ -1,0 +1,36 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "weapons",
+  "actor_alias": "A1",
+  "marker": "DCTMV7GRCUNARM",
+  "record_id": 4,
+  "patch": {
+    "source": "UI click",
+    "method": "PATCH",
+    "path": "/api/armas/4/",
+    "status": 200,
+    "request_body_sanitized": {
+      "modelo_arma": "DCTMV7GRCUNARM-MOD-EDIT"
+    },
+    "response_fields_sanitized": {
+      "id_arma": 4,
+      "tipo_arma": "fusil",
+      "modelo_arma": "DCTMV7GRCUNARM-MOD-EDIT",
+      "numero_serie": "DCTMV7GRCUNARM-SN",
+      "armory_code": "ALM-CIA-A-DEV",
+      "calibre_code": "5.56X45",
+      "organization_unit_code": "CIA-A"
+    }
+  },
+  "reconcile_after_patch": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/armas/4/",
+    "status": 200,
+    "model": "DCTMV7GRCUNARM-MOD-EDIT",
+    "serial": "DCTMV7GRCUNARM-SN",
+    "relations_match_create_baseline": true
+  },
+  "cleanup": "pending"
+}

@@ -1,0 +1,1860 @@
+:root {
+  --bg: #191e23;
+  --surface: #1d2329;
+  --surface-2: #232a31;
+  --hover: #2a3139;
+  --border: #272f37;
+  --border-2: #2e3741;
+  --muted: #8391a2;
+  --text: #aab8c5;
+  --heading: #aab8c5;
+  --primary: #7e67fe;
+  --primary-soft: rgba(126, 103, 254, .15);
+  --primary-text: var(--primary);
+  /* baseui.css L413: solid-primary ink is white by default; the violet
+     accent's near-black ink (#0b002c) only applies under data-accent
+     (theme-customizer.css L68, L80). Default dashboard = #fff. */
+  --primary-ink: #fff;
+  --success: #68ce7d;
+  --danger: #d75341;
+  --warning: #e7985f;
+  --info: #45afeb;
+  --on-success: #012209;
+  --on-danger: #180000;
+  --on-warning: #2f1100;
+  --on-info: #000a1e;
+  --success-text: var(--success);
+  --danger-text: #ea7b69;
+  --warning-text: var(--warning);
+  --info-text: var(--info);
+  --primary-rgb: 126, 103, 254;
+  --success-rgb: 104, 206, 125;
+  --warning-rgb: 231, 152, 95;
+  --info-rgb: 69, 175, 235;
+  --danger-rgb: 215, 83, 65;
+  --input-border: #d8dfe7;
+  --input-focus: #b0b0bb;
+  --sidebar-w: 250px;
+  --sidebar-collapsed-w: 75px;
+  --topbar-h: 70px;
+  --card-radius: 5.6px;
+  --card-border: 3px double var(--border);
+  --r-pill: 999px;
+  --r-md: 6px;
+  --r-sm: 4px;
+  --r-search: 20px;
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, .2);
+  --dashboard-scale: 1;  /* styles.css:66 — default :root; el override 3200px existe abajo */
+  --shadow-pop: 0 14px 30px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .02);
+  --font: "Play", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+html[data-theme="light"] {
+  --bg: #f4f6f8;
+  --surface: #fff;
+  --surface-2: #eef1f5;
+  --hover: #e6ebf0;
+  --border: #d8dde3;
+  --border-2: #c9d0d7;
+  --muted: #5b6776;
+  --text: #2d3742;
+  --heading: #1f2937;
+  --success-text: #097e35;
+  --danger-text: #b83526;
+  --warning-text: #a65608;
+  --info-text: #0071a3;
+  --input-border: #d8dfe7;
+  --input-focus: #b0b0bb;
+}
+
+html[data-theme="dark"] {
+  --input-border: #3a4551;
+  --input-focus: #4a5663;
+}
+
+html[data-accent="violet"] {
+  --primary-ink: #0b002c;
+}
+
+html[data-accent="mint"] {
+  --primary: #5bc9b5;
+  --primary-soft: rgba(91, 201, 181, .15);
+  --primary-rgb: 91, 201, 181;
+  --primary-ink: #0a2620;
+}
+
+html[data-theme="light"][data-accent="mint"] {
+  --primary-text: #5a6e6a;
+}
+
+html[data-theme="dark"][data-bg="command"] {
+  --bg: #11161e;
+  --surface: #171c25;
+  --surface-2: #1d242f;
+  --hover: #252d3a;
+  --border: #212935;
+  --border-2: #2b333f;
+}
+
+html[data-theme="light"][data-bg="command"] {
+  --bg: #eef1f5;
+  --surface: #fff;
+  --surface-2: #e4e9ef;
+  --hover: #dadee6;
+  --border: #ced5dd;
+  --border-2: #bbc4cf;
+}
+
+html[data-font="ibm-plex"] {
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+html[data-radius="square"] {
+  --card-radius: 0;
+  --r-pill: 0;
+  --r-md: 0;
+  --r-sm: 0;
+  --r-search: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* El foco de una vista no puede quedar oculto bajo la topbar fija. */
+html {
+  scroll-padding-top: calc(var(--topbar-h) + 14px);
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--surface);
+}
+
+.dashboard-shell {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: var(--sidebar-w);
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: width .25s ease, transform .25s ease;
+}
+
+.sidebar-brand {
+  display: flex;
+  height: var(--topbar-h);
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+html[data-theme="light"] .sidebar-brand {
+  color: var(--heading);
+}
+
+.brand-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inumito mark — styles.css L158-163 literal (asset 192² reproducido a 32px
+   por width/height como en index.html; sprite ~29px visible, sin chip). */
+.brand-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+/* El nav ocupa el alto restante (antes: height calc(100% - topbar-h)); el pie
+   queda anclado abajo con margin-top: auto. */
+.sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 12px 24px;
+}
+
+/* Fila del control de colapso, al fondo del sidebar y nunca bajo el nav. */
+.sidebar-footer {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding: 12px 15px;
+}
+
+.menu-group-items {
+  height: 0;
+  overflow: hidden;
+}
+
+/* El contenido vive siempre renderizado y recortado (misma técnica que el
+   desplegable de contexto); `is-open` revela su alto natural. */
+.menu-group-items.is-open {
+  height: auto;
+}
+
+.menu-label {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18.75px;
+  border: 0;
+  background: transparent;
+  color: #afb9cf;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .55px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.menu-caret {
+  flex: 0 0 auto;
+  font-size: 14px;
+  transition: transform .2s ease;
+}
+
+.menu-label[aria-expanded="false"] .menu-caret,
+.context-disclosure-summary[aria-expanded="false"] .menu-caret {
+  transform: rotate(-90deg);
+}
+
+/* Realce conservador del grupo activo, por token: el rótulo sube a `--heading`
+   (en claro se nota sobre `--muted`; en oscuro la diferencia es mínima). */
+.menu-label[data-active="true"] {
+  color: var(--heading);
+}
+
+.menu-link {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+  padding: 10px 15px;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: #afb9cf;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: left;
+  transition: background .15s ease, color .15s ease;
+}
+
+.menu-link:hover,
+.menu-link.active {
+  background: var(--hover);
+  color: #fff;
+}
+
+.menu-link.active {
+  font-weight: 500;
+}
+
+.menu-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.menu-icon iconify-icon {
+  display: block;
+}
+
+.menu-label-text {
+  overflow: hidden;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Colapso lateral — styles.css L268-280 literal (mecanismo del kit: la clase
+   vive en <body>; DashboardSidebar.vue la sincroniza desde collapsed/mobileOpen
+   igual que app.js del DS). El botón propio .sidebar-collapse del invento
+   anterior se eliminó: en el DS el colapso solo se dispara desde #sidebarToggle
+   del topbar, con ramificación media-query ya replicada en App.vue. */
+body.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-w);
+}
+
+body.sidebar-collapsed .brand-text,
+body.sidebar-collapsed .menu-label-text,
+body.sidebar-collapsed .menu-label {
+  display: none;
+}
+
+body.sidebar-collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+/* En 75px el pie centra el control de colapso: es la única salida del modo
+   achicado y jamás puede quedar oculto. */
+body.sidebar-collapsed .sidebar-footer {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+body.sidebar-collapsed .menu-link {
+  justify-content: center;
+  padding: 10px;
+}
+
+body.sidebar-collapsed .sidebar-nav {
+  padding: 14px 8px;
+}
+
+.dashboard-frame {
+  min-height: 100vh;
+  margin-left: var(--sidebar-w);
+  transition: margin-left .25s ease;
+}
+
+/* Adaptación de estructura (App.vue, no editable en este target): el offset
+   horizontal del contenido lo carga .dashboard-frame en la app, no
+   .page-content como en el DS. Los valores son los literales del DS. */
+body.sidebar-collapsed .dashboard-frame {
+  margin-left: var(--sidebar-collapsed-w);
+}
+
+.topbar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-w);
+  display: flex;
+  height: var(--topbar-h);
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  transition: left .25s ease;
+}
+
+body.sidebar-collapsed .topbar {
+  left: var(--sidebar-collapsed-w);
+  margin-left: 0;
+}
+
+/* user-btn — styles.css L358-369 literal: círculo de 48px, avatar real de
+   32px dentro. data-dropdown="user" del kit es wiring de su app.js; aquí el
+   estado vive en profileOpen (contrato tipado del componente). */
+.user-btn {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-2);
+  transition: background .15s ease;
+}
+
+.user-btn:hover {
+  background: var(--hover);
+}
+
+.user-btn img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* El contexto del backend no expone foto de usuario (verificado: ningún
+   serializer de apps/identity ni apipoligono tiene campo de avatar), así que
+   se muestra el placeholder del proyecto («—») sobre el mecanismo literal de
+   avatar de texto del DS: baseui.css L1095 (círculo, inline-flex centrado,
+   #fff, 600, overflow hidden) en la geometría literal de .user-btn img
+   (32px). Cuando exista foto real, <img> dentro del <span> y esta regla es
+   irrelevante. */
+.user-btn > span {
+  position: relative;
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: var(--surface-2);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* .topbar-context es adición propia de la app (el DS no tiene bloque de
+   contexto); como ítem flex ocupa el hueco del .topbar-search del kit y las
+   acciones van a la derecha con el margin-left:auto literal de
+   styles.css L353-356. */
+.topbar-context {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.topbar-context-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.topbar-context-item span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.topbar-context-item strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 280px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  animation: popIn .15s ease;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-menu {
+  min-width: 220px;
+}
+
+.actor-menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.actor-menu-header strong {
+  color: var(--heading);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.actor-menu-header span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.actor-context-list {
+  display: grid;
+  gap: 8px;
+  padding: 4px 10px 8px;
+}
+
+.actor-context-list div {
+  display: grid;
+  gap: 2px;
+}
+
+.actor-context-list dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.actor-context-list dd {
+  color: var(--text);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.icon-btn {
+  position: relative;
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: #afb9cf;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.icon-btn:hover {
+  background: var(--hover);
+  color: #fff;
+}
+
+.icon-btn iconify-icon {
+  display: block;
+  font-size: 22px;
+}
+
+/* El control de colapso vive ahora DENTRO del sidebar (.sidebar-collapse-toggle);
+   la hamburguesa del topbar queda sólo como apertura del drawer móvil
+   (media ≤767px, más abajo). Va después de `.icon-btn` para ganar el cascade:
+   ambos declaran `display`. */
+.sidebar-toggle {
+  display: none;
+}
+
+.page-content {
+  /* El offset horizontal del DS (margin-left: var(--sidebar-w) en
+     styles.css L444-451) lo carga .dashboard-frame en esta app; ver
+     comentario en el bloque de .dashboard-frame. Padding literal. */
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 24px 12px 60px;
+  padding-top: calc(var(--topbar-h) + 14px);
+  transition: margin-left .25s ease;
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 24px;
+}
+
+.page-title {
+  margin-bottom: 2px;
+  color: var(--heading);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  flex-wrap: wrap;
+}
+
+.card-title {
+  color: var(--heading);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-body.no-pad {
+  padding: 0;
+}
+
+.connection-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.connection-field {
+  min-width: 0;
+}
+
+.form-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: calc(1.5em + 1rem + 2px);
+  padding: 8px 24px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--card-radius);
+  background-color: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  background-clip: padding-box;
+  appearance: none;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.form-control:focus-visible {
+  border-color: var(--input-focus);
+  outline: 0;
+  box-shadow: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--card-radius);
+  background-color: transparent;
+  color: var(--heading);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.btn:active:not(:disabled):not(.disabled) {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  border-color: rgba(var(--primary-rgb), 1);
+  background-color: rgba(var(--primary-rgb), 1);
+  color: var(--primary-ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--primary) 84%, #000);
+  border-color: color-mix(in srgb, var(--primary) 84%, #000);
+}
+
+.btn:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px rgba(var(--primary-rgb), 1);
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: .65;
+}
+
+.overview-section {
+  margin-bottom: 24px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.section-title {
+  color: var(--heading);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Instante de la última consulta del resumen, junto a su encabezado. */
+.section-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.active-lesson-card {
+  margin-bottom: 24px;
+}
+
+.active-lesson-head {
+  align-items: center;
+}
+
+/* El chip y la acción de la tarjeta cierran la fila juntos. */
+
+.active-lesson-label {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.active-lesson-details {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.active-lesson-detail {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.active-lesson-detail dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.active-lesson-detail dd {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.active-lesson-empty {
+  color: var(--muted);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Nota de estado del resumen: nombra loading/empty/denied/error sin inventar cifras. */
+.stat-note {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-card {
+  min-width: 0;
+  padding: 0;
+}
+
+.stat-card > .card-body {
+  padding: 20px 24px;
+}
+
+.stat-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.stat-value {
+  margin-top: 12px;
+  color: var(--heading);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.stat-icon {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--card-radius);
+  font-size: 32px;
+}
+
+.stat-icon iconify-icon {
+  display: block;
+  font-size: 32px;
+}
+
+.stat-icon--primary {
+  background: rgba(var(--primary-rgb), .25);
+  color: var(--primary);
+}
+
+.stat-icon--success {
+  background: rgba(var(--success-rgb), .12);
+  color: var(--success);
+}
+
+.stat-icon--info {
+  background: rgba(var(--info-rgb), .12);
+  color: var(--info);
+}
+
+.stat-icon--warning {
+  background: rgba(var(--warning-rgb), .12);
+  color: var(--warning);
+}
+
+.summary-notice {
+  margin-top: 0;
+}
+
+.accuracy-card {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.accuracy-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.accuracy-copy {
+  min-width: 0;
+}
+
+.accuracy-title {
+  color: var(--heading);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.accuracy-count {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.accuracy-value {
+  color: var(--heading);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.progress {
+  display: flex;
+  height: 12px;
+  grid-column: 1 / -1;
+  overflow: hidden;
+  font-size: 10.5px;
+  color: var(--text);
+  background-color: var(--surface-2);
+  border-radius: var(--card-radius);
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: rgba(var(--primary-rgb), 1);
+  transition: width .6s ease;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.dashboard-section,
+.lesson-card,
+.context-card {
+  min-width: 0;
+}
+
+.lesson-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table th {
+  padding: 6px 13.6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 12px 13.6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table tbody tr:hover td {
+  background: rgba(255, 255, 255, .025);
+}
+
+.data-table tbody tr.is-selected td {
+  background: var(--primary-soft);
+}
+
+.lesson-select {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  color: var(--heading);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: left;
+}
+
+.lesson-select:hover {
+  background: var(--hover);
+}
+
+.context-empty {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.context-details-section {
+  margin: 24px 0;
+}
+
+.context-disclosure {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.context-disclosure-summary {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+}
+
+/* El separador sólo aparece con el panel desplegado (espejo del
+   `.context-disclosure[open] > summary` del patrón anterior). */
+.context-disclosure-summary[aria-expanded="true"] {
+  border-bottom: 1px solid var(--border);
+}
+
+/* El contenido vive siempre renderizado; cerrado se recorta a 0. */
+.context-disclosure-panel {
+  height: 0;
+  overflow: hidden;
+}
+
+.context-disclosure-panel.is-open {
+  height: auto;
+}
+
+.context-disclosure .context-card {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.context-list {
+  display: grid;
+  gap: 18px;
+}
+
+.context-item {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.context-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.context-item dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.context-item dd {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.context-item dd.context-detail {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* baseui.css:718-725,737-739 — anatomy y tintes literales del DS. */
+.alert {
+  position: relative;
+  margin-bottom: 16px;            /* baseui.css:721 */
+  padding: 12px 16px;             /* baseui.css:720 */
+  border: 1px solid transparent;  /* baseui.css:722 */
+  border-radius: var(--card-radius);
+  color: var(--text);
+}
+
+.alert-info {
+  background-color: rgba(var(--info-rgb), .15);
+  color: var(--info-text);
+  border-color: rgba(var(--bui-info-rgb), .4);    /* baseui.css:737 */
+}
+
+.alert-warning {
+  background-color: rgba(var(--warning-rgb), .15);
+  color: var(--warning-text);
+  border-color: rgba(var(--bui-warning-rgb), .4); /* baseui.css:738 */
+}
+
+.alert-danger {
+  background-color: rgba(var(--danger-rgb), .15);
+  color: var(--danger-text);
+  border-color: rgba(var(--bui-danger-rgb), .4);  /* baseui.css:739 */
+}
+
+.state-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.state-copy {
+  min-width: 0;
+}
+
+.state-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.state-description {
+  margin-top: 3px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.alert-heading {
+  color: inherit;
+  font-weight: 600;
+}
+
+.state-action {
+  display: inline-flex;
+  min-height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  padding: 0 12px;
+  text-align: center;
+}
+
+/* El pie se empuja al final del área de contenido cuando la página es corta
+   (orden del operador, 2026-10-16); con contenido largo sigue el flujo normal.
+   Cálculo: 100vh − padding vertical real de .page-content, que es
+   (var(--topbar-h) + 14px) arriba + 60px abajo = var(--topbar-h) + 74px.
+   `box-sizing: border-box` es global (dashboard.css:120-122). */
+.dashboard-view {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--topbar-h) - 74px);
+}
+
+.dashboard-view > .footer {
+  margin-top: auto;
+}
+
+.footer-inner {
+  color: #afb9cf;
+  font-size: 13px;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 10px;
+  left: 10px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 10px 16px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  color: var(--heading);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.skip-link:focus-visible {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sidebar-brand:focus-visible,
+.menu-link:focus-visible,
+.menu-label:focus-visible,
+.context-disclosure-summary:focus-visible,
+.icon-btn:focus-visible,
+.user-btn:focus-visible,
+.lesson-table-wrap:focus-visible,
+.lesson-select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+html[data-theme="light"] .menu-link {
+  color: var(--muted);
+}
+
+html[data-theme="light"] .menu-link:hover,
+html[data-theme="light"] .menu-link.active {
+  color: var(--heading);
+  background: #e9eef3;
+}
+
+html[data-theme="light"] .menu-label,
+html[data-theme="light"] .footer-inner {
+  color: var(--muted);
+}
+
+html[data-theme="light"] .icon-btn {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+html[data-theme="light"] .icon-btn:hover {
+  background: var(--hover);
+  color: var(--heading);
+}
+
+/* styles.css L961 literal */
+html[data-theme="light"] .user-btn {
+  background: var(--surface-2);
+}
+
+/* Placeholder «—» (adición app): baseui.css L1095 fija ink #fff pensado para
+   dark; el ajuste light sigue el mecanismo de light tweaks del kit
+   (styles.css L959-964, ink → var(--heading)/var(--muted)). */
+html[data-theme="light"] .user-btn > span {
+  color: var(--heading);
+}
+
+html[data-theme="light"] .data-table tbody tr:hover td {
+  background: rgba(0, 0, 0, .02);
+}
+
+html[data-theme="light"] .card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+@media (min-width: 3200px) and (min-height: 1600px) {
+  :root {
+    --dashboard-scale: 2;
+  }
+
+  body {
+    width: 100%;
+    height: calc(100vh / var(--dashboard-scale));
+    zoom: var(--dashboard-scale);
+  }
+
+  .page-content {
+    min-height: calc(100vh / var(--dashboard-scale));
+  }
+}
+
+@media (max-width: 1279px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .active-lesson-details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px) {
+  .active-lesson-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  /* styles.css L924-933 literal: drawer off-canvas + topbar full-width. El
+     DS no neutraliza el ancho colapsado en móvil; se reproduce tal cual.
+     Reglas de componente propio de la app (stat/lesson/form) fuera de estos
+     targets: conservadas de la entrega anterior. */
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .topbar {
+    left: 0;
+  }
+
+  /* Móvil: el sidebar es off-canvas y el botón de dentro no puede abrirlo, así
+     que la hamburguesa del topbar vuelve a estar visible; el control interno se
+     oculta (el drawer se cierra con backdrop y con la propia navegación). */
+  .sidebar-toggle {
+    display: inline-flex;
+  }
+
+  .sidebar-collapse-toggle {
+    display: none;
+  }
+
+  body.sidebar-collapsed .topbar {
+    margin-left: 0;
+  }
+
+  /* El offset horizontal en la app lo carga .dashboard-frame (estructura de
+     App.vue); equivalente del body.sidebar-collapsed .page-content{
+     margin-left:0} de styles.css L933. */
+  .dashboard-frame,
+  body.sidebar-collapsed .dashboard-frame {
+    margin-left: 0;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    z-index: 55;
+    inset: 0;
+    display: block;
+    background: rgba(0, 0, 0, .5);
+    cursor: pointer;
+  }
+
+  .page-content {
+    margin-left: 0;
+    padding: 24px 12px 60px;
+    padding-top: calc(var(--topbar-h) + 14px);
+  }
+
+  /* touch targets: 44px mínimo del DS — en el kit solo para .icon-btn (ya
+     presente) y controles de listas/tablas que la app no tiene. .menu-link
+     y .user-btn NO reciben overrides: el DS los deja compactos; user-btn es
+     círculo de 48px ≥ 44 en todos los viewports. */
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .stat-card > .card-body {
+    padding: 14px 12px;
+  }
+
+  .stat-content {
+    grid-template-columns: minmax(0, 1fr) 36px;
+    gap: 8px;
+  }
+
+  .stat-value {
+    font-size: 21px;
+  }
+
+  .stat-icon,
+  .stat-icon iconify-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+
+  .active-lesson-details {
+    gap: 12px;
+  }
+
+  .active-lesson-body {
+    padding: 16px;
+  }
+
+  .accuracy-body {
+    gap: 10px 12px;
+  }
+
+  .connection-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-control {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .connection-form .btn {
+    min-height: 44px;
+  }
+
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .data-table {
+    font-size: 14px;
+  }
+
+  .data-table td,
+  .data-table th {
+    padding-right: 13.6px;
+    padding-left: 13.6px;
+  }
+
+  .state-message {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .state-action {
+    min-height: 44px;
+  }
+
+  .lesson-select {
+    min-height: 44px;
+  }
+
+  .context-disclosure-summary {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 359px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-content {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .stat-card > .card-body {
+    padding: 16px 18px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-icon,
+  .stat-icon iconify-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;  /* baseui.css:1110 */
+    animation-duration: .001ms !important;   /* baseui.css:1108 */
+    animation-iteration-count: 1 !important;
+  }
+}
+
+.fs-60 {
+  font-size: 60px;
+  line-height: 66px;
+}
+
+.fs-22 {
+  font-size: 22px;
+  line-height: 33px;
+  font-weight: 600;
+}
+
+.text-center {
+  text-align: center !important;  /* baseui.css:290 */
+}
+
+.error-card {
+  background: var(--surface);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  margin-bottom: 24px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, .03);
+}
+
+.error-pad {
+  padding: 36px;
+}
+
+.error-body-alt {
+  padding: 72px 24px;
+}
+
+.error-inner {
+  margin-bottom: 36px;
+}
+
+.error-code {
+  margin: 0 0 24px;
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 66px;
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.error-title {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 33px;
+  color: var(--heading);
+}
+
+.error-text {
+  margin: 6px 0 36px;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--muted);
+}
+
+.error-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.error-btn-danger {
+  background-color: #c2281a;
+  border-color: #c2281a;
+}
+
+.error-btn-danger:hover {
+  background-color: #ab2317;
+  border-color: #ab2317;
+  color: #fff;
+}
+
+.error-btn-danger:active {
+  background-color: #971f14;
+  border-color: #971f14;
+}
+
+.error-btn-danger:focus-visible {
+  box-shadow: 0 0 0 .25rem rgba(240, 81, 65, .5);
+}
+
+.error-btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.error-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+@media (min-width: 576px) {
+  .error-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .error-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .error-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .error-container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .error-container {
+    max-width: 1320px;
+  }
+}
+
+.error-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+  justify-content: center;
+}
+
+.error-col {
+  position: relative;
+  width: 100%;
+  padding: 0 12px;
+}
+
+@media (min-width: 1200px) {
+  .error-col-xl5 {
+    width: 41.66666667%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error-btn {
+    transition: none;
+  }
+}
+
+/* Inume dropdown item anatomy used by the explicit session logout action. */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--r-md);
+  color: var(--text);
+  text-align: left;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus-visible {
+  background: var(--hover);
+  color: #fff;
+}
+
+.dropdown-item:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.dropdown-item.disabled,
+.dropdown-item:disabled {
+  color: var(--muted);
+  pointer-events: none;
+  background: transparent;
+}
+
+.dropdown-item-danger {
+  color: var(--danger-text);
+}
+
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus-visible {
+  color: var(--danger-text);
+}
+
+.dropdown-divider {
+  height: 1px;
+  margin: 6px 0;
+  background: var(--border);
+}
+
+html[data-theme="light"] .dropdown-item:hover,
+html[data-theme="light"] .dropdown-item:focus-visible {
+  color: var(--heading);
+}
+
+html[data-theme="light"] .dropdown-item-danger:hover,
+html[data-theme="light"] .dropdown-item-danger:focus-visible {
+  color: var(--danger-text);
+}
+
+.topbar .unit-switcher {
+  display: flex;
+  min-width: 100px;
+  flex: 0 1 200px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Mensaje del enfriamiento por 429, junto al selector deshabilitado. */
+.unit-switcher-cooldown {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.topbar .unit-switcher .form-select {
+  --buf-select-chevron: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2336404a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 72px 8px 24px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  appearance: none;
+  background-color: var(--surface);
+  background-image: var(--buf-select-chevron);
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  background-size: 14px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--card-radius);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.topbar .unit-switcher .form-select:focus {
+  border-color: var(--input-focus);
+  outline: 0;
+  box-shadow: none;
+}
+
+.topbar .unit-switcher .form-select:disabled {
+  background-color: var(--bg);
+}
+
+@media (max-width: 991px) {
+  .topbar-context {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar .unit-switcher {
+    flex-basis: 150px;
+  }
+}
+
+@media (max-width: 575px) {
+  .topbar .unit-switcher {
+    min-width: 72px;
+    flex-basis: 72px;
+  }
+
+  .topbar .unit-switcher .form-select {
+    padding-right: 26px;
+    padding-left: 8px;
+    background-position: right 8px center;
+  }
+}

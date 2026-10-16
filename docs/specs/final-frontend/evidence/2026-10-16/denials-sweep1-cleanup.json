@@ -1,0 +1,22 @@
+{
+  "schema": "frontend-t11-denials-sweep1-cleanup-orm/v1",
+  "date": "2026-10-16",
+  "reason": "Los 5 puestos descartables del barrido de denegaciones sweep1 (ids 69-73, marcadores T11A4POSD-02…T11A8POSD-02) no se borraron en la corrida: DELETE /api/posiciones/{id}/ → 500 ProtectedError por Assignment.position, porque al momento del intento persistían filas Assignment de los holders. Tras la baja de los usuarios holder (204, cascada), las asignaciones desaparecieron y los puestos quedaron libres (verificado por lectura ORM).",
+  "method": "manage.py shell (ORM de desarrollo) — borrado directo de las 5 filas Position, con verificación antes/después. La vía por API era posible tras el cascade; se ejecutó por ORM por economía y registro único.",
+  "action": {
+    "ids": [69, 70, 71, 72, 73],
+    "before_count": 5,
+    "delete_result": "(5, {'identity.Position': 5})",
+    "after_count": 0
+  },
+  "kept": {
+    "id": 65,
+    "marker": "T11A1HLDMVABD354P",
+    "why": "Residuo PREEXISTENTE (2026-10-15), conservado como artefacto de reproducción de la deuda §11; su Assignment 62 (inactivo, account 20) sigue bloqueando su baja."
+  },
+  "debt_refinement": "Refina §11 con lo observado hoy: el bloqueo es el ProtectedError por Assignment.position; si la cuenta/usuario asociado se elimina (cascada), la baja del puesto procede. El residuo 65 sobrevive por su Assignment 62, que ninguna baja eliminó.",
+  "no_code_touched": true,
+  "mutations": [
+    { "resource": "posiciones", "ids": [69, 70, 71, 72, 73], "action": "delete", "via": "ORM dev-shell" }
+  ]
+}

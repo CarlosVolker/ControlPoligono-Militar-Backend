@@ -1,0 +1,33 @@
+{
+  "date":"2026-10-13",
+  "source_kind":"direct_orchestrator_verification",
+  "changes":[
+    "front/src/features/shooting/error-message.ts",
+    "front/src/views/shooting/ShootingView.vue",
+    "front/tests/focused/shooting-error-message.test.ts",
+    "front/src/views/armory/ArmoryView.vue"
+  ],
+  "shooting_error_feedback":{
+    "actor":"A1",
+    "request":{"method":"PATCH","path":"/api/resultados/1/","body":{"tiros_acertados":9}},
+    "status":400,
+    "visible_alert":"La fraccion no pertenece a la unidad organizacional del recurso.",
+    "generic_http_message_replaced_with_backend_reason":true,
+    "originals_get_status":{"1":200,"2":200},
+    "original_results_unchanged":true,
+    "result1":{"tiros_acertados":8,"total_tiros":10,"numero_carril":1},
+    "result2":{"tiros_acertados":7,"total_tiros":10,"numero_carril":2},
+    "backend_edit_block_still_present":true,
+    "unit_tests_cover":["non_field_errors string arrays with invalid values","detail plus non_field_errors deduplicated","HTTP fallback for malformed payload","Vue renders backend HTML-like error as escaped text"]
+  },
+  "responsive_verification":"armory-responsive-results.json",
+  "commands_run_by_orchestrator":[
+    {"command":"pnpm --dir front typecheck","exit_code":0},
+    {"command":"pnpm --dir front test:focused","exit_code":0,"test_files":15,"tests_passed":232},
+    {"command":"pnpm --dir front build","exit_code":0}
+  ],
+  "warnings":["Vitest warns about extensionless vite.config import for future native config loader.","Built JavaScript chunk remains larger than500kB; no performance acceptance claimed."],
+  "worker_limits":"First worker could not create an isolated MCP context or reproduce armory route in separate Chrome; it did not invent CSS. Orchestrator supplied measured DOM diagnosis, worker applied position:relative, orchestrator verified eight widths and live400 feedback.",
+  "backend_modified":false,
+  "global_acceptance":"NOT_VERIFIED"
+}

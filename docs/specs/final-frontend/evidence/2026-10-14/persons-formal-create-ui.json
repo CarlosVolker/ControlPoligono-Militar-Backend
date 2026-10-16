@@ -1,0 +1,144 @@
+{
+  "schema": "frontend-persons-formal-create-ui/v1",
+  "date": "2026-10-14",
+  "task": "T4 (completion-plan-2026-10-14)",
+  "ac": ["AC-5"],
+  "delivery_status": "DELIVERED",
+  "alias": "NOT_VERIFIED",
+  "coverage": "formal account creation, primary + secondary assignment and their removal, account deactivation, and full traceable cleanup, exercised through the real UI with the high administrative role",
+  "marker": "T4FMV8A1L0T",
+  "actor": {
+    "role_exercised": "tenant_admin",
+    "role_class": "existing_high_administrative_role (IsTenantAdmin predicate)",
+    "used_super_admin_bypass": false,
+    "session_source": "UI login (isolated fresh browser context) using the existing local credential mechanism; no cookies fabricated",
+    "login_request": { "method": "POST", "path": "/api/auth/login/", "status": 200 },
+    "alias": "NOT_VERIFIED",
+    "identifier_values_persisted": false
+  },
+  "gate_compliance": {
+    "disposable_own_data_with_turn_marker": true,
+    "real_persons_touched": false,
+    "inherited_accounts_touched": false,
+    "shared_operational_destinations_used": false,
+    "privileged_role_assigned": false,
+    "role_assigned_to_created_account": "oficial_observador",
+    "role_assigned_secondary": "oficial_tiro",
+    "holder_in_unique_occupied_position": "not applicable (no position holder assigned)",
+    "unit_used": "own disposable unit created for this turn with the marker; not an operational destination",
+    "credentials_read_from_dotenv": false,
+    "credentials_printed_or_persisted": false,
+    "created_account_login_attempted": false,
+    "default_password_used_to_login": false,
+    "cleanup_designed_before_create": true,
+    "residue_repair_via_database": false
+  },
+  "verified_identity_source": "identity and assignment returned by the creation response only (the created account was never logged into)",
+  "unit_own_disposable": {
+    "purpose": "prerequisite disposable own unit required by the security gate for the initial/primary assignment",
+    "code_is_marker_derived": true,
+    "create": { "source": "UI Crear unidad > Guardar", "method": "POST", "path": "/api/organization-units/", "status": 201 },
+    "create_response_field_names": ["code", "id", "is_active", "name", "parent", "tenant", "unit_type"],
+    "in_assignable_units_before_create": { "observed": true, "source": "GET /api/me/assignable-units/ via the Alta formal unit select" }
+  },
+  "formal_user_create": {
+    "distinct_from_temporary": true,
+    "temporary_path_not_used": "/api/usuarios/crear-temporal/",
+    "source": "UI Alta formal dialog > Crear usuario",
+    "method": "POST",
+    "path": "/api/usuarios/",
+    "status": 201,
+    "request_field_names_from_source": ["rut", "grado", "apellido_paterno", "apellido_materno", "correo", "initial_unit_code", "initial_role_code"],
+    "returned_field_names": ["apellido_materno", "apellido_paterno", "assignments", "correo", "grado", "habilitado", "id_usuario", "is_locked", "must_change_password", "nombre", "password_changed_at", "primary_assignment", "rut"],
+    "returned_booleans": { "habilitado": true, "is_locked": false, "must_change_password": true },
+    "returned_primary_assignment": { "unit_matches_created_disposable_unit": true, "role_code": "oficial_observador", "scope_code": null },
+    "returned_assignments_count": 2,
+    "returned_values_persisted": false
+  },
+  "assignments": {
+    "primary": {
+      "created_with": "the formal create itself (initial_unit_code + initial_role_code)",
+      "deactivate": { "source": "UI Ficha > Asignaciones > Desactivar > Confirmar desactivación", "method": "POST", "path": "/api/usuarios/{id}/desactivar-asignacion-principal/", "status": 200, "detail": "Rol funcional removido. Mantiene rol tirador.", "deactivated_count": 1 }
+    },
+    "secondary": {
+      "add": { "source": "UI Ficha > Asignaciones > Agregar secundaria", "method": "POST", "path": "/api/usuarios/{id}/agregar-asignacion/", "status": 201, "returned_field_names": ["detail", "assignment_id"] },
+      "remove": { "source": "UI Ficha > Asignaciones > Quitar > Quitar asignación", "method": "POST", "path": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/", "status": 200, "returned_field_names": ["detail"] }
+    },
+    "put_patch_primary_variant": "NOT exercised (UI exposes PUT/PATCH for the primary assignment; only the secondary add/remove and the deactivation were exercised)"
+  },
+  "memberships": {
+    "applicable": true,
+    "exercised_via_own_form": false,
+    "note": "POST /api/usuarios/ with initial_unit_code auto-creates a UnitMembership (and the implicit tirador Assignment) on the server; per source apipoligono/views.py:326-327. The dedicated membership form was NOT exercised.",
+    "own_form_path": "/api/memberships/"
+  },
+  "cleanup": {
+    "order": ["remove secondary assignment", "deactivate primary assignment", "DELETE account (Dar de baja)", "DELETE side-effect positions of the disposable unit", "DELETE disposable unit", "verify by GET"],
+    "user_delete": { "source": "UI Ficha > Dar de baja > Confirmar baja", "method": "DELETE", "path": "/api/usuarios/{id}/", "status": 204 },
+    "positions_delete_side_effects": [
+      { "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 },
+      { "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 },
+      { "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 }
+    ],
+    "unit_delete": { "source": "UI Unidad > Eliminar unidad (DELETE simple) > Eliminar unidad", "method": "DELETE", "path": "/api/organization-units/{id}/", "status": 204 },
+    "verification": {
+      "user_get_before_delete": { "method": "GET", "path": "/api/usuarios/{id}/", "status": 200 },
+      "user_get_after_delete": { "method": "GET", "path": "/api/usuarios/{id}/", "status": 404 },
+      "unit_get_after_delete": { "method": "GET", "path": "/api/organization-units/{id}/", "status": 404 }
+    },
+    "cleanup_errors": [],
+    "http_results_do_not_accredit_physical_deletion": true,
+    "residue_sweep": {
+      "source": "authenticated GET in a fresh isolated session after cleanup",
+      "units_get": { "method": "GET", "path": "/api/organization-units/", "status": 200, "own_marker_units_remaining": 0 },
+      "users_get": { "method": "GET", "path": "/api/usuarios/", "status": 200, "own_marker_users_remaining": 0 }
+    }
+  },
+  "mutations": [
+    { "stage": "unit_create", "method": "POST", "path": "/api/organization-units/", "status": 201 },
+    { "stage": "user_create", "method": "POST", "path": "/api/usuarios/", "status": 201 },
+    { "stage": "add_secondary", "method": "POST", "path": "/api/usuarios/{id}/agregar-asignacion/", "status": 201 },
+    { "stage": "remove_secondary", "method": "POST", "path": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/", "status": 200 },
+    { "stage": "deactivate_primary", "method": "POST", "path": "/api/usuarios/{id}/desactivar-asignacion-principal/", "status": 200 },
+    { "stage": "user_delete", "method": "DELETE", "path": "/api/usuarios/{id}/", "status": 204 },
+    { "stage": "positions_cleanup", "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 },
+    { "stage": "positions_cleanup", "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 },
+    { "stage": "positions_cleanup", "method": "DELETE", "path": "/api/posiciones/{id}/", "status": 204 },
+    { "stage": "unit_delete", "method": "DELETE", "path": "/api/organization-units/{id}/", "status": 204 }
+  ],
+  "not_exercised": [
+    { "item": "password change (own and administrative)", "reason": "credential handling excluded by the task contract; the created account credential was never used or reset" },
+    { "item": "password reset", "reason": "explicitly out of scope; would act on credentials" },
+    { "item": "account unlock", "reason": "the created account was never locked; unlock flow not required for this scope" },
+    { "item": "holders (assign/remove position holder)", "reason": "position-holder flow not needed to satisfy T4's persons create/assignment/cleanup scope; also gated against unique-holder positions" },
+    { "item": "primary assignment PUT/PATCH method variant", "reason": "the primary assignment was created by the formal create and removed by deactivation; the standalone PUT/PATCH variant was not exercised" },
+    { "item": "membership via its own form", "reason": "membership was auto-created by the server-side create; its dedicated create form was not exercised" },
+    { "item": "editing an existing/host account", "reason": "out of scope and prohibited by the gate" }
+  ],
+  "limits": [
+    "Alias NOT_VERIFIED; expected_by_actor NOT_VERIFIED. No authorization verdict is derived per actor.",
+    "204/404 results do NOT accredit physical database deletion; they acredit only the observed HTTP contract.",
+    "Only the high administrative role tenant_admin was exercised; the super_admin bypass was intentionally not used.",
+    "The created account was never logged into; identity/assignment were verified only from the creation response.",
+    "No credential was read, printed, persisted or used; the private credential mechanism was read in-memory at runtime.",
+    "The role catalog offers no 'tirador' option; a non-privileged catalog role (oficial_observador) was used as the initial/primary role.",
+    "Side-effect positions created for the disposable unit were removed through the UI before deleting the unit; HTTP 204 does not acredit their physical removal.",
+    "Only persons/identity surfaces were exercised; other acceptance families were not touched."
+  ],
+  "residue": {
+    "observed_residue": "none observable through the client after cleanup (user detail GET 404, unit GET 404, no owned marker row)",
+    "inferred_residue": {
+      "record_class": "identity.Person",
+      "basis": "static source inference: perform_create uses Person.objects.get_or_create(document_id=user.rut) (apipoligono/views.py:298-305) and account deletion does not cascade to Person (Account.person is PROTECT); no post_delete signal removes it",
+      "runtime_verified": false,
+      "accessible_through_client": false,
+      "action": "stopped that branch and reported it; NOT repaired via database (gate e)"
+    }
+  },
+  "product_files_modified": [],
+  "prior_artifacts_modified": false,
+  "servers_restarted": false,
+  "dependencies_installed": false,
+  "secrets_or_personal_data_retained": false,
+  "global_acceptance_certified": false
+}

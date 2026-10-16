@@ -1,0 +1,503 @@
+{
+  "schema": "frontend-t11-seed-dev-content/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Sembrar contenido de desarrollo (orden del operador 2026-10-16) para habilitar las celdas GET \"sin filas propias\" de la matriz.",
+  "markers": {
+    "name_prefix": "DEV",
+    "observaciones": "Contenido de desarrollo (seed 2026-10-16)"
+  },
+  "excluded": "OP-OVR-003/OP-PPR-003 (filas RBAC): terreno auth, pendiente de autorización explícita del operador.",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A4": {
+      "alias": "A4",
+      "private_role_expected": "comandante_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "comandante_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    },
+    "A6": {
+      "alias": "A6",
+      "private_role_expected": "oficial_observador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_observador"
+      },
+      "alias_matched": true
+    },
+    "A7": {
+      "alias": "A7",
+      "private_role_expected": "encargado_almacen",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "encargado_almacen"
+      },
+      "alias_matched": true
+    },
+    "A8": {
+      "alias": "A8",
+      "private_role_expected": "tirador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tirador"
+      },
+      "alias_matched": true
+    }
+  },
+  "resolution": {
+    "distinct_units": {
+      "U5": {
+        "id": 5,
+        "aliases": [
+          "A3",
+          "A4",
+          "A5",
+          "A6",
+          "A7",
+          "A8"
+        ]
+      }
+    },
+    "a4_armory_code_len": 13,
+    "note": "códigos usados en runtime únicamente; el registro persiste ids y etiquetas U<id>"
+  },
+  "planned": [
+    {
+      "key": "poligono_U5",
+      "op": "OP-RNG-002",
+      "resource": "poligonos",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "leccion_U5",
+      "op": "OP-LES-002",
+      "resource": "lecciones",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "fraccion_U5",
+      "op": "OP-FRC-002",
+      "resource": "fracciones",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "ejercicio_U5",
+      "op": "OP-EJR-002",
+      "resource": "ejercicios",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "arma_A4",
+      "op": "OP-WPN-002",
+      "resource": "armas",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "consumo_municion_dev",
+      "op": "OP-CMN-002",
+      "resource": "consumos-municion",
+      "unit_ref": "U5"
+    },
+    {
+      "key": "consumo_arma_dev",
+      "op": "OP-CAR-002",
+      "resource": "consumos-arma",
+      "unit_ref": "U5"
+    }
+  ],
+  "created": [
+    {
+      "key": "poligono_U5",
+      "op": "OP-RNG-002",
+      "resource": "poligonos",
+      "unit_ref": "U5",
+      "status": 201,
+      "id": 2,
+      "detail": null
+    },
+    {
+      "key": "leccion_U5",
+      "op": "OP-LES-002",
+      "resource": "lecciones",
+      "unit_ref": "U5",
+      "status": 201,
+      "id": 2,
+      "detail": null
+    },
+    {
+      "key": "fraccion_U5",
+      "op": "OP-FRC-002",
+      "resource": "fracciones",
+      "unit_ref": "U5",
+      "status": 201,
+      "id": 2,
+      "detail": null
+    },
+    {
+      "key": "ejercicio_U5",
+      "op": "OP-EJR-002",
+      "resource": "ejercicios",
+      "unit_ref": "U5",
+      "status": 201,
+      "id": 19,
+      "detail": null
+    },
+    {
+      "key": "arma_A4",
+      "op": "OP-WPN-002",
+      "resource": "armas",
+      "unit_ref": "U5",
+      "status": 201,
+      "id": 17,
+      "detail": null
+    }
+  ],
+  "failed": [
+    {
+      "key": "consumo_municion_dev",
+      "op": "OP-CMN-002",
+      "resource": "consumos-municion",
+      "unit_ref": "U5",
+      "status": 500,
+      "id": null,
+      "detail": "status 500"
+    },
+    {
+      "key": "consumo_arma_dev",
+      "op": "OP-CAR-002",
+      "reason": "dependencia_no_creada"
+    }
+  ],
+  "verification": {
+    "A1": {
+      "poligonos": {
+        "status": 200,
+        "count": 2
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4
+      },
+      "armas": {
+        "status": 200,
+        "count": 4
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A2": {
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A3": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A4": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 1
+      },
+      "armas": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A5": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A6": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A7": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A8": {
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 1
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 0
+      }
+    }
+  },
+  "page_errors": [],
+  "mutations": [
+    {
+      "key": "poligono_U5",
+      "resource": "poligonos",
+      "id": 2
+    },
+    {
+      "key": "leccion_U5",
+      "resource": "lecciones",
+      "id": 2
+    },
+    {
+      "key": "fraccion_U5",
+      "resource": "fracciones",
+      "id": 2
+    },
+    {
+      "key": "ejercicio_U5",
+      "resource": "ejercicios",
+      "id": 19
+    },
+    {
+      "key": "arma_A4",
+      "resource": "armas",
+      "id": 17
+    }
+  ],
+  "summary": {
+    "planned": 7,
+    "created": 5,
+    "failed": 2,
+    "created_keys": [
+      "poligono_U5",
+      "leccion_U5",
+      "fraccion_U5",
+      "ejercicio_U5",
+      "arma_A4"
+    ],
+    "failed_keys": [
+      "consumo_municion_dev",
+      "consumo_arma_dev"
+    ]
+  }
+}

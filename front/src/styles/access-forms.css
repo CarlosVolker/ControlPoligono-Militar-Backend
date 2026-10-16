@@ -1,0 +1,207 @@
+.access-forms{
+  --buf-input-border: #d8dfe7;
+  --buf-input-focus: #b0b0bb;
+  --buf-placeholder: var(--muted);
+  --buf-valid: var(--success);
+  --buf-invalid: var(--danger);
+}
+
+[data-theme="dark"] .access-forms{
+  --buf-input-border: #3a4551;
+  --buf-input-focus: #4a5663;
+}
+
+.page-content .access-forms .form-label{
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.page-content .access-forms .form-select{
+  --buf-select-chevron: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2336404a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  display: block;
+  width: 100%;
+  padding: 8px 72px 8px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--surface);
+  background-image: var(--buf-select-chevron), var(--buf-select-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  background-size: 14px 10px;
+  border: 1px solid var(--buf-input-border);
+  border-radius: var(--card-radius);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.page-content .access-forms .form-select:focus{
+  border-color: var(--buf-input-focus);
+  outline: 0;
+  box-shadow: none;
+}
+
+.page-content .access-forms .form-select:disabled{
+  background-color: var(--bg);
+}
+
+.page-content .access-forms .form-control:disabled{
+  background-color: var(--bg);
+  opacity: 1;
+}
+
+.page-content .access-forms .form-control.is-invalid,
+.page-content .access-forms .was-validated .form-control:invalid{
+  border-color: var(--buf-invalid);
+  padding-right: calc(1.5em + 1rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23d75341'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23d75341' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .25rem) center;
+  background-size: calc(.75em + .5rem) calc(.75em + .5rem);
+}
+
+.page-content .access-forms .form-control.is-invalid:focus,
+.page-content .access-forms .was-validated .form-control:invalid:focus{
+  border-color: var(--buf-invalid);
+  box-shadow: 0 0 0 .15rem rgba(215,83,65,.25);
+}
+
+.page-content .access-forms .invalid-feedback,
+.page-content .access-forms .auth-field-error{
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font-size: 12.25px;
+  color: var(--danger-text);
+}
+
+.authentication-bg .auth-field-error{
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font-size: 12.25px;
+  color: var(--danger-text);
+}
+
+.authentication-bg .auth-control.is-invalid{
+  border-color: var(--danger);
+  padding-right: calc(1.5em + 1rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23d75341'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23d75341' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .25rem) center;
+  background-size: calc(.75em + .5rem) calc(.75em + .5rem);
+}
+
+.authentication-bg .auth-control.is-invalid:focus{
+  border-color: var(--danger);
+  box-shadow: 0 0 0 .15rem rgba(215,83,65,.25);
+}
+
+.page-content .access-forms .access-feedback{
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: var(--card-radius);
+}
+
+.authentication-bg .access-feedback{
+  position: relative;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+  border-radius: var(--card-radius);
+}
+
+.access-feedback.alert-info{
+  color: var(--info-text);
+  background-color: rgba(var(--info-rgb), .15);
+}
+
+.authentication-bg .access-feedback.alert-info{
+  border-color: rgba(var(--info-rgb), .4);
+}
+
+.access-feedback.alert-success{
+  color: var(--success-text);
+  background-color: rgba(var(--success-rgb), .15);
+}
+
+.authentication-bg .access-feedback.alert-success{
+  border-color: rgba(var(--success-rgb), .4);
+}
+
+.access-feedback.alert-warning{
+  color: var(--warning-text);
+  background-color: rgba(var(--warning-rgb), .15);
+}
+
+.authentication-bg .access-feedback.alert-warning{
+  border-color: rgba(var(--warning-rgb), .4);
+}
+
+.access-feedback.alert-danger{
+  color: var(--danger-text);
+  background-color: rgba(var(--danger-rgb), .15);
+}
+
+.authentication-bg .access-feedback.alert-danger{
+  border-color: rgba(var(--danger-rgb), .4);
+}
+
+.page-content .access-forms .access-feedback.alert-info,
+.page-content .access-forms .access-feedback.alert-success,
+.page-content .access-forms .access-feedback.alert-warning,
+.page-content .access-forms .access-feedback.alert-danger{
+  border: 0;
+}
+
+.access-busy{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.access-busy .spinner-border{
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  vertical-align: -.125em;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  color: var(--primary);
+  animation: .75s linear infinite access-spinner-border;
+}
+
+@keyframes access-spinner-border{
+  to{ transform: rotate(360deg); }
+}
+
+.context-unit-control{
+  max-width: 540px;
+}
+
+.context-capture-card .context-empty{
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.context-retry{
+  margin-bottom: 24px;
+}
+
+.context-view-actions,
+.context-lost-actions{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}

@@ -1,0 +1,172 @@
+{
+  "generated_at": "2026-10-09T11:40:52.515Z",
+  "compiler": "3.5.43",
+  "before_sha256": "9f230b6d7e68ce99a1a3d85448bfe8848786e46a3720fbde04a23d253dc55de2",
+  "expected_after_sha256": "61a9086b8e8b82c73580360253c3ed2403e53c2b51e89dc0bfc6baa05759e800",
+  "current_sha256": "61a9086b8e8b82c73580360253c3ed2403e53c2b51e89dc0bfc6baa05759e800",
+  "identities": {
+    "current_equals_expected_after": true,
+    "script_unchanged": true
+  },
+  "fields_by_form": {
+    "user": 10,
+    "temporary": 6,
+    "assignment": 4,
+    "position": 9,
+    "holder": 2,
+    "membership": 5
+  },
+  "total_fields": 36,
+  "ids": [
+    {
+      "form": "user",
+      "id": "identity-user-rut"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-grado"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-nombre"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-apellido-paterno"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-apellido-materno"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-correo"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-unit-code"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-role-code"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-scope-code"
+    },
+    {
+      "form": "user",
+      "id": "identity-user-method"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-rut"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-grado"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-nombre"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-apellido-paterno"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-apellido-materno"
+    },
+    {
+      "form": "temporary",
+      "id": "identity-temporary-organization-unit-code"
+    },
+    {
+      "form": "assignment",
+      "id": "identity-assignment-unit-code"
+    },
+    {
+      "form": "assignment",
+      "id": "identity-assignment-role-code"
+    },
+    {
+      "form": "assignment",
+      "id": "identity-assignment-scopeselection"
+    },
+    {
+      "form": "assignment",
+      "id": "identity-assignment-method"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-code"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-name"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-organization-unit-code-write"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-role-code-write"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-armory-code-write"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-scope-code-write"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-recinto-code-write"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-description"
+    },
+    {
+      "form": "position",
+      "id": "identity-position-method"
+    },
+    {
+      "form": "holder",
+      "id": "identity-holder-account-id"
+    },
+    {
+      "form": "holder",
+      "id": "identity-holder-starts-at"
+    },
+    {
+      "form": "membership",
+      "id": "identity-membership-account"
+    },
+    {
+      "form": "membership",
+      "id": "identity-membership-unit"
+    },
+    {
+      "form": "membership",
+      "id": "identity-membership-starts-at"
+    },
+    {
+      "form": "membership",
+      "id": "identity-membership-ends-at"
+    },
+    {
+      "form": "membership",
+      "id": "identity-membership-method"
+    }
+  ],
+  "compile": {
+    "template_errors": [],
+    "style_errors": []
+  },
+  "defects": [],
+  "ok": true
+}

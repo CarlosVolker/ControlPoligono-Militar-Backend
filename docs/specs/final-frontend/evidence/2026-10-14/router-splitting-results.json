@@ -1,0 +1,476 @@
+{
+  "delivery_status": "DELIVERED",
+  "touched_code": ["front/src/router/routes.ts", "front/tests/focused/guards-return.test.ts"],
+  "checks": [
+    {"command": "python /tmp/opencode/router-splitting-measure.py before", "exit_status": 127, "error": "python: orden no encontrada", "note": "Yo repetí la medición con python3 antes de modificar código."},
+    {"command": "pnpm typecheck", "cwd": "front", "exit_status": 0},
+    {"command": "pnpm exec vitest run tests/focused/guards-return.test.ts tests/focused/denial-navigation.test.ts tests/focused/account-navigation.test.ts tests/focused/visibility-resolution.test.ts tests/focused/sidebar-visibility.test.ts tests/focused/reload-session.test.ts", "cwd": "front", "exit_status": 0, "test_files": 6, "tests": 146},
+    {"reading": "Yo comparé SHA-256 del source normalizado: sólo normalicé import Vue estático y const loader equivalente. El resto del archivo coincide, incluidos ROUTE_NAMES, paths y meta."},
+    {"reading": "Yo ejecuté router.push con los componentes reales para LOGIN y RECOVERY, manteniendo registerDashboardGuards. El test comprueba resolución de función loader a componente con setup, sin imports manuales ni montaje. Los dobles auth existentes son sólo unitarios; no es aceptación backend."},
+    {"reading": "Yo inspeccioné git diff focalizado; no produjo salida porque estos archivos no tienen baseline rastreado. Mi comparación antes/después usa hashes del disco, no git."}
+  ],
+  "html_initial_local_js": {
+    "method": "Yo sumo scripts y modulepreloads JS locales explícitos del HTML emitido; excluyo el script externo Iconify y el loader adicional de la ruta inicial. No es una medición de red.",
+    "before_bytes": 856249,
+    "before_gzip_bytes": 215196,
+    "after_bytes": 254167,
+    "after_gzip_bytes": 84877,
+    "after_files": ["assets/auth-BQ8xMsZh.js", "assets/catalog-DiAmjoRW.js", "assets/devtools-CN5uWJaH-26Cdntur.js", "assets/index-DhWfRdtQ.js", "assets/runtime-core.esm-bundler-D6KUDeOL.js", "assets/session-B9WQZD5e.js", "assets/session-UQ_qM1LL.js", "assets/useApi-BPuI6ZR9-DpDp6qbo.js"]
+  },
+  "build_display_gzip": {"before_entry": "217.14 kB", "after_entry": "46.16 kB", "note": "Yo conservo las cifras redondeadas mostradas por Vite separadas de mis conteos gzip reproducibles con zlib nivel 6; no mezclo métodos."},
+  "warnings": [
+    "Yo observé INEFFECTIVE_DYNAMIC_IMPORT: PersonalizerView.vue también tiene import estático en App.vue y permanece en la entrada. App.vue queda fuera del scope.",
+    "Yo observé la advertencia existente de configLoader native: import sin extensión en vitest.config.ts. No modifiqué configuración."
+  ],
+  "not_exercised": ["Yo no abrí navegador ni ejercité rutas con backend real; la navegación dirigida es unitaria y no acredita performance de campo.", "Yo no ejecuté suite global ni auditoría Hasted; la revisión focalizada queda para el orquestador."],
+  "before": {
+    "command": "pnpm build",
+    "cwd": "front",
+    "exit_status": 0,
+    "node": "v24.18.0",
+    "pnpm": "12.10.1",
+    "routes_sha256": "91b1bde25ec81f16ab485529050a09b8593ba74adbf43ae4c61480e028136e2e",
+    "normalized_routes_sha256": "279eebd9bdae9f1572c062e57925ea2262bacc39bc23f676af6c6f54c3a01a65",
+    "lockfile_sha256": "d3d62b2f39354234811497b3df5b4a8f48a092e7b3be7bdfd99cfae3f58f2857",
+    "config_sha256": "3dd337ecd1a994b786144387a975715b7bc5e9aa4fa01078e7bdacf24e212351",
+    "source_sha256": {
+      "src/App.vue": "1e0a8273f887ff7fa203a2ffe5f6da3acfc2448c57b180b32244a4d9b09d5e0d",
+      "src/api/appearance.ts": "216b4a7e93b2fd8c3394b21fa1fc00bd91db81bbd4d283c91f5a52530d1de534",
+      "src/api/auth.ts": "cd9a8cce4adb7265b30266ea7344cbde789953e7f43dd37507e8b554cf81d63c",
+      "src/api/dashboard.ts": "43f2cd3b1295a8cf3c5227dbf55bcb1e8503289cfbae165f9a9f479431c43e33",
+      "src/api/http.ts": "3a66dcb8a2b829b089961993ddd951e444ea4dfb807573596dbaed1abf9e4dc1",
+      "src/api/shared/domain.ts": "3d880ad63f9ce3b58be2469d0dc390e76f02657db8964b4afcd453b18c74837b",
+      "src/assets/img/Inumito.png": "b9296a74a6ca2f58b2635b2122be134b70d0710ed4baed70f9ea6cbabe8ae781",
+      "src/components/AccuracyProgress.vue": "fb8b1ef01938553ac5f17b5978f2b6c4d4d9a02f4f33ae0bb4a4f3414a86820d",
+      "src/components/ActiveLesson.vue": "9e1a6a2e635f19d8cf456cea07703a0214a48da3afb82b36b4c963aed7044c77",
+      "src/components/ConnectionForm.vue": "d404a081cb74abd26f228abfde2ee10aa98023507b2a4f86bc0380e3da19d7e7",
+      "src/components/ContextCard.vue": "59709f8933e237936bd1836c994a82fa49b6ea557dfd6556e8632e75b7dc77cf",
+      "src/components/DashboardSidebar.vue": "5d31997e5a5d36f4ba5c64f323c2608ece61ebdbc8e640aef6131099fd3fd723",
+      "src/components/DashboardTopbar.vue": "caf7a2ef7c0cbe2d2e41dfcb8b5ca584d79e462c4b9044c0efc1a22a5f497949",
+      "src/components/LessonList.vue": "85cc8a4fb16aee8bcc17e3842f68756598a37a328d1f64cf3ce9b9ed9188ac44",
+      "src/components/MetricGrid.vue": "6e61e41f23e4e47a661b77d6e8a16268fdd7d791ec1bbec55495170591d37ac0",
+      "src/components/StateMessage.vue": "efd5ed923809e89a8e81aedb58ccd3e08abb8ec6c61148ffb876ecb5fa893234",
+      "src/components/auth/LoginForm.vue": "ef2ff4f2c6e4a51d6a531b91f6c7901484838a9d094fcd16f634ade763668497",
+      "src/components/auth/PasswordRequiredForm.vue": "6638146998b7edd28f69e163abd78abd2b342b9fef2c198c9925f44b6d0963be",
+      "src/components/auth/RecoveryStepForm.vue": "1b8508dc233bd786b3b679f0554c0c4720428c308f3659f2f2993ad26360148b",
+      "src/components/context/ContextSelector.vue": "29ff1e465382d353e61e553b8aafafcad01c2afa70201797470adad1fb3dfbb7",
+      "src/components/ds/AuthCard.vue": "459c68ec218f7b3377b2c4e75093e9da5ec59c5d2f44d3b48172e37404f91759",
+      "src/components/ds/AuthField.vue": "f3743a1edd4c65cdf6d2124ff0c9c35377debdf3273c40a09ce48ed42a7de951",
+      "src/components/ds/FormFeedback.vue": "5b1b07299c27303400f591a20cf6711f20cbe416261a8c1205f9f55cffe49e03",
+      "src/components/personalizer/AppearanceEffects.vue": "9c788c51e1f376d7fdb3f2f707449d93d773856a5ac899e6206bde46922ad7db",
+      "src/components/shared/DsModal.vue": "f8a7436acdaa5a1295994ad13696ee7c58251a49e01ccf85ed3d40859982a41f",
+      "src/components/shell/AppShell.vue": "cbee69686e8ac0633cf83b7c47d7779576edb392f4f3f36a37e9192d3552e02b",
+      "src/components/shell/AppSidebar.vue": "d214b6b9305b8a461eec2f676f69da1dc9d54a8a853dfe0e397f34e61e5c1765",
+      "src/components/shell/AppTopbar.vue": "405df8b296023a20f94715cca047008c53ad89de93f9803e1035199da77cc967",
+      "src/components/shell/UnitSwitcher.vue": "89a20456ad5c56bf11534fd4498a0ded1721a4168816026ad5ce428f9855f28e",
+      "src/composables/auth/useRecovery.ts": "3f37e0759c597cb4599054064e56b591d320a939571e5723c7ee9cb1ab856ff4",
+      "src/features/account/useOwnAccount.ts": "2ef20d696d98c15b77ad8d79cffa13e105a83df293a428b54e1adce21668f61b",
+      "src/features/appearance/preview-assets.ts": "af030c9881b6d9ada0776a3ed528a9311eb4ac9278d8c739df30d51e2bccba4a",
+      "src/features/armory/api.ts": "834cb5e9e02d4fe9ad5f195be1527ae969be8c7b86788c2f65c5b44d5c6fedbb",
+      "src/features/authorization/api.ts": "a077a1d89c608680cbd8ce8bf359b2cc065568dd1742360b66ca6000348818a2",
+      "src/features/exercises/api.ts": "958860168f0a78d446f498f2eb1d517c0305b46c4b1bbb261f8c41114accd4f9",
+      "src/features/identity/api.ts": "4bf0dcd0fce0f17fdfcb904294259b734a0543fae4314c31070824e8190c1fe8",
+      "src/features/organization/api.ts": "d51ff958f8e41899b2e0bfee7a13a915bcc1390eab80d44cd38d3c84b88fcfeb",
+      "src/features/shooting/api.ts": "51916e22ccc77438be36bb7b43bf954e1a1dcf60715e8ea5f4e3fd1e91ab1a07",
+      "src/features/shooting/error-message.ts": "0f5b950962e6da7ae5dcda2d7a36b08762d74dbcf75b9da761de64d929ee7628",
+      "src/main.ts": "ec74488f3d1f45b3b323d27214b307977b853059312cb854a52392bbca19f037",
+      "src/permissions/catalog.ts": "ab787f4bfa48f08c00586ad285d48f3b037d05e6c3bbe926216e18fc63a2aacb",
+      "src/router/guards.ts": "c4fa5beb61d9aa3168423b99c4fed28e2f063cd3fa8a83ce7f2f58e13d8d958b",
+      "src/router/index.ts": "dd51f8a5f809da389ee25580c57b56cb601634c58fe4455950aa4cb4186cb4cd",
+      "src/router/routes.ts": "91b1bde25ec81f16ab485529050a09b8593ba74adbf43ae4c61480e028136e2e",
+      "src/router/visibility.ts": "c958d6a4d4347198e5ea7e79fdada1f646108be36967fb198f1282552554224c",
+      "src/stores/appearance.ts": "1f1865778084687b1eda0dec54d5e6ae705877e4f5213215f8a0eec871654071",
+      "src/stores/dashboard.ts": "e7a6bf8c7ad21e9eaa67836d32bbf7caec175a828e15c32374b67bf0d81fd537",
+      "src/stores/session.ts": "1699aa6b7bb4f243ed8d0dd5aacbac9e03b1e234bf7b26e644d7f8d14680aec2",
+      "src/styles/access-forms.css": "aecda0b7cf780ad90d7a4e24309ab982e0a93f21dc577a8b84215be1d7c0b7ba",
+      "src/styles/auth.css": "5b0aa21a72876e834c978e48eb23c0999b56f504718b6f7029bc8c2498b34ceb",
+      "src/styles/dashboard.css": "d5c7ce3bff328bd7e134b923a996b4f5d74a8410fb9c52587606e591273bb882",
+      "src/styles/design-system.css": "b06bdd456ee7a5738602b96ffb778156e3cc0dbc6acc808d9371579d964e7bec",
+      "src/styles/theme-customizer.css": "2b21e495e373b2d678f0a801529c819e673c96b3674f0deba0e2e217a43a487d",
+      "src/types/access-ui.ts": "232e2e6c0ef1a2677355dc3bbd0cff30a882bc3973cec8090333a2df03cb9d18",
+      "src/types/appearance.ts": "eada47c8852fe4a247b5e625ad834d914bf4d1074ae709879ca79b4d0288dae6",
+      "src/types/auth.ts": "0139d1d32fd74db5956a95d1974cf0c53602b864664fc5462ea9e56d8223a788",
+      "src/types/contexto.ts": "47ab4033ab0616e3fed237c0e2ff5eaac386233e450689cf6891eabb1c4d506d",
+      "src/types/dashboard.ts": "9fdf0ab012dc1ce3ba86af48b0469bd2a6fb3210ad7b794df09c92c0a22cfbe2",
+      "src/types/index.ts": "7ed527bf25e7ae01c35afeae56eaa586c4e0662e00ddc484c89ae15c6afd8b5f",
+      "src/types/session.ts": "2f165998645258cf53da33f14714012c38c5dee71f2524b2ec40fb64c44a4b67",
+      "src/types/shared/domain.ts": "29843efe36a9aff8d6188cca5f6cf57df4ff6b68ec4ded8217e3526820b3b38e",
+      "src/types/shell.ts": "762bd6cf305c2325036a6968b533445e14b8c317c719109a3ca559e04debbbdc",
+      "src/views/ContextLostView.vue": "e85581677c606c666883c390497937499fee6f643b2057ed8f397d370996abc7",
+      "src/views/DashboardView.vue": "0ffbae206c05c4e106eac9d6a4e638af884ae111d2018d7f256b7706c1d24512",
+      "src/views/NotFoundView.vue": "689f806435d6735ba0a7d4e153d7c824da1490757f15b33c3e47704080f6cbab",
+      "src/views/account/AccountView.vue": "ca4da6a92f8bd6be19cc1b370565551566ca906d9b6471c94cde71033b3405ef",
+      "src/views/appearance/PersonalizerView.vue": "8901ff0cea062e4a9969c82cc03511bdd18394899c9964af1b0ddc49e69d4998",
+      "src/views/armory/ArmoryView.vue": "eae8e33c2ece818b1e25eb26e1cfbb8a3e656f227c40d063e97d4b1ef7136251",
+      "src/views/auth/LoginView.vue": "d1dca5d81fa33c0718b9e1e2474139a564fe3e4d9460f03571e2a1be429d8615",
+      "src/views/auth/PasswordRequiredView.vue": "75deabb52a58210d1d005b53796d954c4de963e7c675def043cb7b4d8952b3cb",
+      "src/views/auth/RecoveryView.vue": "4d1ccb02f96b8a37822d8bb649986cb591e93391cdf7cfc6957330cfe8d74ee4",
+      "src/views/authorization/AuthorizationView.vue": "247df34b09a539730bba73c54a77e2b0c6b49b631deec39a1837b7314a387518",
+      "src/views/context/ContextView.vue": "ba2d385b9d7799ce32c4d7087ec19efeca6c22aa7fd969b6553a50f9e7f92434",
+      "src/views/exercises/ExercisesView.vue": "f195a1fc9f6062cb4309b2fee650dd279f51adeec68ba48b887fd81a4cc77318",
+      "src/views/identity/IdentityView.vue": "ae1611292a5e1cb45c5d4809c0ede77a52c7bba77d9c9a1dc03c9a6f82372491",
+      "src/views/organization/OrganizationView.vue": "a62b5dd68f90b78c249404a4a7faacedf345137367a3694458c87d239da18085",
+      "src/views/shooting/ShootingView.vue": "11d9a116d9bf91a21b4890eda43f87189ef544f2ec93adeb9b12ee6046648288",
+      "src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    "chunks": [
+      {
+        "file": "assets/index-BT1Fp_gy.js",
+        "bytes": 856249,
+        "gzip_bytes": 215196,
+        "sha256": "8328122529056dbe594fa4a8d413c99f317fb9a35ae9d48913f6e9ddc1aae161",
+        "entry": true
+      }
+    ],
+    "js_total_bytes": 856249,
+    "js_total_gzip_bytes": 215196,
+    "js_entry_bytes": 856249,
+    "js_entry_gzip_bytes": 215196,
+    "js_chunk_count": 1
+  },
+  "method": "Yo cuento bytes del JS emitido y gzip por archivo con zlib, nivel 6, wrapper gzip. Entry significa script JS declarado en dist/index.html; no incluye el loader de la ruta inicial ni CSS.",
+  "limits": [
+    "Yo no mido CWV, tiempos de contenido útil, red real ni performance de campo.",
+    "Yo no inicio ni reinicio servidores, ni escribo en backend o base de datos.",
+    "Yo no incluyo CSS en los totales JS; la suma gzip corresponde a archivos comprimidos por separado."
+  ],
+  "after": {
+    "command": "pnpm build",
+    "cwd": "front",
+    "exit_status": 0,
+    "node": "v24.18.0",
+    "pnpm": "12.10.1",
+    "routes_sha256": "bf08a11057223e9b115bd45be1c64de08ecccf544f035e387f78df15968bf8aa",
+    "normalized_routes_sha256": "279eebd9bdae9f1572c062e57925ea2262bacc39bc23f676af6c6f54c3a01a65",
+    "lockfile_sha256": "d3d62b2f39354234811497b3df5b4a8f48a092e7b3be7bdfd99cfae3f58f2857",
+    "config_sha256": "3dd337ecd1a994b786144387a975715b7bc5e9aa4fa01078e7bdacf24e212351",
+    "source_sha256": {
+      "src/App.vue": "1e0a8273f887ff7fa203a2ffe5f6da3acfc2448c57b180b32244a4d9b09d5e0d",
+      "src/api/appearance.ts": "216b4a7e93b2fd8c3394b21fa1fc00bd91db81bbd4d283c91f5a52530d1de534",
+      "src/api/auth.ts": "cd9a8cce4adb7265b30266ea7344cbde789953e7f43dd37507e8b554cf81d63c",
+      "src/api/dashboard.ts": "43f2cd3b1295a8cf3c5227dbf55bcb1e8503289cfbae165f9a9f479431c43e33",
+      "src/api/http.ts": "3a66dcb8a2b829b089961993ddd951e444ea4dfb807573596dbaed1abf9e4dc1",
+      "src/api/shared/domain.ts": "3d880ad63f9ce3b58be2469d0dc390e76f02657db8964b4afcd453b18c74837b",
+      "src/assets/img/Inumito.png": "b9296a74a6ca2f58b2635b2122be134b70d0710ed4baed70f9ea6cbabe8ae781",
+      "src/components/AccuracyProgress.vue": "fb8b1ef01938553ac5f17b5978f2b6c4d4d9a02f4f33ae0bb4a4f3414a86820d",
+      "src/components/ActiveLesson.vue": "9e1a6a2e635f19d8cf456cea07703a0214a48da3afb82b36b4c963aed7044c77",
+      "src/components/ConnectionForm.vue": "d404a081cb74abd26f228abfde2ee10aa98023507b2a4f86bc0380e3da19d7e7",
+      "src/components/ContextCard.vue": "59709f8933e237936bd1836c994a82fa49b6ea557dfd6556e8632e75b7dc77cf",
+      "src/components/DashboardSidebar.vue": "5d31997e5a5d36f4ba5c64f323c2608ece61ebdbc8e640aef6131099fd3fd723",
+      "src/components/DashboardTopbar.vue": "caf7a2ef7c0cbe2d2e41dfcb8b5ca584d79e462c4b9044c0efc1a22a5f497949",
+      "src/components/LessonList.vue": "85cc8a4fb16aee8bcc17e3842f68756598a37a328d1f64cf3ce9b9ed9188ac44",
+      "src/components/MetricGrid.vue": "6e61e41f23e4e47a661b77d6e8a16268fdd7d791ec1bbec55495170591d37ac0",
+      "src/components/StateMessage.vue": "efd5ed923809e89a8e81aedb58ccd3e08abb8ec6c61148ffb876ecb5fa893234",
+      "src/components/auth/LoginForm.vue": "ef2ff4f2c6e4a51d6a531b91f6c7901484838a9d094fcd16f634ade763668497",
+      "src/components/auth/PasswordRequiredForm.vue": "6638146998b7edd28f69e163abd78abd2b342b9fef2c198c9925f44b6d0963be",
+      "src/components/auth/RecoveryStepForm.vue": "1b8508dc233bd786b3b679f0554c0c4720428c308f3659f2f2993ad26360148b",
+      "src/components/context/ContextSelector.vue": "29ff1e465382d353e61e553b8aafafcad01c2afa70201797470adad1fb3dfbb7",
+      "src/components/ds/AuthCard.vue": "459c68ec218f7b3377b2c4e75093e9da5ec59c5d2f44d3b48172e37404f91759",
+      "src/components/ds/AuthField.vue": "f3743a1edd4c65cdf6d2124ff0c9c35377debdf3273c40a09ce48ed42a7de951",
+      "src/components/ds/FormFeedback.vue": "5b1b07299c27303400f591a20cf6711f20cbe416261a8c1205f9f55cffe49e03",
+      "src/components/personalizer/AppearanceEffects.vue": "9c788c51e1f376d7fdb3f2f707449d93d773856a5ac899e6206bde46922ad7db",
+      "src/components/shared/DsModal.vue": "f8a7436acdaa5a1295994ad13696ee7c58251a49e01ccf85ed3d40859982a41f",
+      "src/components/shell/AppShell.vue": "cbee69686e8ac0633cf83b7c47d7779576edb392f4f3f36a37e9192d3552e02b",
+      "src/components/shell/AppSidebar.vue": "d214b6b9305b8a461eec2f676f69da1dc9d54a8a853dfe0e397f34e61e5c1765",
+      "src/components/shell/AppTopbar.vue": "405df8b296023a20f94715cca047008c53ad89de93f9803e1035199da77cc967",
+      "src/components/shell/UnitSwitcher.vue": "89a20456ad5c56bf11534fd4498a0ded1721a4168816026ad5ce428f9855f28e",
+      "src/composables/auth/useRecovery.ts": "3f37e0759c597cb4599054064e56b591d320a939571e5723c7ee9cb1ab856ff4",
+      "src/features/account/useOwnAccount.ts": "2ef20d696d98c15b77ad8d79cffa13e105a83df293a428b54e1adce21668f61b",
+      "src/features/appearance/preview-assets.ts": "af030c9881b6d9ada0776a3ed528a9311eb4ac9278d8c739df30d51e2bccba4a",
+      "src/features/armory/api.ts": "834cb5e9e02d4fe9ad5f195be1527ae969be8c7b86788c2f65c5b44d5c6fedbb",
+      "src/features/authorization/api.ts": "a077a1d89c608680cbd8ce8bf359b2cc065568dd1742360b66ca6000348818a2",
+      "src/features/exercises/api.ts": "958860168f0a78d446f498f2eb1d517c0305b46c4b1bbb261f8c41114accd4f9",
+      "src/features/identity/api.ts": "4bf0dcd0fce0f17fdfcb904294259b734a0543fae4314c31070824e8190c1fe8",
+      "src/features/organization/api.ts": "d51ff958f8e41899b2e0bfee7a13a915bcc1390eab80d44cd38d3c84b88fcfeb",
+      "src/features/shooting/api.ts": "51916e22ccc77438be36bb7b43bf954e1a1dcf60715e8ea5f4e3fd1e91ab1a07",
+      "src/features/shooting/error-message.ts": "0f5b950962e6da7ae5dcda2d7a36b08762d74dbcf75b9da761de64d929ee7628",
+      "src/main.ts": "ec74488f3d1f45b3b323d27214b307977b853059312cb854a52392bbca19f037",
+      "src/permissions/catalog.ts": "ab787f4bfa48f08c00586ad285d48f3b037d05e6c3bbe926216e18fc63a2aacb",
+      "src/router/guards.ts": "c4fa5beb61d9aa3168423b99c4fed28e2f063cd3fa8a83ce7f2f58e13d8d958b",
+      "src/router/index.ts": "dd51f8a5f809da389ee25580c57b56cb601634c58fe4455950aa4cb4186cb4cd",
+      "src/router/routes.ts": "bf08a11057223e9b115bd45be1c64de08ecccf544f035e387f78df15968bf8aa",
+      "src/router/visibility.ts": "c958d6a4d4347198e5ea7e79fdada1f646108be36967fb198f1282552554224c",
+      "src/stores/appearance.ts": "1f1865778084687b1eda0dec54d5e6ae705877e4f5213215f8a0eec871654071",
+      "src/stores/dashboard.ts": "e7a6bf8c7ad21e9eaa67836d32bbf7caec175a828e15c32374b67bf0d81fd537",
+      "src/stores/session.ts": "1699aa6b7bb4f243ed8d0dd5aacbac9e03b1e234bf7b26e644d7f8d14680aec2",
+      "src/styles/access-forms.css": "aecda0b7cf780ad90d7a4e24309ab982e0a93f21dc577a8b84215be1d7c0b7ba",
+      "src/styles/auth.css": "5b0aa21a72876e834c978e48eb23c0999b56f504718b6f7029bc8c2498b34ceb",
+      "src/styles/dashboard.css": "d5c7ce3bff328bd7e134b923a996b4f5d74a8410fb9c52587606e591273bb882",
+      "src/styles/design-system.css": "b06bdd456ee7a5738602b96ffb778156e3cc0dbc6acc808d9371579d964e7bec",
+      "src/styles/theme-customizer.css": "2b21e495e373b2d678f0a801529c819e673c96b3674f0deba0e2e217a43a487d",
+      "src/types/access-ui.ts": "232e2e6c0ef1a2677355dc3bbd0cff30a882bc3973cec8090333a2df03cb9d18",
+      "src/types/appearance.ts": "eada47c8852fe4a247b5e625ad834d914bf4d1074ae709879ca79b4d0288dae6",
+      "src/types/auth.ts": "0139d1d32fd74db5956a95d1974cf0c53602b864664fc5462ea9e56d8223a788",
+      "src/types/contexto.ts": "47ab4033ab0616e3fed237c0e2ff5eaac386233e450689cf6891eabb1c4d506d",
+      "src/types/dashboard.ts": "9fdf0ab012dc1ce3ba86af48b0469bd2a6fb3210ad7b794df09c92c0a22cfbe2",
+      "src/types/index.ts": "7ed527bf25e7ae01c35afeae56eaa586c4e0662e00ddc484c89ae15c6afd8b5f",
+      "src/types/session.ts": "2f165998645258cf53da33f14714012c38c5dee71f2524b2ec40fb64c44a4b67",
+      "src/types/shared/domain.ts": "29843efe36a9aff8d6188cca5f6cf57df4ff6b68ec4ded8217e3526820b3b38e",
+      "src/types/shell.ts": "762bd6cf305c2325036a6968b533445e14b8c317c719109a3ca559e04debbbdc",
+      "src/views/ContextLostView.vue": "e85581677c606c666883c390497937499fee6f643b2057ed8f397d370996abc7",
+      "src/views/DashboardView.vue": "0ffbae206c05c4e106eac9d6a4e638af884ae111d2018d7f256b7706c1d24512",
+      "src/views/NotFoundView.vue": "689f806435d6735ba0a7d4e153d7c824da1490757f15b33c3e47704080f6cbab",
+      "src/views/account/AccountView.vue": "ca4da6a92f8bd6be19cc1b370565551566ca906d9b6471c94cde71033b3405ef",
+      "src/views/appearance/PersonalizerView.vue": "8901ff0cea062e4a9969c82cc03511bdd18394899c9964af1b0ddc49e69d4998",
+      "src/views/armory/ArmoryView.vue": "eae8e33c2ece818b1e25eb26e1cfbb8a3e656f227c40d063e97d4b1ef7136251",
+      "src/views/auth/LoginView.vue": "d1dca5d81fa33c0718b9e1e2474139a564fe3e4d9460f03571e2a1be429d8615",
+      "src/views/auth/PasswordRequiredView.vue": "75deabb52a58210d1d005b53796d954c4de963e7c675def043cb7b4d8952b3cb",
+      "src/views/auth/RecoveryView.vue": "4d1ccb02f96b8a37822d8bb649986cb591e93391cdf7cfc6957330cfe8d74ee4",
+      "src/views/authorization/AuthorizationView.vue": "247df34b09a539730bba73c54a77e2b0c6b49b631deec39a1837b7314a387518",
+      "src/views/context/ContextView.vue": "ba2d385b9d7799ce32c4d7087ec19efeca6c22aa7fd969b6553a50f9e7f92434",
+      "src/views/exercises/ExercisesView.vue": "f195a1fc9f6062cb4309b2fee650dd279f51adeec68ba48b887fd81a4cc77318",
+      "src/views/identity/IdentityView.vue": "ae1611292a5e1cb45c5d4809c0ede77a52c7bba77d9c9a1dc03c9a6f82372491",
+      "src/views/organization/OrganizationView.vue": "a62b5dd68f90b78c249404a4a7faacedf345137367a3694458c87d239da18085",
+      "src/views/shooting/ShootingView.vue": "11d9a116d9bf91a21b4890eda43f87189ef544f2ec93adeb9b12ee6046648288",
+      "src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    "chunks": [
+      {
+        "file": "assets/AccountView-qjrXnHk9.js",
+        "bytes": 9184,
+        "gzip_bytes": 3071,
+        "sha256": "4fa0277ac291dce45d7cf814bf942e318784a9d196c05d6466467f6da8dcf847",
+        "entry": false
+      },
+      {
+        "file": "assets/ArmoryView-mGc7xEDK.js",
+        "bytes": 66189,
+        "gzip_bytes": 15272,
+        "sha256": "a64b2a76bdee9743befddb17eece4730ec64a9cc5e5347ce6417f17afe81a47f",
+        "entry": false
+      },
+      {
+        "file": "assets/AuthCard-BRhiSDOY.js",
+        "bytes": 1162,
+        "gzip_bytes": 627,
+        "sha256": "c817367c0f9c8837c31b90eb7cdd8eb234cd7b9d53aa4a487fa4a1f71f07cdaa",
+        "entry": false
+      },
+      {
+        "file": "assets/AuthField-ss_jxFNr.js",
+        "bytes": 1182,
+        "gzip_bytes": 635,
+        "sha256": "da545b5286277b1fe9f61b881b830dc635d9d0e6bd186271aff8be14f5aead42",
+        "entry": false
+      },
+      {
+        "file": "assets/AuthorizationView-Cd7FRqbv.js",
+        "bytes": 68499,
+        "gzip_bytes": 16477,
+        "sha256": "ecb1675954a075b2a5898ad49a0ba5d2cd8f010da8619afb11d47dfe3d721748",
+        "entry": false
+      },
+      {
+        "file": "assets/ContextCard-DRZJ7ap1.js",
+        "bytes": 2916,
+        "gzip_bytes": 1273,
+        "sha256": "0f4015ae413eae0abdf7980b774e764fc4c0f15deb0e85b79c1bf1dc92e445dd",
+        "entry": false
+      },
+      {
+        "file": "assets/ContextLostView-BeWH40X0.js",
+        "bytes": 1400,
+        "gzip_bytes": 777,
+        "sha256": "db9f1244b6f21802b86b69b17c243da8ca31314cef0c03d48502cb08ab4bdc1d",
+        "entry": false
+      },
+      {
+        "file": "assets/ContextView-Cdg429HG.js",
+        "bytes": 4311,
+        "gzip_bytes": 1753,
+        "sha256": "f1e85e55e0e579a64d82a6ab40dc209093dd4694774eb57828a9e9abd24a7c10",
+        "entry": false
+      },
+      {
+        "file": "assets/DashboardView-BE1VZCvZ.js",
+        "bytes": 17249,
+        "gzip_bytes": 5264,
+        "sha256": "09ebce9354b5a592dd58a8450bef377537a6feb5c99dc43542be975c933bcad9",
+        "entry": false
+      },
+      {
+        "file": "assets/DsModal-N_JAH3hD.js",
+        "bytes": 8279,
+        "gzip_bytes": 3410,
+        "sha256": "7f6c2e33dcee8e1c46d360ce92ef293b49d1d0efe123f8c70e80972a0a6f6403",
+        "entry": false
+      },
+      {
+        "file": "assets/ExercisesView-BJtpC6LN.js",
+        "bytes": 84737,
+        "gzip_bytes": 18952,
+        "sha256": "c5c8a8f01a3d9131c9174d25b29ac935387ada416f10d215b1dabcb99ddaedb9",
+        "entry": false
+      },
+      {
+        "file": "assets/IdentityView-jlPp4Hh1.js",
+        "bytes": 106957,
+        "gzip_bytes": 23358,
+        "sha256": "0498709363a24d5f3a08f719cb1b2a9861e48538d40f9f731aa5571efb8c5a0e",
+        "entry": false
+      },
+      {
+        "file": "assets/LoginView-La70q_it.js",
+        "bytes": 8391,
+        "gzip_bytes": 3417,
+        "sha256": "a369865ba2e9499df0ce1038b2f20ed436e01ce6f1654b2a82cc37defcf06a5d",
+        "entry": false
+      },
+      {
+        "file": "assets/NotFoundView-DFDi_Xxq.js",
+        "bytes": 1386,
+        "gzip_bytes": 746,
+        "sha256": "127b6b736df6f01aa38fccf33cac631f721eeefe0b29bfcbaf4a4e5c8aa3dc36",
+        "entry": false
+      },
+      {
+        "file": "assets/OrganizationView-CZi02Wvu.js",
+        "bytes": 68681,
+        "gzip_bytes": 16265,
+        "sha256": "f3c360f71b696c23c4a950f3e2e35eedcd7e23dba80c65d429c24164263ba88e",
+        "entry": false
+      },
+      {
+        "file": "assets/PasswordRequiredView-D4e8pVWC.js",
+        "bytes": 9086,
+        "gzip_bytes": 3447,
+        "sha256": "99c8690090d3758476b52bb45993a19f4ec152bca4abfb4190446ecc4e5b6f9c",
+        "entry": false
+      },
+      {
+        "file": "assets/RecoveryView-BThDiD9K.js",
+        "bytes": 6140,
+        "gzip_bytes": 2357,
+        "sha256": "20cd66d716c21d12d403c30ebd5f8c069527926577c500c781d7ff735e254d67",
+        "entry": false
+      },
+      {
+        "file": "assets/ShootingView-CowE7PO9.js",
+        "bytes": 104519,
+        "gzip_bytes": 22567,
+        "sha256": "8da1fe336c18beebff95a225759649eb8f62e8889beeece446687e76f84773cd",
+        "entry": false
+      },
+      {
+        "file": "assets/api-BflE2GyK.js",
+        "bytes": 11641,
+        "gzip_bytes": 3210,
+        "sha256": "4ada4f273bfb50e369f576efc6d26aad7ce599dec2e4e07f31d63b5a5f37c9fa",
+        "entry": false
+      },
+      {
+        "file": "assets/api-C0ORfo54.js",
+        "bytes": 6186,
+        "gzip_bytes": 2067,
+        "sha256": "727c35193ba086c191d21b957e8ccb71783cf3327defdc0c40c0ad669b4012ca",
+        "entry": false
+      },
+      {
+        "file": "assets/api-D0H7pAD9.js",
+        "bytes": 6307,
+        "gzip_bytes": 1919,
+        "sha256": "6df5f01e4e7f4c8513f08ab1fd745ee96f1eadd757750ced10225b1c82105ffe",
+        "entry": false
+      },
+      {
+        "file": "assets/api-DIhsnqDX.js",
+        "bytes": 10761,
+        "gzip_bytes": 2620,
+        "sha256": "d6a796d0f88c5f7e94938df7f8b95573f3946960d961d841c524354e7f649d5f",
+        "entry": false
+      },
+      {
+        "file": "assets/auth-BQ8xMsZh.js",
+        "bytes": 6226,
+        "gzip_bytes": 2494,
+        "sha256": "61e0702230bf0034143d726b21eb3250de71cdbbc760c1e296c63456fcd40bba",
+        "entry": false
+      },
+      {
+        "file": "assets/catalog-DiAmjoRW.js",
+        "bytes": 963,
+        "gzip_bytes": 468,
+        "sha256": "d2cdbdffb1e2672bb9acbc105ee6d104d8a2fd1ce7b7d64174212b3483f51274",
+        "entry": false
+      },
+      {
+        "file": "assets/devtools-CN5uWJaH-26Cdntur.js",
+        "bytes": 5690,
+        "gzip_bytes": 2569,
+        "sha256": "9f33f1cfe9e8452ed98d44975931a70ae1e7cdf7c31f8fa5df97b72d7296520a",
+        "entry": false
+      },
+      {
+        "file": "assets/index-DhWfRdtQ.js",
+        "bytes": 153318,
+        "gzip_bytes": 45665,
+        "sha256": "5180a2b803b95a20dc90f8fc20b707df84eb14f6f5d2be735bdb8fe439c5417f",
+        "entry": true
+      },
+      {
+        "file": "assets/runtime-core.esm-bundler-D6KUDeOL.js",
+        "bytes": 65456,
+        "gzip_bytes": 25260,
+        "sha256": "df2ba18fd6ef358c6de2b2315bf7a328a11ab39158230c44f31d7feb52c4221d",
+        "entry": false
+      },
+      {
+        "file": "assets/session-B9WQZD5e.js",
+        "bytes": 515,
+        "gzip_bytes": 326,
+        "sha256": "bbd1c76d6921dbd7573e6b190983a5b84585fe686dc9f5243df0cf8a1482621c",
+        "entry": false
+      },
+      {
+        "file": "assets/session-UQ_qM1LL.js",
+        "bytes": 21135,
+        "gzip_bytes": 7615,
+        "sha256": "dffe04d7e912d28ba1114e7eac722550dbdf92309fad3773b9783a2059909460",
+        "entry": false
+      },
+      {
+        "file": "assets/useApi-BPuI6ZR9-DpDp6qbo.js",
+        "bytes": 864,
+        "gzip_bytes": 480,
+        "sha256": "23e6d635ac5e95c05e05f29e1e7b347cc7f6d6b466fceae3b319f44c0c9c2325",
+        "entry": false
+      },
+      {
+        "file": "assets/useOwnAccount-BMIUCMOy.js",
+        "bytes": 4684,
+        "gzip_bytes": 1955,
+        "sha256": "46feb34adc263ddd5e1717e96a16c61294f0d0c17367340c63824306d9deb09f",
+        "entry": false
+      },
+      {
+        "file": "assets/useRecovery-CQFKuxNm.js",
+        "bytes": 4045,
+        "gzip_bytes": 1687,
+        "sha256": "40e0f8c55c8a33ae819c0b809b67f3b0f06b88b8865009f38914def65cd38b1f",
+        "entry": false
+      }
+    ],
+    "js_total_bytes": 868059,
+    "js_total_gzip_bytes": 238003,
+    "js_entry_bytes": 153318,
+    "js_entry_gzip_bytes": 45665,
+    "js_chunk_count": 32
+  },
+  "comparison": {
+    "js_total_bytes_delta": 11810,
+    "js_total_gzip_bytes_delta": 22807,
+    "js_entry_bytes_delta": -702931,
+    "js_entry_gzip_bytes_delta": -169531,
+    "js_chunk_count_delta": 31
+  },
+  "conditions": {
+    "same_lockfile": true,
+    "same_config": true,
+    "same_node": true,
+    "same_pnpm": true,
+    "same_normalized_routes": true,
+    "changed_source_files": [
+      "src/router/routes.ts"
+    ]
+  }
+}

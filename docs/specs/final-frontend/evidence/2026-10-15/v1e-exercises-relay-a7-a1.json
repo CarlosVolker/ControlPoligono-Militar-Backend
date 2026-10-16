@@ -1,0 +1,126 @@
+{
+  "schema": "frontend-t11-v1e-exercises-relay/v1",
+  "date": "2026-10-15",
+  "task": "T11 V1e — ejercicios: alta y edición por A7 (PUT/PATCH separados), baja por relevo A1, y lectura de recinto RCT-003 de A1",
+  "stage": "residue",
+  "acreditacion_a7": {
+    "alias": "A7",
+    "private_role_expected": "encargado_almacen",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "encargado_almacen"
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "acreditacion_a1": {
+    "alias": "A1",
+    "private_role_expected": "super_admin",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin"
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "exercise": {
+    "marker": "T11A7EJRMVAA73O0",
+    "id": 18,
+    "create": {
+      "method": "POST",
+      "path": "/api/ejercicios/",
+      "status": 201
+    },
+    "create_fields": [
+      "created_at",
+      "fecha",
+      "fecha_orden",
+      "id_ejercicio",
+      "nombre",
+      "numero_orden",
+      "observaciones",
+      "organization_unit",
+      "tenant",
+      "tipo_ejercicio",
+      "unidades_participantes_codes",
+      "zona"
+    ],
+    "detail_get": 200,
+    "edit_put": {
+      "opened": true,
+      "status": 200
+    },
+    "edit_patch": {
+      "opened": true,
+      "status": 200
+    },
+    "a7_delete_affordance": {
+      "present": true,
+      "disabled": true,
+      "hint": "Se requiere permiso para eliminar ejercicios y consumos. El backend conserva la autoridad final."
+    },
+    "delete_a1": {
+      "method": "DELETE",
+      "path": "/api/ejercicios/18/",
+      "status": 204
+    },
+    "get_after": 404
+  },
+  "rct003_a1": {
+    "row_opened": true,
+    "detail_status": 200
+  },
+  "residue": {
+    "exercises_rows_with_marker": 0
+  },
+  "gate": {
+    "a7_role": "encargado_almacen",
+    "a1_relay_for_delete": true,
+    "used_super_admin_bypass_from_a7": false,
+    "credentials_printed_or_persisted": false
+  },
+  "cleanup_errors": [],
+  "page_errors": [],
+  "mutations": [
+    {
+      "actor": "A7",
+      "method": "POST",
+      "path": "/api/ejercicios/",
+      "status": 201
+    },
+    {
+      "actor": "A7",
+      "method": "PUT",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200
+    },
+    {
+      "actor": "A7",
+      "method": "PATCH",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200
+    },
+    {
+      "actor": "A1",
+      "method": "DELETE",
+      "path": "/api/ejercicios/{id}/",
+      "status": 204
+    }
+  ]
+}

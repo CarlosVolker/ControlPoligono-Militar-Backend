@@ -1,0 +1,53 @@
+{
+  "schema": "frontend-t11-v1g-residue-cleanup/v1",
+  "date": "2026-10-15",
+  "task": "T11 — limpieza de relevo: A1 elimina la unidad residuo de V1g (id 43, marcador T11A3USR)",
+  "alias": "A1",
+  "stage": "residue",
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "alias_matched": true,
+    "missing_field": null,
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin"
+    }
+  },
+  "cleanup": {
+    "detail_get": 200,
+    "delete_opened": true,
+    "delete": {
+      "method": "DELETE",
+      "path": "/api/organization-units/43/",
+      "status": 204
+    },
+    "get_after": 404
+  },
+  "residue": {
+    "units_with_marker": {
+      "tree_links": 0,
+      "table_rows": 0
+    }
+  },
+  "page_errors": [],
+  "network": {
+    "total_api_calls": 15,
+    "mutations": [
+      {
+        "method": "DELETE",
+        "path": "/api/organization-units/{id}/",
+        "raw": "/api/organization-units/43/",
+        "status": 204
+      }
+    ]
+  }
+}

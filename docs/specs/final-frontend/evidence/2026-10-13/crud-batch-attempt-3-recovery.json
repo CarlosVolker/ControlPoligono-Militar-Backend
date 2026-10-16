@@ -1,0 +1,35 @@
+{
+  "schema": "frontend-ui-crud-recovery/v1",
+  "date": "2026-10-13",
+  "source_artifact": ".cache/frontend-acceptance/2026-10-13/crud-batch-retry-evidence.json",
+  "resource": "organization_unit",
+  "marker": "DCTMV7GIND8U",
+  "record_id": 15,
+  "observed_write": {
+    "source": "UI cleanup click",
+    "method": "DELETE",
+    "path": "/api/organization-units/15/",
+    "status": 204,
+    "evidence_source": "filtered Playwright network request listing"
+  },
+  "reconciliation": [
+    {
+      "source": "authenticated GET",
+      "method": "GET",
+      "path": "/api/organization-units/",
+      "status": 200,
+      "exact_marker_matches": 0
+    },
+    {
+      "source": "UI search",
+      "query": "DCTMV7GIND8U",
+      "result": "No hay coincidencias para la búsqueda."
+    }
+  ],
+  "harness_issue": {
+    "expected_delete_path": "/api/organization-units/null/",
+    "actual_delete_path": "/api/organization-units/15/",
+    "cause": "The record ID was not captured before cleanup; the create modal also remained open when switching to table view."
+  },
+  "remaining_scope": "Weapons, exercises, munition consumption, and weapon-consumption relation CRUD were not executed."
+}

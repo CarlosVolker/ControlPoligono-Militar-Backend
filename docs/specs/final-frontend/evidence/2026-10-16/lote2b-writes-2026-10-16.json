@@ -1,0 +1,702 @@
+{
+  "schema": "frontend-t11-writes-lote2b/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "purpose": "Fichas de escritura lote 2b: consumos-arma (CAR), membresías (MEM), recintos (RCT), unidades (UNT) y puestos/holders (POS).",
+  "method": "Llamada directa con sesión real del actor + CSRF real; descartables y marcadores T11<ALIAS><FAM>-02; RUT sintéticos solo en memoria.",
+  "notes": {
+    "car_pair_constraint": "UniqueConstraint(consumo, arma): las 5 parejas se eligen distintas y evitando las ya existentes",
+    "logout_not_used": "este módulo no ejercita AUT-005; las sesiones permanecen vivas para la limpieza",
+    "position_delete_debt": "baja del puesto con historial de holder puede dar 500 ProtectedError (deuda §11): no se fuerza",
+    "wpn_seed": "las armas de la pre-fase llevan marcador T11SECDWPN-02, fuera de los tokens del barrido (T11A|T11RT|T11R2): su residuo se verifica por get_after en cleanup",
+    "sweep_families": "las 8 familias no incluyen recintos/membresías/consumos-arma/puestos: residuos de esas familias se declaran explícitamente"
+  },
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    },
+    "A7": {
+      "alias": "A7",
+      "private_role_expected": "encargado_almacen",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "encargado_almacen"
+      },
+      "alias_matched": true
+    }
+  },
+  "steps": [
+    {
+      "op": "OP-CAR-002",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/consumos-arma/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A1",
+      "verb": "PUT",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A1",
+      "verb": "PATCH",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A1",
+      "verb": "DELETE",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/consumos-arma/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A2",
+      "verb": "PUT",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A2",
+      "verb": "PATCH",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A2",
+      "verb": "DELETE",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/consumos-arma/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/consumos-arma/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/consumos-arma/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/memberships/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A1",
+      "verb": "PUT",
+      "path_tpl": "/memberships/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A1",
+      "verb": "PATCH",
+      "path_tpl": "/memberships/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": "campo benigno is_active"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A1",
+      "verb": "DELETE",
+      "path_tpl": "/memberships/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/memberships/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/memberships/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": "campo benigno is_active"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A1",
+      "verb": "PATCH",
+      "path_tpl": "/recintos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A1",
+      "verb": "POST",
+      "path_tpl": "/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A1",
+      "verb": "DELETE",
+      "path_tpl": "/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/organization-units/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/organization-units/{id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/organization-units/{id}/",
+      "status": 204,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/organization-units/{id}/eliminar-con-migracion/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/organization-units/{id}/eliminar-con-migracion/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/posiciones/{id}/asignar-holder/",
+      "status": 201,
+      "verdict": "MATCH_2XX",
+      "note": null
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 200,
+      "verdict": "MATCH_2XX",
+      "note": null
+    }
+  ],
+  "setup": [
+    {
+      "what": "unit_resolution",
+      "source_alias": "A3",
+      "shared_unit_code_len": 5,
+      "other_unit_resolved": true
+    },
+    {
+      "what": "wpn_seed_resolution",
+      "marker": "T11SECDWPN-02",
+      "needed": 2,
+      "armory_status": 200,
+      "calibre_status": 200,
+      "armory_resolved": true,
+      "calibre_resolved": true
+    },
+    {
+      "what": "wpn_seed_1",
+      "status": 201,
+      "id": 18
+    },
+    {
+      "what": "wpn_seed_2",
+      "status": 201,
+      "id": 19
+    },
+    {
+      "what": "car_pair_resolution",
+      "consumo_status": 200,
+      "arma_status": 200,
+      "existing_status": 200,
+      "consumo_ids": 1,
+      "arma_ids": 6,
+      "pairs_available_pre_seed": 3,
+      "pairs_available": 5,
+      "requested": 5,
+      "seeded_weapons": 2,
+      "pairs_missing_for": [],
+      "assigned": {
+        "A1": {
+          "consumo": 1,
+          "arma": 1
+        },
+        "A2": {
+          "consumo": 1,
+          "arma": 2
+        },
+        "A3": {
+          "consumo": 1,
+          "arma": 3
+        },
+        "A5": {
+          "consumo": 1,
+          "arma": 18
+        },
+        "A7": {
+          "consumo": 1,
+          "arma": 19
+        }
+      }
+    },
+    {
+      "what": "desc_A1MEM_n1",
+      "status": 201,
+      "id": 53,
+      "rut": "22223001-2"
+    },
+    {
+      "what": "desc_A3MEM_n2",
+      "status": 201,
+      "id": 54,
+      "rut": "22223002-0"
+    },
+    {
+      "what": "desc_A3MEM_visible",
+      "visible_to_A3": true
+    },
+    {
+      "what": "recinto_desc",
+      "status": 201,
+      "id": 21
+    },
+    {
+      "what": "unit_T11A3UNT-02a-lkgw",
+      "actor": "A3",
+      "status": 201,
+      "id": 44
+    },
+    {
+      "what": "unit_T11A3UNT-02b-lkgw",
+      "actor": "A3",
+      "status": 201,
+      "id": 45
+    },
+    {
+      "what": "unit_T11A2UNT-02-lkgw",
+      "actor": "A2",
+      "status": 201,
+      "id": 46
+    },
+    {
+      "what": "desc_A3POS_n3",
+      "status": 201,
+      "id": 55,
+      "rut": "22223003-9"
+    },
+    {
+      "what": "position_desc",
+      "status": 201,
+      "id": 68,
+      "account_id_len": 2
+    }
+  ],
+  "cleanup": {
+    "car_A1": {
+      "id": 2,
+      "relay": false,
+      "note": "baja por la propia celda CAR-006"
+    },
+    "car_A2": {
+      "id": 3,
+      "relay": false,
+      "note": "baja por la propia celda CAR-006"
+    },
+    "car_A3": {
+      "id": 4,
+      "relay": true,
+      "delete_status": 204
+    },
+    "car_A5": {
+      "id": 5,
+      "relay": true,
+      "delete_status": 204
+    },
+    "car_A7": {
+      "id": 6,
+      "relay": true,
+      "delete_status": 204
+    },
+    "desc_A1MEM": {
+      "id": 53,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "desc_A3MEM": {
+      "id": 54,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "desc_A3POS": {
+      "id": 55,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "position": {
+      "id": 68,
+      "marker": "T11A3POS-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "recinto": {
+      "id": 21,
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "wpn_seed_18": {
+      "id": 18,
+      "marker": "T11SECDWPN-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "wpn_seed_19": {
+      "id": 19,
+      "marker": "T11SECDWPN-02",
+      "delete_status": 204,
+      "get_after": 404
+    }
+  },
+  "sweep_strict": {
+    "token": "T11A|T11RT|T11R2",
+    "own_matches": 0,
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      }
+    }
+  },
+  "coverage": {
+    "expected_cells": 35,
+    "expected": [
+      "OP-CAR-002:A1",
+      "OP-CAR-002:A2",
+      "OP-CAR-002:A3",
+      "OP-CAR-002:A5",
+      "OP-CAR-002:A7",
+      "OP-CAR-004:A1",
+      "OP-CAR-004:A2",
+      "OP-CAR-004:A3",
+      "OP-CAR-004:A5",
+      "OP-CAR-004:A7",
+      "OP-CAR-005:A1",
+      "OP-CAR-005:A2",
+      "OP-CAR-005:A3",
+      "OP-CAR-005:A5",
+      "OP-CAR-005:A7",
+      "OP-CAR-006:A1",
+      "OP-CAR-006:A2",
+      "OP-MEM-002:A1",
+      "OP-MEM-004:A1",
+      "OP-MEM-005:A1",
+      "OP-MEM-006:A1",
+      "OP-MEM-004:A3",
+      "OP-MEM-005:A3",
+      "OP-RCT-005:A1",
+      "OP-RCT-007:A1",
+      "OP-RCT-008:A1",
+      "OP-RCT-007:A3",
+      "OP-RCT-008:A3",
+      "OP-UNT-004:A3",
+      "OP-UNT-005:A3",
+      "OP-UNT-006:A3",
+      "OP-UNT-008:A3",
+      "OP-UNT-008:A2",
+      "OP-POS-007:A3",
+      "OP-POS-008:A3"
+    ],
+    "observed_cells": 35,
+    "missing": [],
+    "extra": []
+  },
+  "page_errors": [],
+  "car_ids": {
+    "A1": 2,
+    "A2": 3,
+    "A3": 4,
+    "A5": 5,
+    "A7": 6
+  },
+  "summary": {
+    "steps": 35,
+    "match_2xx": 35,
+    "not_2xx": 0,
+    "no_response": 0,
+    "sweep_own_matches": 0,
+    "coverage_expected": 35,
+    "coverage_observed": 35
+  }
+}

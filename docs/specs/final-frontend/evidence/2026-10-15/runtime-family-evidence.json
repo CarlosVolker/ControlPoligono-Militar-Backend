@@ -1,0 +1,3571 @@
+{
+  "schema": "frontend-runtime-family-sweep/v1",
+  "date": "2026-10-13",
+  "source": {
+    "routes": "front/src/router/routes.ts",
+    "matrix": "docs/specs/final-frontend/evidence/2026-10-12/acceptance-matrix.json"
+  },
+  "policy": {
+    "business_methods": [
+      "GET"
+    ],
+    "auth_methods": [
+      "POST /api/auth/login/",
+      "POST /api/logout/"
+    ],
+    "excluded": [
+      "appearance preference API calls",
+      "closed overrides backend probe",
+      "detail routes without existing IDs",
+      "response bodies"
+    ],
+    "context": "I use one fresh browser context per actor, UI login/logout, and no shared-page interaction"
+  },
+  "harness_retry": {
+    "first_attempt": "harness_error",
+    "cause": "process_global_unavailable_in_playwright_runtime",
+    "retry": "credential_file_url_via_proc_self_cwd",
+    "second_attempt": "harness_error_during_account_menu_or_logout_after_family_routes",
+    "current_attempt": "2026-10-15 v0: GETs de apariencia permitidos; menú con timeout y caída a deep-link; try/catch por ruta; logout garantizado"
+  },
+  "actors": [
+    {
+      "actor": "A1",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "menu",
+          "landed": "/organizacion/recintos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 200,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "menu",
+          "landed": "/auditoria",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 200,
+              "public_op": "OP-AUT-004"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A2",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "menu",
+          "landed": "/organizacion/recintos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 200,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "menu",
+          "landed": "/auditoria",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 200,
+              "public_op": "OP-AUT-004"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A3",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "menu",
+          "landed": "/organizacion/recintos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 200,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A4",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "menu",
+          "landed": "/organizacion/recintos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 200,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A5",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "deep_link",
+          "landed": "/organizacion/recintos",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_recinto"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 403,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A6",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "deep_link",
+          "landed": "/organizacion/recintos",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_recinto"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 403,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "deep_link",
+          "landed": "/almacen/armerias",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_warehouse"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 403,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "deep_link",
+          "landed": "/almacen/armas",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_warehouse"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 403,
+              "public_op": "OP-WPN-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A7",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "deep_link",
+          "landed": "/organizacion/recintos",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_recinto"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 403,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "menu",
+          "landed": "/almacen/armerias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "menu",
+          "landed": "/almacen/armas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 200,
+              "public_op": "OP-ARM-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 200,
+              "public_op": "OP-WPN-001"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/lookup/",
+              "status": 200,
+              "public_op": "OP-UNT-009"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "actor": "A8",
+      "login": {
+        "status": "ui_login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/auth/login/",
+            "status": 200,
+            "public_op": "OP-AUT-001"
+          },
+          {
+            "source": "ui",
+            "method": "GET",
+            "path": "/api/auth/context/",
+            "status": 200,
+            "public_op": "OP-AUT-002"
+          }
+        ]
+      },
+      "families": [
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/unidades",
+          "navigation": "menu",
+          "landed": "/organizacion/unidades",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/organization-units/",
+              "status": 200,
+              "public_op": "OP-UNT-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/recintos",
+          "navigation": "deep_link",
+          "landed": "/organizacion/recintos",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_recinto"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/recintos/",
+              "status": 403,
+              "public_op": "OP-RCT-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/puestos",
+          "navigation": "menu",
+          "landed": "/organizacion/puestos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/posiciones/",
+              "status": 200,
+              "public_op": "OP-POS-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "organizaciones",
+          "route": "/organizacion/membresias",
+          "navigation": "menu",
+          "landed": "/organizacion/membresias",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/memberships/",
+              "status": 200,
+              "public_op": "OP-MEM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "personas",
+          "route": "/personas",
+          "navigation": "menu",
+          "landed": "/personas",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/",
+              "status": 200,
+              "public_op": "OP-USR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/roles",
+          "navigation": "menu",
+          "landed": "/personas/roles",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/role-categories/",
+              "status": 200,
+              "public_op": "OP-AZC-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/roles/",
+              "status": 200,
+              "public_op": "OP-ROL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/scopes",
+          "navigation": "menu",
+          "landed": "/personas/scopes",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/scopes/",
+              "status": 200,
+              "public_op": "OP-SCP-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/permisos",
+          "navigation": "menu",
+          "landed": "/personas/permisos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/authz/permissions/",
+              "status": 200,
+              "public_op": "OP-PRM-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "autorizacion",
+          "route": "/personas/overrides",
+          "navigation": "deep_link",
+          "landed": "/personas/overrides",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": "closed_route_no_probe"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armerias",
+          "navigation": "deep_link",
+          "landed": "/almacen/armerias",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_warehouse"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/armorias/",
+              "status": 403,
+              "public_op": "OP-ARM-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "armas",
+          "route": "/almacen/armas",
+          "navigation": "deep_link",
+          "landed": "/almacen/armas",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [
+            "view_warehouse"
+          ],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/armas/",
+              "status": 403,
+              "public_op": "OP-WPN-001"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "calibres",
+          "route": "/almacen/calibres",
+          "navigation": "menu",
+          "landed": "/almacen/calibres",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/calibres/",
+              "status": 200,
+              "public_op": "OP-CAL-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/poligonos",
+          "navigation": "menu",
+          "landed": "/tiro/poligonos",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/poligonos/",
+              "status": 200,
+              "public_op": "OP-RNG-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "tiro",
+          "route": "/tiro/lecciones",
+          "navigation": "menu",
+          "landed": "/tiro/lecciones",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/lecciones/",
+              "status": 200,
+              "public_op": "OP-LES-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "ejercicios",
+          "route": "/tiro/ejercicios",
+          "navigation": "menu",
+          "landed": "/tiro/ejercicios",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/ejercicios/",
+              "status": 200,
+              "public_op": "OP-EJR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-municion",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-municion",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-municion/",
+              "status": 200,
+              "public_op": "OP-CMN-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "consumos",
+          "route": "/tiro/consumos-arma",
+          "navigation": "menu",
+          "landed": "/tiro/consumos-arma",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/consumos-arma/",
+              "status": 200,
+              "public_op": "OP-CAR-001"
+            }
+          ],
+          "limitation": null
+        },
+        {
+          "family": "auditoria",
+          "route": "/auditoria",
+          "navigation": "deep_link",
+          "landed": "/auditoria",
+          "surface": "neutral_denial",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/auth/context/",
+              "status": 200,
+              "public_op": "OP-AUT-002"
+            },
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/me/preferences/appearance/design-system/",
+              "status": 200,
+              "public_op": null
+            },
+            {
+              "source": "direct_read_fallback",
+              "method": "GET",
+              "path": "/api/auth/audit-log/",
+              "status": 403,
+              "public_op": "OP-AUT-004"
+            }
+          ],
+          "limitation": "no_fresh_ui_response_direct_GET_observed"
+        },
+        {
+          "family": "cuenta",
+          "route": "/cuenta",
+          "navigation": "menu",
+          "landed": "/cuenta",
+          "surface": "page_shell",
+          "permission_codes_visible": [],
+          "http": [
+            {
+              "source": "ui",
+              "method": "GET",
+              "path": "/api/usuarios/{id}/",
+              "status": 200,
+              "public_op": null
+            }
+          ],
+          "limitation": null
+        }
+      ],
+      "logout": {
+        "path": "/login",
+        "http": [
+          {
+            "source": "ui",
+            "method": "POST",
+            "path": "/api/logout/",
+            "status": 200,
+            "public_op": "OP-AUT-005"
+          }
+        ]
+      },
+      "blocked": []
+    }
+  ]
+}

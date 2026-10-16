@@ -1,0 +1,65 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "persons",
+  "privacy_constraint": "Do not enumerate, retain, or expose existing personal data in reports; normal UI loading required for the authorized CRUD is permitted.",
+  "history": {
+    "previous_status": "BLOCKED by an overly broad interpretation of the no-enumeration instruction.",
+    "operator_correction": "Normal navigation to /personas and its automatic UI collection GET are authorized; do not inspect, print, or persist existing people data.",
+    "previous_prerequisite_artifact": "The earlier blocker in this file was based on source inspection only and is superseded by the current authorized UI execution."
+  },
+  "record": {
+    "kind": "temporary_person",
+    "marker": "DCTMV7H9KK8TMP",
+    "id_usuario": 28,
+    "create": {
+      "source": "UI click",
+      "method": "POST",
+      "path": "/api/usuarios/crear-temporal/",
+      "status": 201
+    },
+    "reconcile_after_create": {
+      "source": "authenticated GET detail",
+      "method": "GET",
+      "path": "/api/usuarios/28/",
+      "status": 200,
+      "id_match": true,
+      "marker_match": true,
+      "has_assignment": false
+    },
+    "edit": {
+      "source": "UI click",
+      "method": "PATCH",
+      "path": "/api/usuarios/28/",
+      "status": 200,
+      "request_field_names": ["grado", "nombre"],
+      "response_matches_id_and_marker": true,
+      "reconcile_after_edit": {
+        "source": "authenticated GET detail",
+        "method": "GET",
+        "path": "/api/usuarios/28/",
+        "status": 200,
+        "id_match": true,
+        "marker_match": true
+      }
+    },
+    "delete": {
+      "status": "not sent",
+      "reason": "After the PATCH, the exact-heading cleanup locator failed before clicking. I made one cleanup-only locator adjustment; that heading assertion also failed before clicking. I then stopped. No DELETE response was observed."
+    },
+    "cleanup": "pending; last authenticated detail GET before the cleanup attempts returned 200"
+  },
+  "privacy_handling": {
+    "persons_ui_route_opened": true,
+    "normal_ui_collection_loading_authorized": true,
+    "existing_collection_body_inspected": false,
+    "personal_data_written_to_artifacts": false,
+    "rut_email_password_retained": false
+  },
+  "harness_failure": {
+    "type": "selector_shape_assumption",
+    "write_sent_after_failure": false,
+    "cleanup_locator_attempts_after_edit": 2,
+    "operator_stop_rule_applied_after_second_cleanup_failure": true
+  }
+}

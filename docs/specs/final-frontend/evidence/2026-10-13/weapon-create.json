@@ -1,0 +1,40 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "weapons",
+  "actor_alias": "A1",
+  "tenant": "desarrollo-poligono-local",
+  "active_unit": "CIA-A",
+  "marker": "DCTMV7GRCUNARM",
+  "record_id": 4,
+  "create": {
+    "source": "UI click",
+    "method": "POST",
+    "path": "/api/armas/",
+    "status": 201,
+    "request_body_sanitized": {
+      "tipo_arma": "fusil",
+      "modelo_arma": "DCTMV7GRCUNARM-MOD",
+      "numero_serie": "DCTMV7GRCUNARM-SN",
+      "armory_code_write": "ALM-CIA-A-DEV",
+      "calibre_code_write": "5.56X45"
+    },
+    "response_fields_sanitized": {
+      "id_arma": 4,
+      "tipo_arma": "fusil",
+      "modelo_arma": "DCTMV7GRCUNARM-MOD",
+      "numero_serie": "DCTMV7GRCUNARM-SN",
+      "armory_code": "ALM-CIA-A-DEV",
+      "calibre_code": "5.56X45",
+      "organization_unit_code": "CIA-A"
+    }
+  },
+  "reconcile_after_create": {
+    "source": "authenticated GET",
+    "method": "GET",
+    "path": "/api/armas/4/",
+    "status": 200,
+    "matches_marker_model_and_serial": true
+  },
+  "cleanup": "pending"
+}

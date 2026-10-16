@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-10-09T11:59:44.399Z",
+  "kind": "BEFORE",
+  "phase": "seam correction (pre-replace)",
+  "compiler": "3.5.43",
+  "dsmodal": {
+    "source_sha256": "384135717650b2a4be5d2ecdf4ee83f08e49b0023fc8877b4c7166e2e1594409",
+    "script_sha256": "ddccea98e0df8cb6090325311216ff37c4b9860027c33585d663945280cc0c41",
+    "template_sha256": "f10a5c528c84c680e8c3d9799e34dcdb84f6dc47765a1c2e0ff85f46328fc8ea",
+    "style_sha256": "e1a73733d3bb44027d90b8dc3c7bbc80d898228c36a976b2d0a99829bc6be1e6",
+    "old_block_sha256": "cc96520ef9247d463ab9265e3cea812c47cea1113d2fe4f8aceb5dbd3b133ba8",
+    "expected_after_source_sha256": "9b5e62e98fd4606c5e00d4cd0f28873a76b8add90eeddda1941704210874933b",
+    "replaced_span": {
+      "start_index": 13096,
+      "end_index": 16157,
+      "old_block_lines": 105
+    }
+  },
+  "shooting_readonly_sha256": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+  "shooting_expected_readonly": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+  "note": "hashes/metadata only; no source content"
+}

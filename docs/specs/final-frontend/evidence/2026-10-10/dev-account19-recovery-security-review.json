@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-10",
+  "reviewer": "Dhampir-Slayer",
+  "review_session": "ses_ed84d623dffeeDEfH5gjz5Ud0i",
+  "delivery": "DELIVERED",
+  "orchestrator_review_acceptance": "ACCEPTED_WITH_RESERVATIONS",
+  "security_review": "BLOCKED",
+  "recovery_helper_execution_disposition": "REJECTED until a future explicitly scoped remediation; no second automatic correction",
+  "source": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-runner.cjs",
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "issue": "Single reset authorization is not reserved or consumed atomically across invocations",
+      "anchors": ["recovery-runner.cjs:655-659", "recovery-runner.cjs:900-904", "recovery-runner.cjs:993-996", "recovery-runner.cjs:1080-1086", "recovery-runner.cjs:1111-1112"],
+      "review_reason": "Evidence existence is checked before execution, but exclusive evidence creation occurs at the end; per-invocation flags do not guarantee a single reset across invocations",
+      "orchestrator_focal_check": "Read resetOwnPassword:655-679 and persistEvidence:900-904; reset checks performed only and exclusive JSON creation is a separate final operation",
+      "duplicate_reset_observed": false,
+      "required_property": "Atomically reserve and consume the single authorization before reset, retain consumption after uncertain outcome"
+    },
+    {
+      "severity": "RESERVATION",
+      "issue": "UI pathname is not restricted to an allowlist before evidence persistence",
+      "anchors": ["recovery-runner.cjs:526-529", "recovery-runner.cjs:916", "recovery-runner.cjs:1011", "recovery-runner.cjs:1073", "recovery-runner.cjs:1094-1096"],
+      "secret_exposure_observed": false,
+      "required_property": "Enumerated routes and validated evidence schema before persistence"
+    }
+  ],
+  "review_controls_accepted_with_scope_limits": [
+    "SQLite engine and destination guard:36-46; not independent proof of development-only contents",
+    "Own IDs and links checked:48-117, revalidated transactionally:224-226",
+    "Password update targets User19 only:226; no explicit role or account creation",
+    "Login UI and preflight precede reset:681-715,918-943,1012-1037",
+    "Current executable close path uses the context object opened by the helper:475-489,1003,1080,1109",
+    "Singleton failure blocks without closing the prior browser:494-507",
+    "Error diagnostics reduce to enumerated data:376-472; raw message/stack/log/env values not persisted",
+    "API tracking omits body and headers:548-571",
+    "Secret reference removal:907-911 is not proof of physical memory erasure"
+  ],
+  "disconnected_code_reservation": {
+    "source": "recovery-runner.cjs:229-360",
+    "issue": "Unused ownership/close helpers inspect proc arguments and prepare X11 close",
+    "called_by_current_flow": false,
+    "ownership_or_future_activation_approved": false
+  },
+  "runtime_evidence": {
+    "artifacts_read": ["recovery-observation.json", "recovery-observation-correction.json"],
+    "ui_observed": false,
+    "reset_attempted_or_performed_in_artifacts": false,
+    "exit_code_recorded": 0,
+    "startup_reason": "UNKNOWN",
+    "reviewer_executed_helper_browser_db_or_process_access": false
+  },
+  "closing_audit": {
+    "agents": { "Code-Transmuter": "Implemented temporary recovery helper and reported the launch attempts", "Dhampir-Slayer": "Read-only focused post-implementation security review" },
+    "modified_files": [
+      { "path": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-runner.cjs", "change": "Conditional own-account recovery and allowlisted launch diagnostics" },
+      { "path": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-observation.json", "change": "Initial blocked attempt evidence" },
+      { "path": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-observation-correction.json", "change": "Single diagnostic correction evidence" },
+      { "path": "docs/specs/final-frontend/evidence/2026-10-10/dev-account19-recovery-attempt-assessment.json", "change": "Initial acceptance assessment" },
+      { "path": "docs/specs/final-frontend/evidence/2026-10-10/dev-account19-recovery-correction-assessment.json", "change": "Corrective artifact assessment" },
+      { "path": "docs/specs/final-frontend/evidence/2026-10-10/dev-account19-recovery-security-review.json", "change": "Focused review consolidation and closing audit" },
+      { "path": "docs/specs/final-frontend/runtime-verification-2026-10-06.md", "change": "Append-only authorization, attempts and limits" }
+    ],
+    "checks": ["Writer reported initial node --check exit0", "Two blocked normal local browser launch attempts in immutable evidence artifacts", "Orchestrator read the actual artifacts and focused code anchors", "Reviewer read frozen helper and artifacts without execution"],
+    "risks_and_blockers": ["Single-reset exclusion not atomic", "Evidence route allowlist incomplete", "Browser exits before UI; startup reason unknown", "No legitimate login UI available to activate conditional reset"],
+    "authorization_and_tools": "Explicitly authorized own browser recovery and one conditional User19 reset. Used original inume-worker channel and local Playwright attempts. No alternative MCP, process close, database reset, raw profile inspection or application change in this recovery",
+    "branch_scope_guard": "No adjacent implementation changed; previous backend defects remain debt and were not fixed. Unused process-argument inspection code is not approved for activation",
+    "unverified": "Current DB state, login, institution/context, Unit12, dashboard, reusable profile and integral frontend acceptance; browser never opened UI",
+    "future_requirements": "Correct atomic single-use reservation and route evidence allowlist, and restore normal browser opening before any authorized reset; no further automatic retry in the exhausted workstream"
+  },
+  "objective_verdict": "NOT_VERIFIED",
+  "objective_status": "no cumplido",
+  "F10_closed": false,
+  "spec_closed": false
+}

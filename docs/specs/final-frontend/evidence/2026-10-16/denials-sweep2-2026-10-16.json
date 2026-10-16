@@ -1,0 +1,3076 @@
+{
+  "schema": "frontend-t11-denials-sweep2/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "sweep": "sweep2",
+  "purpose": "Barrido de denegaciones de escritura no-RBAC (tiro/almacén/resultados): cada celda EXPECTED_DENY NOT_EXERCISED se prueba con la sesión real del actor y se espera 403.",
+  "families": [
+    "RNG",
+    "RES",
+    "LES",
+    "FRC",
+    "CMN",
+    "CAR",
+    "ARM",
+    "EJR",
+    "WPN"
+  ],
+  "excluded_families_rbac": [
+    "OP-OVR-*",
+    "OP-PPR-*",
+    "OP-RPR-*",
+    "OP-ROL-*"
+  ],
+  "method": "Sesión real por alias (login UI + /api/auth/context/ 200 con rol) + CSRF real. POST de colección: intento directo. PUT/PATCH/DELETE y POST con {id}: intento sobre descartable de A1 con marcador T11<ALIAS><FAM>D-02.",
+  "notes": {
+    "cert_rule": "solo 403 exacto se certifica como denegación; 2xx se registra como MISMATCH_ALLOW; 404/401/500 como OTHER",
+    "wrong_expectation": "si el status fuera 2xx, la fila creada/mutada entra a la limpieza de A1",
+    "cmn_unprobeable": "CMN-004/005/006 no se prueban: el alta por API está rota (§8) y no hay objetivo descartable sin ORM; jamás se apunta al consumo sembrado",
+    "res_chain": "RES usa cadena descartable propia (polígono→lección→fracción→resultado) + usuario descartable; el arma se elige del listado (preferentemente en la unidad del recurso) — si la creación es rechazada, se declara el motivo",
+    "marker_without_row_field": "FRC y RES no tienen campo de texto propio: el marcador vive en la lección (numero_orden) y en el usuario padre; MEM no aplica a este sweep",
+    "csrf": "el token CSRF se lee de la cookie csrftoken de cada contexto; solo se extrae en corrida real"
+  },
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A4": {
+      "alias": "A4",
+      "private_role_expected": "comandante_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "comandante_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    },
+    "A6": {
+      "alias": "A6",
+      "private_role_expected": "oficial_observador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_observador"
+      },
+      "alias_matched": true
+    },
+    "A7": {
+      "alias": "A7",
+      "private_role_expected": "encargado_almacen",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "encargado_almacen"
+      },
+      "alias_matched": true
+    },
+    "A8": {
+      "alias": "A8",
+      "private_role_expected": "tirador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tirador"
+      },
+      "alias_matched": true
+    }
+  },
+  "preflight": {
+    "units": {
+      "source_alias": "A3",
+      "shared_status": 200,
+      "shared_code_len": 5,
+      "other_resolved": true
+    },
+    "armory": {
+      "status": 200,
+      "resolved": true
+    },
+    "calibre": {
+      "status": 200,
+      "resolved": true
+    },
+    "ejercicio": {
+      "status": 200,
+      "resolved": true
+    },
+    "consumo_municion": {
+      "status": 200,
+      "count": 1,
+      "anchored": true
+    },
+    "armas": {
+      "status": 200,
+      "count": 7
+    },
+    "consumos_arma": {
+      "status": 200,
+      "existing_pairs": 1
+    },
+    "car_pairs_pre_seed": 3,
+    "car_wpn_seed_needed": 3,
+    "car_wpn_seeded": 3,
+    "car_pairs": {
+      "A3": {
+        "consumo": 1,
+        "arma": 1
+      },
+      "A4": {
+        "consumo": 1,
+        "arma": 2
+      },
+      "A5": {
+        "consumo": 1,
+        "arma": 3
+      },
+      "A6": {
+        "consumo": 1,
+        "arma": 20
+      },
+      "A7": {
+        "consumo": 1,
+        "arma": 21
+      },
+      "A8": {
+        "consumo": 1,
+        "arma": 22
+      }
+    }
+  },
+  "targets_total": 150,
+  "family_counts": {
+    "ARM": 14,
+    "CAR": 15,
+    "CMN": 15,
+    "EJR": 13,
+    "FRC": 20,
+    "LES": 20,
+    "RES": 20,
+    "RNG": 22,
+    "WPN": 11
+  },
+  "discardable_plan": [
+    {
+      "key": "ARM:A3",
+      "fam": "ARM",
+      "actor": "A3",
+      "marker": "T11A3ARMD-02",
+      "recipe": "ARM"
+    },
+    {
+      "key": "ARM:A4",
+      "fam": "ARM",
+      "actor": "A4",
+      "marker": "T11A4ARMD-02",
+      "recipe": "ARM"
+    },
+    {
+      "key": "ARM:A5",
+      "fam": "ARM",
+      "actor": "A5",
+      "marker": "T11A5ARMD-02",
+      "recipe": "ARM"
+    },
+    {
+      "key": "ARM:A6",
+      "fam": "ARM",
+      "actor": "A6",
+      "marker": "T11A6ARMD-02",
+      "recipe": "ARM"
+    },
+    {
+      "key": "ARM:A8",
+      "fam": "ARM",
+      "actor": "A8",
+      "marker": "T11A8ARMD-02",
+      "recipe": "ARM"
+    },
+    {
+      "key": "CAR:A3",
+      "fam": "CAR",
+      "actor": "A3",
+      "marker": "T11A3CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "CAR:A4",
+      "fam": "CAR",
+      "actor": "A4",
+      "marker": "T11A4CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "CAR:A5",
+      "fam": "CAR",
+      "actor": "A5",
+      "marker": "T11A5CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "CAR:A6",
+      "fam": "CAR",
+      "actor": "A6",
+      "marker": "T11A6CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "CAR:A7",
+      "fam": "CAR",
+      "actor": "A7",
+      "marker": "T11A7CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "CAR:A8",
+      "fam": "CAR",
+      "actor": "A8",
+      "marker": "T11A8CARD-02",
+      "recipe": "CAR"
+    },
+    {
+      "key": "EJR:A4",
+      "fam": "EJR",
+      "actor": "A4",
+      "marker": "T11A4EJRD-02",
+      "recipe": "EJR"
+    },
+    {
+      "key": "EJR:A5",
+      "fam": "EJR",
+      "actor": "A5",
+      "marker": "T11A5EJRD-02",
+      "recipe": "EJR"
+    },
+    {
+      "key": "EJR:A6",
+      "fam": "EJR",
+      "actor": "A6",
+      "marker": "T11A6EJRD-02",
+      "recipe": "EJR"
+    },
+    {
+      "key": "EJR:A8",
+      "fam": "EJR",
+      "actor": "A8",
+      "marker": "T11A8EJRD-02",
+      "recipe": "EJR"
+    },
+    {
+      "key": "FRC:A3",
+      "fam": "FRC",
+      "actor": "A3",
+      "marker": "T11A3FRCD-02",
+      "recipe": "FRC"
+    },
+    {
+      "key": "FRC:A4",
+      "fam": "FRC",
+      "actor": "A4",
+      "marker": "T11A4FRCD-02",
+      "recipe": "FRC"
+    },
+    {
+      "key": "FRC:A6",
+      "fam": "FRC",
+      "actor": "A6",
+      "marker": "T11A6FRCD-02",
+      "recipe": "FRC"
+    },
+    {
+      "key": "FRC:A7",
+      "fam": "FRC",
+      "actor": "A7",
+      "marker": "T11A7FRCD-02",
+      "recipe": "FRC"
+    },
+    {
+      "key": "FRC:A8",
+      "fam": "FRC",
+      "actor": "A8",
+      "marker": "T11A8FRCD-02",
+      "recipe": "FRC"
+    },
+    {
+      "key": "LES:A3",
+      "fam": "LES",
+      "actor": "A3",
+      "marker": "T11A3LESD-02",
+      "recipe": "LES"
+    },
+    {
+      "key": "LES:A4",
+      "fam": "LES",
+      "actor": "A4",
+      "marker": "T11A4LESD-02",
+      "recipe": "LES"
+    },
+    {
+      "key": "LES:A6",
+      "fam": "LES",
+      "actor": "A6",
+      "marker": "T11A6LESD-02",
+      "recipe": "LES"
+    },
+    {
+      "key": "LES:A7",
+      "fam": "LES",
+      "actor": "A7",
+      "marker": "T11A7LESD-02",
+      "recipe": "LES"
+    },
+    {
+      "key": "LES:A8",
+      "fam": "LES",
+      "actor": "A8",
+      "marker": "T11A8LESD-02",
+      "recipe": "LES"
+    },
+    {
+      "key": "RES:A3",
+      "fam": "RES",
+      "actor": "A3",
+      "marker": "T11A3RESD-02",
+      "recipe": "RES"
+    },
+    {
+      "key": "RES:A4",
+      "fam": "RES",
+      "actor": "A4",
+      "marker": "T11A4RESD-02",
+      "recipe": "RES"
+    },
+    {
+      "key": "RES:A6",
+      "fam": "RES",
+      "actor": "A6",
+      "marker": "T11A6RESD-02",
+      "recipe": "RES"
+    },
+    {
+      "key": "RES:A7",
+      "fam": "RES",
+      "actor": "A7",
+      "marker": "T11A7RESD-02",
+      "recipe": "RES"
+    },
+    {
+      "key": "RES:A8",
+      "fam": "RES",
+      "actor": "A8",
+      "marker": "T11A8RESD-02",
+      "recipe": "RES"
+    },
+    {
+      "key": "RNG:A2",
+      "fam": "RNG",
+      "actor": "A2",
+      "marker": "T11A2RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A3",
+      "fam": "RNG",
+      "actor": "A3",
+      "marker": "T11A3RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A4",
+      "fam": "RNG",
+      "actor": "A4",
+      "marker": "T11A4RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A5",
+      "fam": "RNG",
+      "actor": "A5",
+      "marker": "T11A5RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A6",
+      "fam": "RNG",
+      "actor": "A6",
+      "marker": "T11A6RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A7",
+      "fam": "RNG",
+      "actor": "A7",
+      "marker": "T11A7RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "RNG:A8",
+      "fam": "RNG",
+      "actor": "A8",
+      "marker": "T11A8RNGD-02",
+      "recipe": "RNG"
+    },
+    {
+      "key": "WPN:A4",
+      "fam": "WPN",
+      "actor": "A4",
+      "marker": "T11A4WPND-02",
+      "recipe": "WPN"
+    },
+    {
+      "key": "WPN:A6",
+      "fam": "WPN",
+      "actor": "A6",
+      "marker": "T11A6WPND-02",
+      "recipe": "WPN"
+    },
+    {
+      "key": "WPN:A8",
+      "fam": "WPN",
+      "actor": "A8",
+      "marker": "T11A8WPND-02",
+      "recipe": "WPN"
+    }
+  ],
+  "unprobeable_plan": [
+    {
+      "op": "OP-CMN-004",
+      "actor": "A4",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-004",
+      "actor": "A6",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-004",
+      "actor": "A8",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A4",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A6",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A8",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A3",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A4",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A5",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A6",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A7",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A8",
+      "fam": "CMN",
+      "reason": "CMN: sin objetivo descartable posible sin ORM (alta por API rota §8); no se apunta al consumo sembrado"
+    }
+  ],
+  "plan": [
+    "Derivados 150 objetivos EXPECTED_DENY no-RBAC de familias RNG·RES·LES·FRC·CMN·CAR·ARM·EJR·WPN ({\"ARM\":14,\"CAR\":15,\"CMN\":15,\"EJR\":13,\"FRC\":20,\"LES\":20,\"RES\":20,\"RNG\":22,\"WPN\":11}).",
+    "Descartables a crear por A1: 40 (ARM:A3, ARM:A4, ARM:A5, ARM:A6, ARM:A8, CAR:A3, CAR:A4, CAR:A5, CAR:A6, CAR:A7, CAR:A8, EJR:A4, EJR:A5, EJR:A6, EJR:A8, FRC:A3, FRC:A4, FRC:A6, FRC:A7, FRC:A8, LES:A3, LES:A4, LES:A6, LES:A7, LES:A8, RES:A3, RES:A4, RES:A6, RES:A7, RES:A8, RNG:A2, RNG:A3, RNG:A4, RNG:A5, RNG:A6, RNG:A7, RNG:A8, WPN:A4, WPN:A6, WPN:A8). Cadena RES/FRC/LES: polígono→lección→fracción→resultado, todo marcado y borrado por A1.",
+    "Parejas (consumo,arma) libres para CAR: 3; faltan 3 para 6 actores -> A1 siembra 3 armas (marcador T11SECDWPN-02) que se borran SOLO en cleanup.",
+    "No probadas declaradas: 12 celdas CMN con {id} (OP-CMN-004:A4, OP-CMN-004:A6, OP-CMN-004:A8, OP-CMN-005:A4, OP-CMN-005:A6, OP-CMN-005:A8, OP-CMN-006:A3, OP-CMN-006:A4, OP-CMN-006:A5, OP-CMN-006:A6, OP-CMN-006:A7, OP-CMN-006:A8).",
+    "Cada celda POST de colección se intenta directo; cada celda con {id} se intenta sobre su descartable.",
+    "Limpieza final por A1 + barrido estricto T11A|T11RT|T11R2 en las familias de residuo."
+  ],
+  "setup": [
+    {
+      "what": "wpn_seed_1",
+      "status": 201,
+      "id": 20
+    },
+    {
+      "what": "wpn_seed_2",
+      "status": 201,
+      "id": 21
+    },
+    {
+      "what": "wpn_seed_3",
+      "status": 201,
+      "id": 22
+    },
+    {
+      "what": "disc_ARM_A3",
+      "marker": "T11A3ARMD-02",
+      "status": 201,
+      "id": 11
+    },
+    {
+      "what": "disc_ARM_A4",
+      "marker": "T11A4ARMD-02",
+      "status": 201,
+      "id": 12
+    },
+    {
+      "what": "disc_ARM_A5",
+      "marker": "T11A5ARMD-02",
+      "status": 201,
+      "id": 13
+    },
+    {
+      "what": "disc_ARM_A6",
+      "marker": "T11A6ARMD-02",
+      "status": 201,
+      "id": 14
+    },
+    {
+      "what": "disc_ARM_A8",
+      "marker": "T11A8ARMD-02",
+      "status": 201,
+      "id": 15
+    },
+    {
+      "what": "disc_CAR_A3",
+      "marker": "T11A3CARD-02",
+      "status": 201,
+      "id": 7
+    },
+    {
+      "what": "disc_CAR_A4",
+      "marker": "T11A4CARD-02",
+      "status": 201,
+      "id": 8
+    },
+    {
+      "what": "disc_CAR_A5",
+      "marker": "T11A5CARD-02",
+      "status": 201,
+      "id": 9
+    },
+    {
+      "what": "disc_CAR_A6",
+      "marker": "T11A6CARD-02",
+      "status": 201,
+      "id": 10
+    },
+    {
+      "what": "disc_CAR_A7",
+      "marker": "T11A7CARD-02",
+      "status": 201,
+      "id": 11
+    },
+    {
+      "what": "disc_CAR_A8",
+      "marker": "T11A8CARD-02",
+      "status": 201,
+      "id": 12
+    },
+    {
+      "what": "disc_EJR_A4",
+      "marker": "T11A4EJRD-02",
+      "status": 201,
+      "id": 20
+    },
+    {
+      "what": "disc_EJR_A5",
+      "marker": "T11A5EJRD-02",
+      "status": 201,
+      "id": 21
+    },
+    {
+      "what": "disc_EJR_A6",
+      "marker": "T11A6EJRD-02",
+      "status": 201,
+      "id": 22
+    },
+    {
+      "what": "disc_EJR_A8",
+      "marker": "T11A8EJRD-02",
+      "status": 201,
+      "id": 23
+    },
+    {
+      "what": "disc_FRC_A3",
+      "marker": "T11A3FRCD-02",
+      "status": 201,
+      "id": 6,
+      "leccion_id": 6
+    },
+    {
+      "what": "disc_FRC_A4",
+      "marker": "T11A4FRCD-02",
+      "status": 201,
+      "id": 7,
+      "leccion_id": 7
+    },
+    {
+      "what": "disc_FRC_A6",
+      "marker": "T11A6FRCD-02",
+      "status": 201,
+      "id": 8,
+      "leccion_id": 8
+    },
+    {
+      "what": "disc_FRC_A7",
+      "marker": "T11A7FRCD-02",
+      "status": 201,
+      "id": 9,
+      "leccion_id": 9
+    },
+    {
+      "what": "disc_FRC_A8",
+      "marker": "T11A8FRCD-02",
+      "status": 201,
+      "id": 10,
+      "leccion_id": 10
+    },
+    {
+      "what": "disc_LES_A3",
+      "marker": "T11A3LESD-02",
+      "status": 201,
+      "id": 11,
+      "poligono_id": 11,
+      "organization_unit": 5
+    },
+    {
+      "what": "disc_LES_A4",
+      "marker": "T11A4LESD-02",
+      "status": 201,
+      "id": 12,
+      "poligono_id": 12,
+      "organization_unit": 5
+    },
+    {
+      "what": "disc_LES_A6",
+      "marker": "T11A6LESD-02",
+      "status": 201,
+      "id": 13,
+      "poligono_id": 13,
+      "organization_unit": 5
+    },
+    {
+      "what": "disc_LES_A7",
+      "marker": "T11A7LESD-02",
+      "status": 201,
+      "id": 14,
+      "poligono_id": 14,
+      "organization_unit": 5
+    },
+    {
+      "what": "disc_LES_A8",
+      "marker": "T11A8LESD-02",
+      "status": 201,
+      "id": 15,
+      "poligono_id": 15,
+      "organization_unit": 5
+    },
+    {
+      "what": "disc_RES_A3",
+      "marker": "T11A3RESD-02",
+      "status": 201,
+      "id": 4,
+      "leccion_id": 16,
+      "fraccion_id": 11,
+      "usuario_id": 71,
+      "arma_id": 17,
+      "arma_same_unit": true,
+      "attempts": 1,
+      "create_error": null
+    },
+    {
+      "what": "disc_RES_A4",
+      "marker": "T11A4RESD-02",
+      "status": 201,
+      "id": 5,
+      "leccion_id": 17,
+      "fraccion_id": 12,
+      "usuario_id": 72,
+      "arma_id": 17,
+      "arma_same_unit": true,
+      "attempts": 1,
+      "create_error": null
+    },
+    {
+      "what": "disc_RES_A6",
+      "marker": "T11A6RESD-02",
+      "status": 201,
+      "id": 6,
+      "leccion_id": 18,
+      "fraccion_id": 13,
+      "usuario_id": 73,
+      "arma_id": 17,
+      "arma_same_unit": true,
+      "attempts": 1,
+      "create_error": null
+    },
+    {
+      "what": "disc_RES_A7",
+      "marker": "T11A7RESD-02",
+      "status": 201,
+      "id": 7,
+      "leccion_id": 19,
+      "fraccion_id": 14,
+      "usuario_id": 74,
+      "arma_id": 17,
+      "arma_same_unit": true,
+      "attempts": 1,
+      "create_error": null
+    },
+    {
+      "what": "disc_RES_A8",
+      "marker": "T11A8RESD-02",
+      "status": 201,
+      "id": 8,
+      "leccion_id": 20,
+      "fraccion_id": 15,
+      "usuario_id": 75,
+      "arma_id": 17,
+      "arma_same_unit": true,
+      "attempts": 1,
+      "create_error": null
+    },
+    {
+      "what": "disc_RNG_A2",
+      "marker": "T11A2RNGD-02",
+      "status": 201,
+      "id": 21
+    },
+    {
+      "what": "disc_RNG_A3",
+      "marker": "T11A3RNGD-02",
+      "status": 201,
+      "id": 22
+    },
+    {
+      "what": "disc_RNG_A4",
+      "marker": "T11A4RNGD-02",
+      "status": 201,
+      "id": 23
+    },
+    {
+      "what": "disc_RNG_A5",
+      "marker": "T11A5RNGD-02",
+      "status": 201,
+      "id": 24
+    },
+    {
+      "what": "disc_RNG_A6",
+      "marker": "T11A6RNGD-02",
+      "status": 201,
+      "id": 25
+    },
+    {
+      "what": "disc_RNG_A7",
+      "marker": "T11A7RNGD-02",
+      "status": 201,
+      "id": 26
+    },
+    {
+      "what": "disc_RNG_A8",
+      "marker": "T11A8RNGD-02",
+      "status": 201,
+      "id": 27
+    },
+    {
+      "what": "disc_WPN_A4",
+      "marker": "T11A4WPND-02",
+      "status": 201,
+      "id": 23
+    },
+    {
+      "what": "disc_WPN_A6",
+      "marker": "T11A6WPND-02",
+      "status": 201,
+      "id": 24
+    },
+    {
+      "what": "disc_WPN_A8",
+      "marker": "T11A8WPND-02",
+      "status": 201,
+      "id": 25
+    }
+  ],
+  "cleanup": {
+    "ARM_A3": {
+      "id": 11,
+      "marker": "T11A3ARMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "ARM_A4": {
+      "id": 12,
+      "marker": "T11A4ARMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "ARM_A5": {
+      "id": 13,
+      "marker": "T11A5ARMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "ARM_A6": {
+      "id": 14,
+      "marker": "T11A6ARMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "ARM_A8": {
+      "id": 15,
+      "marker": "T11A8ARMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A3": {
+      "id": 7,
+      "marker": "T11A3CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A4": {
+      "id": 8,
+      "marker": "T11A4CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A5": {
+      "id": 9,
+      "marker": "T11A5CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A6": {
+      "id": 10,
+      "marker": "T11A6CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A7": {
+      "id": 11,
+      "marker": "T11A7CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAR_A8": {
+      "id": 12,
+      "marker": "T11A8CARD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "EJR_A4": {
+      "id": 20,
+      "marker": "T11A4EJRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "EJR_A5": {
+      "id": 21,
+      "marker": "T11A5EJRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "EJR_A6": {
+      "id": 22,
+      "marker": "T11A6EJRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "EJR_A8": {
+      "id": 23,
+      "marker": "T11A8EJRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "FRC_A3": {
+      "id": 6,
+      "marker": "T11A3FRCD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "FRC_A4": {
+      "id": 7,
+      "marker": "T11A4FRCD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "FRC_A6": {
+      "id": 8,
+      "marker": "T11A6FRCD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "FRC_A7": {
+      "id": 9,
+      "marker": "T11A7FRCD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "FRC_A8": {
+      "id": 10,
+      "marker": "T11A8FRCD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "LES_A3": {
+      "id": 11,
+      "marker": "T11A3LESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "LES_A4": {
+      "id": 12,
+      "marker": "T11A4LESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "LES_A6": {
+      "id": 13,
+      "marker": "T11A6LESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "LES_A7": {
+      "id": 14,
+      "marker": "T11A7LESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "LES_A8": {
+      "id": 15,
+      "marker": "T11A8LESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RES_A3": {
+      "id": 4,
+      "marker": "T11A3RESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "usuario": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "fraccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RES_A4": {
+      "id": 5,
+      "marker": "T11A4RESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "usuario": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "fraccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RES_A6": {
+      "id": 6,
+      "marker": "T11A6RESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "usuario": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "fraccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RES_A7": {
+      "id": 7,
+      "marker": "T11A7RESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "usuario": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "fraccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RES_A8": {
+      "id": 8,
+      "marker": "T11A8RESD-02",
+      "delete_status": 204,
+      "get_after": 404,
+      "usuario": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "fraccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "leccion": {
+        "delete_status": 204,
+        "get_after": 404
+      },
+      "poligono": {
+        "delete_status": 204,
+        "get_after": 404
+      }
+    },
+    "RNG_A2": {
+      "id": 21,
+      "marker": "T11A2RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A3": {
+      "id": 22,
+      "marker": "T11A3RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A4": {
+      "id": 23,
+      "marker": "T11A4RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A5": {
+      "id": 24,
+      "marker": "T11A5RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A6": {
+      "id": 25,
+      "marker": "T11A6RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A7": {
+      "id": 26,
+      "marker": "T11A7RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RNG_A8": {
+      "id": 27,
+      "marker": "T11A8RNGD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "WPN_A4": {
+      "id": 23,
+      "marker": "T11A4WPND-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "WPN_A6": {
+      "id": 24,
+      "marker": "T11A6WPND-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "WPN_A8": {
+      "id": 25,
+      "marker": "T11A8WPND-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "wpn_seed_20": {
+      "id": 20,
+      "marker": "T11SECDWPN-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "wpn_seed_21": {
+      "id": 21,
+      "marker": "T11SECDWPN-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "wpn_seed_22": {
+      "id": 22,
+      "marker": "T11SECDWPN-02",
+      "delete_status": 204,
+      "get_after": 404
+    }
+  },
+  "steps": [
+    {
+      "op": "OP-ARM-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/armorias/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/armorias/"
+    },
+    {
+      "op": "OP-ARM-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/armorias/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/armorias/"
+    },
+    {
+      "op": "OP-ARM-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/armorias/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/armorias/"
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/12/"
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/14/"
+    },
+    {
+      "op": "OP-ARM-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/15/"
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/12/"
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/14/"
+    },
+    {
+      "op": "OP-ARM-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/15/"
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/11/"
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/12/"
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/13/"
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/14/"
+    },
+    {
+      "op": "OP-ARM-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/armorias/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armorias/15/"
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-arma/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-arma/"
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-arma/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-arma/"
+    },
+    {
+      "op": "OP-CAR-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-arma/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-arma/"
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/8/"
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/10/"
+    },
+    {
+      "op": "OP-CAR-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/12/"
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/8/"
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/10/"
+    },
+    {
+      "op": "OP-CAR-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/12/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/7/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/8/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/9/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/10/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/11/"
+    },
+    {
+      "op": "OP-CAR-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-arma/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/consumos-arma/12/"
+    },
+    {
+      "op": "OP-CMN-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-municion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-municion/"
+    },
+    {
+      "op": "OP-CMN-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-municion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-municion/"
+    },
+    {
+      "op": "OP-CMN-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/consumos-municion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/consumos-municion/"
+    },
+    {
+      "op": "OP-CMN-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-CMN-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/consumos-municion/{id}/",
+      "status": null,
+      "verdict": "NO_RESPONSE",
+      "note": "NO PROBADA: CMN sin objetivo descartable sin ORM (alta por API rota §8)",
+      "target": "unprobeable"
+    },
+    {
+      "op": "OP-EJR-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/ejercicios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/ejercicios/"
+    },
+    {
+      "op": "OP-EJR-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/ejercicios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/ejercicios/"
+    },
+    {
+      "op": "OP-EJR-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/ejercicios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/ejercicios/"
+    },
+    {
+      "op": "OP-EJR-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/20/"
+    },
+    {
+      "op": "OP-EJR-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/22/"
+    },
+    {
+      "op": "OP-EJR-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/23/"
+    },
+    {
+      "op": "OP-EJR-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/20/"
+    },
+    {
+      "op": "OP-EJR-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/22/"
+    },
+    {
+      "op": "OP-EJR-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/23/"
+    },
+    {
+      "op": "OP-EJR-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/20/"
+    },
+    {
+      "op": "OP-EJR-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/21/"
+    },
+    {
+      "op": "OP-EJR-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/22/"
+    },
+    {
+      "op": "OP-EJR-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/ejercicios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/ejercicios/23/"
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/api/fracciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/fracciones/"
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/fracciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/fracciones/"
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/fracciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/fracciones/"
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/fracciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/fracciones/"
+    },
+    {
+      "op": "OP-FRC-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/fracciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/fracciones/"
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/6/"
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/7/"
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/8/"
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/9/"
+    },
+    {
+      "op": "OP-FRC-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/10/"
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/6/"
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/7/"
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/8/"
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/9/"
+    },
+    {
+      "op": "OP-FRC-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/10/"
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/6/"
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/7/"
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/8/"
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/9/"
+    },
+    {
+      "op": "OP-FRC-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/fracciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/fracciones/10/"
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/api/lecciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/lecciones/"
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/lecciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/lecciones/"
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/lecciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/lecciones/"
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/lecciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/lecciones/"
+    },
+    {
+      "op": "OP-LES-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/lecciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/lecciones/"
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/11/"
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/12/"
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/13/"
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/14/"
+    },
+    {
+      "op": "OP-LES-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/15/"
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/11/"
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/12/"
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/13/"
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/14/"
+    },
+    {
+      "op": "OP-LES-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/15/"
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/11/"
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/12/"
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/13/"
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/14/"
+    },
+    {
+      "op": "OP-LES-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/lecciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/lecciones/15/"
+    },
+    {
+      "op": "OP-RES-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/api/resultados/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/resultados/"
+    },
+    {
+      "op": "OP-RES-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/resultados/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/resultados/"
+    },
+    {
+      "op": "OP-RES-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/resultados/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/resultados/"
+    },
+    {
+      "op": "OP-RES-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/resultados/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/resultados/"
+    },
+    {
+      "op": "OP-RES-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/resultados/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/resultados/"
+    },
+    {
+      "op": "OP-RES-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/4/"
+    },
+    {
+      "op": "OP-RES-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/5/"
+    },
+    {
+      "op": "OP-RES-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/6/"
+    },
+    {
+      "op": "OP-RES-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/7/"
+    },
+    {
+      "op": "OP-RES-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/8/"
+    },
+    {
+      "op": "OP-RES-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/4/"
+    },
+    {
+      "op": "OP-RES-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/5/"
+    },
+    {
+      "op": "OP-RES-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/6/"
+    },
+    {
+      "op": "OP-RES-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/7/"
+    },
+    {
+      "op": "OP-RES-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/8/"
+    },
+    {
+      "op": "OP-RES-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/4/"
+    },
+    {
+      "op": "OP-RES-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/5/"
+    },
+    {
+      "op": "OP-RES-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/6/"
+    },
+    {
+      "op": "OP-RES-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/7/"
+    },
+    {
+      "op": "OP-RES-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/resultados/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/resultados/8/"
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/api/poligonos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/poligonos/"
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/poligonos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/poligonos/"
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/poligonos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/poligonos/"
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/poligonos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/poligonos/"
+    },
+    {
+      "op": "OP-RNG-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/poligonos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/poligonos/"
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/22/"
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/23/"
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/25/"
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/26/"
+    },
+    {
+      "op": "OP-RNG-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/27/"
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/22/"
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/23/"
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/25/"
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/26/"
+    },
+    {
+      "op": "OP-RNG-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/27/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A2",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/21/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/22/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/23/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/24/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/25/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/26/"
+    },
+    {
+      "op": "OP-RNG-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/poligonos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/poligonos/27/"
+    },
+    {
+      "op": "OP-WPN-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/armas/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/armas/"
+    },
+    {
+      "op": "OP-WPN-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/armas/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/armas/"
+    },
+    {
+      "op": "OP-WPN-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/23/"
+    },
+    {
+      "op": "OP-WPN-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/24/"
+    },
+    {
+      "op": "OP-WPN-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/25/"
+    },
+    {
+      "op": "OP-WPN-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/23/"
+    },
+    {
+      "op": "OP-WPN-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/24/"
+    },
+    {
+      "op": "OP-WPN-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/25/"
+    },
+    {
+      "op": "OP-WPN-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/23/"
+    },
+    {
+      "op": "OP-WPN-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/24/"
+    },
+    {
+      "op": "OP-WPN-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/armas/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/armas/25/"
+    }
+  ],
+  "sweep_strict": {
+    "token": "T11A|T11RT|T11R2",
+    "own_matches": 0,
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      },
+      "resultados": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 1,
+        "marker_matches": 0
+      },
+      "consumos-municion": {
+        "status": 200,
+        "count": 1,
+        "marker_matches": 0
+      }
+    }
+  },
+  "coverage": {
+    "expected_total": 150,
+    "expected_families": {
+      "RNG": 22,
+      "RES": 20,
+      "LES": 20,
+      "FRC": 20,
+      "CMN": 15,
+      "CAR": 15,
+      "ARM": 14,
+      "EJR": 13,
+      "WPN": 11
+    },
+    "derived_total": 150,
+    "derived_families": {
+      "ARM": 14,
+      "CAR": 15,
+      "CMN": 15,
+      "EJR": 13,
+      "FRC": 20,
+      "LES": 20,
+      "RES": 20,
+      "RNG": 22,
+      "WPN": 11
+    },
+    "ok": true,
+    "missing": [],
+    "extra": [],
+    "global_total": 341
+  },
+  "summary": {
+    "dry": false,
+    "targets_total": 150,
+    "family_counts": {
+      "ARM": 14,
+      "CAR": 15,
+      "CMN": 15,
+      "EJR": 13,
+      "FRC": 20,
+      "LES": 20,
+      "RES": 20,
+      "RNG": 22,
+      "WPN": 11
+    },
+    "discardables_planned": 40,
+    "unprobeable_planned": 12,
+    "steps": 150,
+    "planned": 0,
+    "match_deny": 138,
+    "mismatch_allow": 0,
+    "other": 0,
+    "no_response": 12,
+    "coverage_expected": 150,
+    "coverage_derived": 150,
+    "coverage_ok": true,
+    "global_total": 341,
+    "sweep_own_matches": 0
+  },
+  "page_errors": []
+}

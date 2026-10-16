@@ -1,0 +1,204 @@
+{
+  "schema": "frontend-t11-v1g-user-editor/v1",
+  "date": "2026-10-15",
+  "task": "T11 V1g — editor de cuenta por UI: PUT y PATCH separados + baja (alias A3 acreditado)",
+  "alias": "A3",
+  "stage": "residue",
+  "acreditacion": {
+    "alias_claimed": "A3",
+    "private_role_expected": "admin_unidad",
+    "alias_matched": true,
+    "missing_field": null,
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "admin_unidad",
+      "assignments_roles": [
+        {
+          "role": "admin_unidad",
+          "is_primary": true
+        },
+        {
+          "role": "tirador",
+          "is_primary": false
+        }
+      ],
+      "permissions_count": 19
+    }
+  },
+  "unit": {
+    "marker": "T11A3USRMVABGZKI",
+    "code": "T11A3USRMVABGZKIU",
+    "id": 43,
+    "create": {
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "raw": "/api/organization-units/",
+      "status": 201
+    },
+    "create_response_field_names": [
+      "code",
+      "id",
+      "is_active",
+      "name",
+      "parent",
+      "parent_code",
+      "tenant",
+      "unit_type"
+    ],
+    "in_assignable_units": true,
+    "parent_selected": true
+  },
+  "user": {
+    "marker": "T11A3USRMVABGZKI",
+    "id": 44,
+    "create": {
+      "method": "POST",
+      "path": "/api/usuarios/",
+      "raw": "/api/usuarios/",
+      "status": 201
+    },
+    "field_names": [
+      "apellido_materno",
+      "apellido_paterno",
+      "assignments",
+      "correo",
+      "grado",
+      "habilitado",
+      "id_usuario",
+      "is_locked",
+      "must_change_password",
+      "nombre",
+      "password_changed_at",
+      "primary_assignment",
+      "rut"
+    ],
+    "booleans": {
+      "habilitado": true,
+      "is_locked": false,
+      "must_change_password": true
+    },
+    "primary_returned": {
+      "unit_matches_created": true,
+      "role_code": "oficial_observador",
+      "scope_code": null
+    },
+    "assignments_returned_count": 2
+  },
+  "membership": {
+    "applicable": true,
+    "note": "POST /api/usuarios/ with initial_unit_code creates a UnitMembership + implicit tirador Assignment on the server (apipoligono/views.py:326-327). Membership was not exercised through its own UI form."
+  },
+  "user_edit": {
+    "put": {
+      "opened": true,
+      "method_set": "PUT",
+      "status": 200
+    },
+    "patch": {
+      "opened": true,
+      "method_set": "PATCH",
+      "status": 200
+    }
+  },
+  "api_confirm": {
+    "get_status": 200,
+    "nombre_after": "T11A3USRMVABGZKI patch"
+  },
+  "user_delete": {
+    "method": "DELETE",
+    "path": "/api/usuarios/44/",
+    "raw": "/api/usuarios/44/",
+    "status": 204
+  },
+  "positions_cleanup": [
+    {
+      "method": "DELETE",
+      "raw": "/api/posiciones/66/",
+      "status": 204
+    },
+    {
+      "method": "DELETE",
+      "raw": "/api/posiciones/67/",
+      "status": 204
+    }
+  ],
+  "unit_delete": null,
+  "verify": {
+    "user_get_before_delete": 200,
+    "user_get_after_delete": 404,
+    "unit_get_after_delete": 200
+  },
+  "residue": {
+    "users_rows_with_marker": 0,
+    "positions_rows_with_marker": 0
+  },
+  "gate": {
+    "actor_role": "admin_unidad",
+    "used_super_admin_bypass": false,
+    "created_role": "oficial_observador",
+    "created_role_privileged": false,
+    "secondary_role": "oficial_tiro",
+    "unit_is_own_disposable": true,
+    "credentials_printed_or_persisted": false,
+    "created_account_login_attempted": false
+  },
+  "cleanup_errors": [
+    "unit_delete:locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a.organization-view__tree-link').filter({ hasText: 'T11A3USR"
+  ],
+  "network": {
+    "total_api_calls": 63,
+    "mutations": [
+      {
+        "method": "POST",
+        "path": "/api/organization-units/",
+        "raw": "/api/organization-units/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/usuarios/",
+        "raw": "/api/usuarios/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/usuarios/{id}/",
+        "raw": "/api/usuarios/44/",
+        "status": 200
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/usuarios/{id}/",
+        "raw": "/api/usuarios/44/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/usuarios/{id}/",
+        "raw": "/api/usuarios/44/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/posiciones/{id}/",
+        "raw": "/api/posiciones/66/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/posiciones/{id}/",
+        "raw": "/api/posiciones/67/",
+        "status": 204
+      }
+    ]
+  },
+  "page_errors": []
+}

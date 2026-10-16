@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-10",
+  "workstream": "dev-account19-context-ui-oct10",
+  "channel": "inume-worker",
+  "writer": "Code-Transmuter",
+  "writer_session": "ses_code-transmuter-1791659686",
+  "delivery": "BLOCKED",
+  "objective_verdict": "NOT_VERIFIED",
+  "existing_helper": "/tmp/opencode/dev-additional-account-own-position-oct10/context-observe.cjs",
+  "reported_check": { "command": "node --check", "exit_code": 0 },
+  "reported_runtime_step": "profile_open_lock_or_browser_block",
+  "focal_source_check": {
+    "source": "context-observe.cjs:249-258",
+    "result": "A catch around launchPersistentContext emits the same blocker code for every launch error and returns before page/UI observation",
+    "specific_error_class_retained": false,
+    "profile_lock_confirmed": false,
+    "browser_unavailable_confirmed": false,
+    "read_known_codes_reached_in_reported_path": false
+  },
+  "ui_observation_artifact": {
+    "expected_path": "/tmp/opencode/dev-additional-account-own-position-oct10/context-ui-observation.json",
+    "created_by_attempt": false,
+    "basis": "Writer report and inspected failure path; not replaced with a fabricated observation"
+  },
+  "not_observed": ["Current URL", "Current login/institution/unit forms", "Context response or error body", "Unit selection", "Dashboard", "Current cause of prior context403"],
+  "not_performed_as_reported": ["Database query", "Database write", "Account creation or reset", "Application changes", "Form submission", "Alternative browser/tool channel", "Credential or profile content inspection"],
+  "accepted": ["Temporary helper exists", "Inspected launch-failure path does not produce a specific diagnosis or UI observation"],
+  "not_accepted_as_proven": ["The launch error is definitely a profile lock", "The previous context403 has a known cause", "Access or integral frontend acceptance is complete"],
+  "disposition": "Access work stopped under the existing intact-guard rule. A controlled recovery scope requires an explicit operator decision; no automatic retry or reset",
+  "F10_closed": false,
+  "spec_closed": false
+}

@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-10",
+  "source_artifact": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-observation.json",
+  "source_observed_at_utc": "2026-10-10T21:08:48.959Z",
+  "source_read_by_orchestrator": true,
+  "writer_session": "ses_code-transmuter-1791659686",
+  "delivery": "BLOCKED",
+  "assessment": "CORRECTION_REQUIRED",
+  "objective_verdict": "NOT_VERIFIED",
+  "observed_artifact_fields": {
+    "launch_diagnostic": "other_launch_error",
+    "launch_attempts": [{ "phase": "initial", "classification": "other_launch_error" }],
+    "owner_proven": false,
+    "normal_close_attempted": false,
+    "ui": {},
+    "preflight_status": "not_required",
+    "reset_attempted": false,
+    "reset_performed": false,
+    "reset_commit": "not_attempted",
+    "api": {},
+    "target_rows": null,
+    "disposition": "blocked"
+  },
+  "focal_source_check": {
+    "source": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-runner.cjs:362-394",
+    "result": "Four fixed classifications fall through to other_launch_error; the next layer discards diagnostic detail before any UI observation",
+    "original_executable_and_profile_match": "Confirmed by comparison with runner.cjs:7-10; no inferred change of executable",
+    "specific_launch_cause_confirmed": false
+  },
+  "reported_by_writer_not_independent_sql": {
+    "database_not_queried": true,
+    "database_not_modified": true,
+    "application_not_modified": true,
+    "processes_not_closed": true,
+    "node_check_exit_code": 0
+  },
+  "single_correction": {
+    "dispatched": true,
+    "same_channel_and_session": true,
+    "scope": "Retain only allowlisted error class/code and non-sensitive browser prerequisite booleans; keep profile/executable/options and guards unchanged",
+    "new_expected_artifact": "/tmp/opencode/dev-additional-account-own-position-oct10/recovery-observation-correction.json",
+    "further_automatic_round_authorized": false
+  },
+  "accepted": ["Initial recovery artifact exists and was read", "No UI/context/reset observed in that artifact"],
+  "not_accepted": ["other_launch_error is a specific cause", "A syntax check establishes recovery", "Access or integral frontend is complete"],
+  "F10_closed": false,
+  "spec_closed": false
+}

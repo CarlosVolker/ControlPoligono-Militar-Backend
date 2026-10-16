@@ -1,0 +1,265 @@
+{
+  "schema": "frontend-a3-residue-cleanup/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — limpieza del residuo de la corrida A3 (admin_unidad) usando el alias A1",
+  "delivery_scope": "UI-driven cleanup of A3 disposable residue (weapon 14, exercise 15, temp user) using alias A1; not an acceptance verdict",
+  "source_paths": [
+    ".cache/frontend-acceptance/2026-10-14/a3-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "source_records": {
+    "weapon": {
+      "id": 14,
+      "serie": "A3CFMV8F5G61S1"
+    },
+    "exercise": {
+      "id": 15,
+      "nombre": "A3CFMV8F5G61 ejercicio patch"
+    },
+    "temp_rut_marker": "01040409-6",
+    "run_marker": "A3CFMV8F5G61"
+  },
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A1->super_admin; credentials.json provisions exactly one super_admin account (same private file used by the 2026-10-14 tandas)",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "assignments_roles": [
+        {
+          "role": "super_admin",
+          "is_primary": true,
+          "scope_present": false
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "permissions_count": 41
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "records": {
+    "weapon": {
+      "id": 14,
+      "serie": "A3CFMV8F5G61S1",
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/armas/14/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/armas/14/",
+        "status": 204,
+        "driver": "UI (Eliminar → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/armas/14/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    },
+    "exercise": {
+      "id": 15,
+      "nombre": "A3CFMV8F5G61 ejercicio patch",
+      "found_by_ui": true,
+      "locate_method": "list_href",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/ejercicios/15/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/ejercicios/15/",
+        "status": 204,
+        "driver": "UI (Eliminar → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/ejercicios/15/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    },
+    "temp_user": {
+      "rut_marker": "01040409-6",
+      "found_by_ui": true,
+      "locate_method": "list_row",
+      "id": "40",
+      "get_before": {
+        "method": "GET",
+        "path": "/api/usuarios/40/",
+        "status": 200,
+        "source": "UI"
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/usuarios/40/",
+        "status": 204,
+        "driver": "UI (Dar de baja → Confirmar baja)"
+      },
+      "get_after": {
+        "method": "GET",
+        "path": "/api/usuarios/40/",
+        "status": 404
+      },
+      "outcome": "delete_ok"
+    }
+  },
+  "sweep": {
+    "marker_prefix": "A3CF",
+    "run_marker": "A3CFMV8F5G61",
+    "families": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 12,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 45,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 16,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 18,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": [],
+        "temp_rut_matches": 0
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 3,
+        "own_marker": 0,
+        "own_including_rut": 0,
+        "matched": []
+      }
+    },
+    "own_marker_total": 0
+  },
+  "mutations": [
+    {
+      "screen": "weapon",
+      "method": "DELETE",
+      "path": "/api/armas/14/",
+      "status": 204,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "exercise",
+      "method": "DELETE",
+      "path": "/api/ejercicios/15/",
+      "status": 204,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "temp_user",
+      "method": "DELETE",
+      "path": "/api/usuarios/40/",
+      "status": 204,
+      "kind": "cleanup"
+    }
+  ],
+  "limits": [
+    "Sólo registros descartables de la corrida A3 (arma 14, ejercicio 15, usuario temporal por RUT descartable propio); no se tocaron personas reales, cuentas ajenas, roles privilegiados ni puestos con titular.",
+    "Cero escrituras de RBAC, backend, base de datos, dependencias o migraciones; sólo la API real del backend ya en marcha.",
+    "DELETE 204 / GET 404 documentan ausencia en la respuesta del servidor; NO acreditan borrado físico.",
+    "Si un registro sigue sin poder darse de baja, se reporta tal cual; no se repara por base de datos.",
+    "No se imprimen ni persisten credenciales ni el valor del tenant."
+  ],
+  "errors": [],
+  "harness": {
+    "stage": "done",
+    "error": null
+  },
+  "diagnostics": [
+    {
+      "where": "exercise.delete",
+      "diag": {
+        "url": "/tiro/ejercicios/15",
+        "modalPresent": false,
+        "modalButtons": null,
+        "alerts": [
+          "El servidor respondió 204 a la baja. Consultando de nuevo la ficha y las colecciones relac",
+          "No EjercicioMilitar matches the given query.Reintentar lectura"
+        ]
+      }
+    }
+  ],
+  "network": {
+    "total_api_calls": 34,
+    "mutations": [
+      {
+        "method": "DELETE",
+        "path": "/api/armas/{id}/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/ejercicios/{id}/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/usuarios/{id}/",
+        "status": 204
+      }
+    ]
+  }
+}

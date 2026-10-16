@@ -1,0 +1,655 @@
+{
+  "schema": "frontend-a6-core-families-ui/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — aceptación por actor A6 (oficial_observador), familias núcleo por UI",
+  "delivery_scope": "UI-driven exercise of A6 pending core-family reads, detail GETs and real denials; observer role; not an acceptance verdict",
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/frontend-acceptance/2026-10-14/a5-core-families-ui.json",
+    ".cache/frontend-acceptance/2026-10-14/a5-readonly-detail-probe.json",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A6",
+    "private_role_expected": "oficial_observador",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A6->oficial_observador",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "oficial_observador",
+      "assignments_roles": [
+        {
+          "role": "oficial_observador",
+          "is_primary": true,
+          "scope_present": true
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "scopes_count": 2,
+      "active_unit_present": false,
+      "unit_membership_present": true,
+      "permissions_count": 4
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "operations": [
+    {
+      "family": "unidades",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/organization-units/",
+      "status": 200,
+      "driver": "UI (navegación)"
+    },
+    {
+      "family": "unidades",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/organization-units/{id}/",
+      "status": 200,
+      "driver": "UI (ficha de unidad existente, solo lectura)"
+    },
+    {
+      "family": "puestos",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/posiciones/",
+      "status": 200,
+      "driver": "UI (navegación)"
+    },
+    {
+      "family": "puestos",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "driver": "UI (ficha de puesto existente, solo lectura)"
+    },
+    {
+      "family": "puestos",
+      "operation": "history",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/historico/",
+      "status": 200,
+      "driver": "UI (ficha carga histórico, solo lectura)"
+    },
+    {
+      "family": "puestos",
+      "operation": "history_tab",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/historico/",
+      "status": 200,
+      "driver": "UI (pestaña Histórico, solo lectura)"
+    },
+    {
+      "family": "puestos",
+      "operation": "assign_holder",
+      "method": "POST",
+      "path": "/api/posiciones/{id}/asignar-holder/",
+      "status": null,
+      "driver": "no ejercido (gate + rol)",
+      "note": "A6 no ofrece asignar holder (sin position:update); además asignar dejaría el puesto indeleble (DELETE 500 con assignment, deuda backend §11)"
+    },
+    {
+      "family": "membresías",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/memberships/",
+      "status": 200,
+      "driver": "UI (navegación)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/usuarios/",
+      "status": 200,
+      "driver": "UI (navegación /personas)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/usuarios/{id}/",
+      "status": 200,
+      "driver": "UI (ficha de usuario existente, solo lectura)"
+    },
+    {
+      "family": "calibres",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/calibres/",
+      "status": 200,
+      "driver": "UI (navegación /almacen/calibres)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/ejercicios/",
+      "status": 200,
+      "driver": "UI (navegación /tiro/ejercicios)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "driver": "UI (ficha de ejercicio existente, solo lectura)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API/UI (lectura de la apariencia propia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "write",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "UI (selección de eje accent)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read_confirm",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API (confirmación de persistencia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "reset",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "driver": "UI (Restablecer valores por defecto)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list_roles",
+      "method": "GET",
+      "path": "/api/authz/roles/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list_role_categories",
+      "method": "GET",
+      "path": "/api/authz/role-categories/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "role_detail",
+      "method": "GET",
+      "path": "/api/authz/roles/{id}/",
+      "status": 200,
+      "driver": "UI (botón Detalle del rol)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list_scopes",
+      "method": "GET",
+      "path": "/api/authz/scopes/",
+      "status": 200,
+      "driver": "UI (navegación /personas/scopes)"
+    },
+    {
+      "family": "autorización",
+      "operation": "scope_detail",
+      "method": "GET",
+      "path": "/api/authz/scopes/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del scope)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list_permissions",
+      "method": "GET",
+      "path": "/api/authz/permissions/",
+      "status": 200,
+      "driver": "UI (navegación /personas/permisos)"
+    },
+    {
+      "family": "autorización",
+      "operation": "permission_detail",
+      "method": "GET",
+      "path": "/api/authz/permissions/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "role_matrix",
+      "method": "GET",
+      "path": "/api/authz/role-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz rol → permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "position_matrix",
+      "method": "GET",
+      "path": "/api/authz/position-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz puesto → permiso)"
+    }
+  ],
+  "route_checks": [
+    {
+      "surface": "unidad/5",
+      "buttons": [
+        {
+          "t": "—",
+          "disabled": false
+        },
+        {
+          "t": "Volver al árbol",
+          "disabled": false
+        },
+        {
+          "t": "Actualizar",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "route": "/organizacion/recintos",
+      "landed": "/organizacion/recintos",
+      "list_get_status": null,
+      "surface": {
+        "path": "/organizacion/recintos",
+        "denial": true,
+        "shell": true,
+        "neutral": false,
+        "hasText": true
+      },
+      "note": "ruta con visibilidad por view_recinto; A6 (observador) no lo tiene: la UI resolvió fail-closed (contenedor neutral \"Acceso denegado\") y NO emitió GET"
+    },
+    {
+      "surface": "puesto/9",
+      "buttons": [
+        {
+          "t": "—",
+          "disabled": false
+        },
+        {
+          "t": "Volver a puestos",
+          "disabled": false
+        },
+        {
+          "t": "Cargar / reconciliar lectura",
+          "disabled": false
+        },
+        {
+          "t": "Holders",
+          "disabled": false
+        },
+        {
+          "t": "Histórico",
+          "disabled": false
+        },
+        {
+          "t": "Datos",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "surface": "membresías (filas)",
+      "rows": [
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "surface": "usuario/20",
+      "buttons": [
+        {
+          "t": "—",
+          "disabled": false
+        },
+        {
+          "t": "Volver a personas",
+          "disabled": false
+        },
+        {
+          "t": "Cargar / reconciliar lectura",
+          "disabled": false
+        },
+        {
+          "t": "Identidad",
+          "disabled": false
+        },
+        {
+          "t": "Asignaciones",
+          "disabled": false
+        },
+        {
+          "t": "Credenciales y pertenencias",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "route": "/almacen/armas",
+      "landed": "/almacen/armas",
+      "list_get_status": null,
+      "surface": {
+        "path": "/almacen/armas",
+        "denial": true,
+        "shell": true,
+        "neutral": false,
+        "hasText": true
+      },
+      "note": "ruta con visibilidad por view_warehouse; A6 (observador) no lo tiene: la UI resolvió fail-closed (contenedor neutral \"Acceso denegado\") y NO emitió GET"
+    },
+    {
+      "surface": "ejercicio/16",
+      "buttons": [
+        {
+          "t": "—",
+          "disabled": false
+        },
+        {
+          "t": "Consumos de munición",
+          "disabled": false
+        },
+        {
+          "t": "Consumos por arma",
+          "disabled": false
+        },
+        {
+          "t": "Actualizar",
+          "disabled": false
+        },
+        {
+          "t": "Volver a ejercicios",
+          "disabled": false
+        },
+        {
+          "t": "Editar",
+          "disabled": true
+        },
+        {
+          "t": "Eliminar",
+          "disabled": true
+        },
+        {
+          "t": "Abrir consumos de munición",
+          "disabled": false
+        },
+        {
+          "t": "Actualizar relaciones",
+          "disabled": false
+        }
+      ]
+    }
+  ],
+  "not_offered": [
+    {
+      "family": "unidades",
+      "operation": "POST /api/organization-units/",
+      "reason": "botón \"Crear unidad\" ausente (rol observador sin permiso de alta)"
+    },
+    {
+      "family": "unidades",
+      "operation": "PUT/PATCH/DELETE /api/organization-units/{id}/ (ficha existente)",
+      "reason": "rol observador sin permiso de edición/baja; la ficha no ofrece esas acciones"
+    },
+    {
+      "family": "recintos",
+      "operation": "POST/PUT/PATCH/DELETE /api/recintos/",
+      "reason": "ruta /organizacion/recintos fail-closed al rol observador (sin view_recinto): la UI mostró contenedor neutral \"Acceso denegado\" sin emitir request; no se forzó la API"
+    },
+    {
+      "family": "recintos",
+      "operation": "GET /api/recintos/ (lista)",
+      "reason": "ruta fail-closed al rol observador (sin view_recinto); no se emitió GET de recintos desde la UI"
+    },
+    {
+      "family": "puestos",
+      "operation": "POST /api/posiciones/",
+      "reason": "botón \"Crear puesto\" ausente (rol observador sin permiso de alta)"
+    },
+    {
+      "family": "puestos",
+      "operation": "PUT/PATCH/DELETE /api/posiciones/{id}/ (ficha existente)",
+      "reason": "rol observador sin permiso de edición/baja; la ficha no ofrece esas acciones"
+    },
+    {
+      "family": "membresías",
+      "operation": "GET /api/memberships/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de membresía en el cliente"
+    },
+    {
+      "family": "membresías",
+      "operation": "POST /api/memberships/",
+      "reason": "botón \"Crear pertenencia\" ausente (rol observador sin permiso de alta)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "POST /api/usuarios/crear-temporal/",
+      "reason": "botón \"Alta temporal\" ausente (rol observador sin permiso de alta)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "PUT/PATCH/DELETE /api/usuarios/{id}/",
+      "reason": "rol observador sin permiso de edición/baja; la ficha no ofrece esas acciones"
+    },
+    {
+      "family": "calibres",
+      "operation": "POST/PUT/PATCH/DELETE /api/calibres/",
+      "reason": "la UI no ofrece mutación de calibre para A6 (gating manage); no se forzó la API"
+    },
+    {
+      "family": "calibres",
+      "operation": "GET /api/calibres/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de calibre en el cliente"
+    },
+    {
+      "family": "armas",
+      "operation": "GET /api/armas/ (lista)",
+      "reason": "ruta /almacen/armas fail-closed al rol observador (sin view_warehouse); no se emitió GET de armas desde la UI"
+    },
+    {
+      "family": "armas",
+      "operation": "POST/PUT/PATCH/DELETE /api/armas/",
+      "reason": "ruta fail-closed al rol observador (sin view_warehouse): la UI mostró contenedor neutral \"Acceso denegado\" sin emitir request; no se forzó la API"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "POST /api/ejercicios/",
+      "reason": "botón \"Crear ejercicio\" presente pero deshabilitado (rol observador sin permiso de alta)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "PUT/PATCH/DELETE /api/ejercicios/{id}/",
+      "reason": "rol observador sin permiso de edición/baja; la ficha no ofrece esas acciones"
+    }
+  ],
+  "blocked": [],
+  "denials": [
+    {
+      "family": "autorización",
+      "operation": "role_matrix",
+      "method": "GET",
+      "path": "/api/authz/role-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz rol → permiso)",
+      "note": "backend denegó la acción ofrecida por la UI"
+    },
+    {
+      "family": "autorización",
+      "operation": "position_matrix",
+      "method": "GET",
+      "path": "/api/authz/position-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz puesto → permiso)",
+      "note": "backend denegó la acción ofrecida por la UI"
+    }
+  ],
+  "diagnostics": [],
+  "mutations": [
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "appearance",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "kind": "reset"
+    }
+  ],
+  "cleanup": {
+    "designed": [
+      "unidad descartable: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "recinto descartable: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "puesto descartable SIN holder: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "membresía descartable: baja por UI (si la UI la ofrece)",
+      "usuario temporal descartable: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "arma descartable: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "ejercicio descartable: baja por UI desde la ficha propia (si la UI la ofrece)",
+      "apariencia propia: restaurar ejes derivados al valor previo por UI",
+      "limpieza SÓLO por UI: si el rol no ofrece/deniega la baja, se reporta como residuo para limpieza posterior con otro actor; NO se fuerza DELETE por API",
+      "barrido final: listar unidades/recintos/puestos/membresías/usuarios/armas/ejercicios y contar residuo propio por marcador"
+    ],
+    "executed": [
+      {
+        "step": "appearance_restore",
+        "axes_drifted": []
+      }
+    ],
+    "residue": [],
+    "appearance_final": {
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "restored_to_pre": true
+    },
+    "residue_sweep": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 403,
+        "total": 0,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 13,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 403,
+        "total": 0,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 0,
+        "marker_prefix": "A6CF",
+        "run_marker": "A6CFMV8GVQEQ",
+        "own_ids": []
+      }
+    }
+  },
+  "limits": [
+    "Sólo actores/registros descartables propios con marcador; no se tocaron personas reales, cuentas ajenas, roles, puestos con titular único ocupado ni RBAC.",
+    "Cero escrituras en roles/permisos/overrides/position-permissions; cero cambios de backend, base de datos o dependencias.",
+    "A6 (oficial_observador) es rol de lectura; el contexto reporta 4 permisos efectivos (view_unit + view_self + view_personnel_basic + view_exercises): la secundaria tirador aporta view_personnel_basic/view_exercises. Rutas de recintos y armas quedan fail-closed (sin view_recinto/view_warehouse) con contenedor neutral y sin request; se registran como no ofrecidas con su route_check. NO se forzó la API en ningún caso.",
+    "Limpieza SÓLO por UI: no se forzó DELETE por API. Lo que el rol no pudo dar de baja por la interfaz queda reportado como residuo para limpieza posterior con otro actor.",
+    "Puesto descartable, si se hubiera ofrecido, se crea SIN holder; la rama asignar/quitar holder NO se ejerce (DELETE /api/posiciones/{id}/ = 500 con assignment asociada, deuda backend §11).",
+    "Limpieza: DELETE 2xx / GET 404 documentan ausencia en la respuesta del servidor; no se afirma borrado físico.",
+    "expected_by_actor sigue NOT_VERIFIED; esta corrida no emite veredicto de aceptación."
+  ],
+  "errors": [],
+  "harness": {
+    "marker": "A6CFMV8GVQEQ",
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 52,
+    "mutations": [
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 204
+      }
+    ]
+  }
+}

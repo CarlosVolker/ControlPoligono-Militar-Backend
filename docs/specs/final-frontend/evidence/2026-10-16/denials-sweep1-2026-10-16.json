@@ -1,0 +1,3099 @@
+{
+  "schema": "frontend-t11-denials-sweep1/v1",
+  "date": "2026-10-16",
+  "dry": false,
+  "sweep": "sweep1",
+  "purpose": "Barrido de denegaciones de escritura no-RBAC (identidad/organización): cada celda EXPECTED_DENY NOT_EXERCISED se prueba con la sesión real del actor y se espera 403.",
+  "families": [
+    "USR",
+    "RCT",
+    "POS",
+    "CAL",
+    "UNT",
+    "MEM"
+  ],
+  "excluded_families_rbac": [
+    "OP-OVR-*",
+    "OP-PPR-*",
+    "OP-RPR-*",
+    "OP-ROL-*"
+  ],
+  "method": "Sesión real por alias (login UI + /api/auth/context/ 200 con rol) + CSRF real. POST de colección: intento directo. PUT/PATCH/DELETE y POST con {id}: intento sobre descartable de A1 con marcador T11<ALIAS><FAM>D-02.",
+  "notes": {
+    "cert_rule": "solo 403 exacto se certifica como denegación; 2xx se registra como MISMATCH_ALLOW; 404/401/500 como OTHER",
+    "wrong_expectation": "si el status fuera 2xx, la fila creada/mutada entra a la limpieza de A1",
+    "unprotected_targets": "nunca se apunta a contenido certificado: CAL usa un calibre descartable; el resto usa descartables por familia/unidad",
+    "marker_without_row_field": "MEM vive en la cuenta del usuario descartable (UnitMembership no tiene campo de texto con marcador)",
+    "csrf": "el token CSRF se lee de la cookie csrftoken de cada contexto; solo se extrae en corrida real"
+  },
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A4": {
+      "alias": "A4",
+      "private_role_expected": "comandante_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "comandante_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    },
+    "A6": {
+      "alias": "A6",
+      "private_role_expected": "oficial_observador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_observador"
+      },
+      "alias_matched": true
+    },
+    "A7": {
+      "alias": "A7",
+      "private_role_expected": "encargado_almacen",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "encargado_almacen"
+      },
+      "alias_matched": true
+    },
+    "A8": {
+      "alias": "A8",
+      "private_role_expected": "tirador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tirador"
+      },
+      "alias_matched": true
+    }
+  },
+  "preflight": {
+    "units": {
+      "source_alias": "A3",
+      "shared_status": 200,
+      "shared_code_len": 5,
+      "other_resolved": true
+    }
+  },
+  "targets_total": 191,
+  "family_counts": {
+    "CAL": 28,
+    "MEM": 20,
+    "POS": 30,
+    "RCT": 30,
+    "UNT": 25,
+    "USR": 58
+  },
+  "discardable_plan": [
+    {
+      "key": "CAL:A2",
+      "fam": "CAL",
+      "actor": "A2",
+      "marker": "T11A2CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A3",
+      "fam": "CAL",
+      "actor": "A3",
+      "marker": "T11A3CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A4",
+      "fam": "CAL",
+      "actor": "A4",
+      "marker": "T11A4CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A5",
+      "fam": "CAL",
+      "actor": "A5",
+      "marker": "T11A5CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A6",
+      "fam": "CAL",
+      "actor": "A6",
+      "marker": "T11A6CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A7",
+      "fam": "CAL",
+      "actor": "A7",
+      "marker": "T11A7CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "CAL:A8",
+      "fam": "CAL",
+      "actor": "A8",
+      "marker": "T11A8CALD-02",
+      "recipe": "CAL"
+    },
+    {
+      "key": "MEM:A4",
+      "fam": "MEM",
+      "actor": "A4",
+      "marker": "T11A4MEMD-02",
+      "recipe": "MEM"
+    },
+    {
+      "key": "MEM:A5",
+      "fam": "MEM",
+      "actor": "A5",
+      "marker": "T11A5MEMD-02",
+      "recipe": "MEM"
+    },
+    {
+      "key": "MEM:A6",
+      "fam": "MEM",
+      "actor": "A6",
+      "marker": "T11A6MEMD-02",
+      "recipe": "MEM"
+    },
+    {
+      "key": "MEM:A7",
+      "fam": "MEM",
+      "actor": "A7",
+      "marker": "T11A7MEMD-02",
+      "recipe": "MEM"
+    },
+    {
+      "key": "MEM:A8",
+      "fam": "MEM",
+      "actor": "A8",
+      "marker": "T11A8MEMD-02",
+      "recipe": "MEM"
+    },
+    {
+      "key": "POS:A4",
+      "fam": "POS",
+      "actor": "A4",
+      "marker": "T11A4POSD-02",
+      "recipe": "POS"
+    },
+    {
+      "key": "POS:A5",
+      "fam": "POS",
+      "actor": "A5",
+      "marker": "T11A5POSD-02",
+      "recipe": "POS"
+    },
+    {
+      "key": "POS:A6",
+      "fam": "POS",
+      "actor": "A6",
+      "marker": "T11A6POSD-02",
+      "recipe": "POS"
+    },
+    {
+      "key": "POS:A7",
+      "fam": "POS",
+      "actor": "A7",
+      "marker": "T11A7POSD-02",
+      "recipe": "POS"
+    },
+    {
+      "key": "POS:A8",
+      "fam": "POS",
+      "actor": "A8",
+      "marker": "T11A8POSD-02",
+      "recipe": "POS"
+    },
+    {
+      "key": "RCT:A4",
+      "fam": "RCT",
+      "actor": "A4",
+      "marker": "T11A4RCTD-02",
+      "recipe": "RCT"
+    },
+    {
+      "key": "RCT:A5",
+      "fam": "RCT",
+      "actor": "A5",
+      "marker": "T11A5RCTD-02",
+      "recipe": "RCT"
+    },
+    {
+      "key": "RCT:A6",
+      "fam": "RCT",
+      "actor": "A6",
+      "marker": "T11A6RCTD-02",
+      "recipe": "RCT"
+    },
+    {
+      "key": "RCT:A7",
+      "fam": "RCT",
+      "actor": "A7",
+      "marker": "T11A7RCTD-02",
+      "recipe": "RCT"
+    },
+    {
+      "key": "RCT:A8",
+      "fam": "RCT",
+      "actor": "A8",
+      "marker": "T11A8RCTD-02",
+      "recipe": "RCT"
+    },
+    {
+      "key": "UNT:A4",
+      "fam": "UNT",
+      "actor": "A4",
+      "marker": "T11A4UNTD-02",
+      "recipe": "UNT"
+    },
+    {
+      "key": "UNT:A5",
+      "fam": "UNT",
+      "actor": "A5",
+      "marker": "T11A5UNTD-02",
+      "recipe": "UNT"
+    },
+    {
+      "key": "UNT:A6",
+      "fam": "UNT",
+      "actor": "A6",
+      "marker": "T11A6UNTD-02",
+      "recipe": "UNT"
+    },
+    {
+      "key": "UNT:A7",
+      "fam": "UNT",
+      "actor": "A7",
+      "marker": "T11A7UNTD-02",
+      "recipe": "UNT"
+    },
+    {
+      "key": "UNT:A8",
+      "fam": "UNT",
+      "actor": "A8",
+      "marker": "T11A8UNTD-02",
+      "recipe": "UNT"
+    },
+    {
+      "key": "USR:A4",
+      "fam": "USR",
+      "actor": "A4",
+      "marker": "T11A4USRD-02",
+      "recipe": "USR"
+    },
+    {
+      "key": "USR:A5",
+      "fam": "USR",
+      "actor": "A5",
+      "marker": "T11A5USRD-02",
+      "recipe": "USR"
+    },
+    {
+      "key": "USR:A6",
+      "fam": "USR",
+      "actor": "A6",
+      "marker": "T11A6USRD-02",
+      "recipe": "USR"
+    },
+    {
+      "key": "USR:A7",
+      "fam": "USR",
+      "actor": "A7",
+      "marker": "T11A7USRD-02",
+      "recipe": "USR"
+    },
+    {
+      "key": "USR:A8",
+      "fam": "USR",
+      "actor": "A8",
+      "marker": "T11A8USRD-02",
+      "recipe": "USR"
+    }
+  ],
+  "unprobeable_plan": [],
+  "plan": [
+    "Derivados 191 objetivos EXPECTED_DENY no-RBAC de familias USR·RCT·POS·CAL·UNT·MEM ({\"CAL\":28,\"MEM\":20,\"POS\":30,\"RCT\":30,\"UNT\":25,\"USR\":58}).",
+    "Descartables a crear por A1: 32 (CAL:A2, CAL:A3, CAL:A4, CAL:A5, CAL:A6, CAL:A7, CAL:A8, MEM:A4, MEM:A5, MEM:A6, MEM:A7, MEM:A8, POS:A4, POS:A5, POS:A6, POS:A7, POS:A8, RCT:A4, RCT:A5, RCT:A6, RCT:A7, RCT:A8, UNT:A4, UNT:A5, UNT:A6, UNT:A7, UNT:A8, USR:A4, USR:A5, USR:A6, USR:A7, USR:A8).",
+    "Cada celda POST de colección se intenta directo; cada celda con {id} se intenta sobre su descartable.",
+    "Limpieza final por A1 + barrido estricto T11A|T11RT|T11R2 en las familias de residuo."
+  ],
+  "setup": [
+    {
+      "what": "disc_CAL_A2",
+      "marker": "T11A2CALD-02",
+      "status": 201,
+      "id": 8
+    },
+    {
+      "what": "disc_CAL_A3",
+      "marker": "T11A3CALD-02",
+      "status": 201,
+      "id": 9
+    },
+    {
+      "what": "disc_CAL_A4",
+      "marker": "T11A4CALD-02",
+      "status": 201,
+      "id": 10
+    },
+    {
+      "what": "disc_CAL_A5",
+      "marker": "T11A5CALD-02",
+      "status": 201,
+      "id": 11
+    },
+    {
+      "what": "disc_CAL_A6",
+      "marker": "T11A6CALD-02",
+      "status": 201,
+      "id": 12
+    },
+    {
+      "what": "disc_CAL_A7",
+      "marker": "T11A7CALD-02",
+      "status": 201,
+      "id": 13
+    },
+    {
+      "what": "disc_CAL_A8",
+      "marker": "T11A8CALD-02",
+      "status": 201,
+      "id": 14
+    },
+    {
+      "what": "disc_MEM_A4",
+      "marker": "T11A4MEMD-02",
+      "status": 201,
+      "id": 56,
+      "assignment_id": 83,
+      "account_len": 2,
+      "membership_id": 53
+    },
+    {
+      "what": "disc_MEM_A5",
+      "marker": "T11A5MEMD-02",
+      "status": 201,
+      "id": 57,
+      "assignment_id": 84,
+      "account_len": 2,
+      "membership_id": 54
+    },
+    {
+      "what": "disc_MEM_A6",
+      "marker": "T11A6MEMD-02",
+      "status": 201,
+      "id": 58,
+      "assignment_id": 85,
+      "account_len": 2,
+      "membership_id": 55
+    },
+    {
+      "what": "disc_MEM_A7",
+      "marker": "T11A7MEMD-02",
+      "status": 201,
+      "id": 59,
+      "assignment_id": 86,
+      "account_len": 2,
+      "membership_id": 56
+    },
+    {
+      "what": "disc_MEM_A8",
+      "marker": "T11A8MEMD-02",
+      "status": 201,
+      "id": 60,
+      "assignment_id": 87,
+      "account_len": 2,
+      "membership_id": 57
+    },
+    {
+      "what": "disc_POS_A4",
+      "marker": "T11A4POSD-02",
+      "status": 201,
+      "id": 69,
+      "holder_user_id": 61,
+      "account_len": 2,
+      "holder_assignment_id": 89
+    },
+    {
+      "what": "disc_POS_A5",
+      "marker": "T11A5POSD-02",
+      "status": 201,
+      "id": 70,
+      "holder_user_id": 62,
+      "account_len": 2,
+      "holder_assignment_id": 91
+    },
+    {
+      "what": "disc_POS_A6",
+      "marker": "T11A6POSD-02",
+      "status": 201,
+      "id": 71,
+      "holder_user_id": 63,
+      "account_len": 2,
+      "holder_assignment_id": 93
+    },
+    {
+      "what": "disc_POS_A7",
+      "marker": "T11A7POSD-02",
+      "status": 201,
+      "id": 72,
+      "holder_user_id": 64,
+      "account_len": 2,
+      "holder_assignment_id": 95
+    },
+    {
+      "what": "disc_POS_A8",
+      "marker": "T11A8POSD-02",
+      "status": 201,
+      "id": 73,
+      "holder_user_id": 65,
+      "account_len": 2,
+      "holder_assignment_id": 97
+    },
+    {
+      "what": "disc_RCT_A4",
+      "marker": "T11A4RCTD-02",
+      "status": 201,
+      "id": 22,
+      "unit_seeded": true
+    },
+    {
+      "what": "disc_RCT_A5",
+      "marker": "T11A5RCTD-02",
+      "status": 201,
+      "id": 23,
+      "unit_seeded": true
+    },
+    {
+      "what": "disc_RCT_A6",
+      "marker": "T11A6RCTD-02",
+      "status": 201,
+      "id": 24,
+      "unit_seeded": true
+    },
+    {
+      "what": "disc_RCT_A7",
+      "marker": "T11A7RCTD-02",
+      "status": 201,
+      "id": 25,
+      "unit_seeded": true
+    },
+    {
+      "what": "disc_RCT_A8",
+      "marker": "T11A8RCTD-02",
+      "status": 201,
+      "id": 26,
+      "unit_seeded": true
+    },
+    {
+      "what": "disc_UNT_A4",
+      "marker": "T11A4UNTD-02",
+      "status": 201,
+      "id": 47
+    },
+    {
+      "what": "disc_UNT_A5",
+      "marker": "T11A5UNTD-02",
+      "status": 201,
+      "id": 48
+    },
+    {
+      "what": "disc_UNT_A6",
+      "marker": "T11A6UNTD-02",
+      "status": 201,
+      "id": 49
+    },
+    {
+      "what": "disc_UNT_A7",
+      "marker": "T11A7UNTD-02",
+      "status": 201,
+      "id": 50
+    },
+    {
+      "what": "disc_UNT_A8",
+      "marker": "T11A8UNTD-02",
+      "status": 201,
+      "id": 51
+    },
+    {
+      "what": "disc_USR_A4",
+      "marker": "T11A4USRD-02",
+      "status": 201,
+      "id": 66,
+      "assignment_id": 98,
+      "account_len": 2,
+      "membership_id": 63
+    },
+    {
+      "what": "disc_USR_A5",
+      "marker": "T11A5USRD-02",
+      "status": 201,
+      "id": 67,
+      "assignment_id": 99,
+      "account_len": 2,
+      "membership_id": 64
+    },
+    {
+      "what": "disc_USR_A6",
+      "marker": "T11A6USRD-02",
+      "status": 201,
+      "id": 68,
+      "assignment_id": 100,
+      "account_len": 2,
+      "membership_id": 65
+    },
+    {
+      "what": "disc_USR_A7",
+      "marker": "T11A7USRD-02",
+      "status": 201,
+      "id": 69,
+      "assignment_id": 101,
+      "account_len": 2,
+      "membership_id": 66
+    },
+    {
+      "what": "disc_USR_A8",
+      "marker": "T11A8USRD-02",
+      "status": 201,
+      "id": 70,
+      "assignment_id": 102,
+      "account_len": 2,
+      "membership_id": 67
+    }
+  ],
+  "cleanup": {
+    "CAL_A2": {
+      "id": 8,
+      "marker": "T11A2CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A3": {
+      "id": 9,
+      "marker": "T11A3CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A4": {
+      "id": 10,
+      "marker": "T11A4CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A5": {
+      "id": 11,
+      "marker": "T11A5CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A6": {
+      "id": 12,
+      "marker": "T11A6CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A7": {
+      "id": 13,
+      "marker": "T11A7CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "CAL_A8": {
+      "id": 14,
+      "marker": "T11A8CALD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "MEM_A4": {
+      "id": 56,
+      "marker": "T11A4MEMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "MEM_A5": {
+      "id": 57,
+      "marker": "T11A5MEMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "MEM_A6": {
+      "id": 58,
+      "marker": "T11A6MEMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "MEM_A7": {
+      "id": 59,
+      "marker": "T11A7MEMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "MEM_A8": {
+      "id": 60,
+      "marker": "T11A8MEMD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "POS_A4_holder": {
+      "id": 61,
+      "delete_status": 204
+    },
+    "POS_A4": {
+      "id": 69,
+      "marker": "T11A4POSD-02",
+      "delete_status": 500,
+      "get_after": 200
+    },
+    "POS_A5_holder": {
+      "id": 62,
+      "delete_status": 204
+    },
+    "POS_A5": {
+      "id": 70,
+      "marker": "T11A5POSD-02",
+      "delete_status": 500,
+      "get_after": 200
+    },
+    "POS_A6_holder": {
+      "id": 63,
+      "delete_status": 204
+    },
+    "POS_A6": {
+      "id": 71,
+      "marker": "T11A6POSD-02",
+      "delete_status": 500,
+      "get_after": 200
+    },
+    "POS_A7_holder": {
+      "id": 64,
+      "delete_status": 204
+    },
+    "POS_A7": {
+      "id": 72,
+      "marker": "T11A7POSD-02",
+      "delete_status": 500,
+      "get_after": 200
+    },
+    "POS_A8_holder": {
+      "id": 65,
+      "delete_status": 204
+    },
+    "POS_A8": {
+      "id": 73,
+      "marker": "T11A8POSD-02",
+      "delete_status": 500,
+      "get_after": 200
+    },
+    "RCT_A4": {
+      "id": 22,
+      "marker": "T11A4RCTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RCT_A5": {
+      "id": 23,
+      "marker": "T11A5RCTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RCT_A6": {
+      "id": 24,
+      "marker": "T11A6RCTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RCT_A7": {
+      "id": 25,
+      "marker": "T11A7RCTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "RCT_A8": {
+      "id": 26,
+      "marker": "T11A8RCTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "UNT_A4": {
+      "id": 47,
+      "marker": "T11A4UNTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "UNT_A5": {
+      "id": 48,
+      "marker": "T11A5UNTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "UNT_A6": {
+      "id": 49,
+      "marker": "T11A6UNTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "UNT_A7": {
+      "id": 50,
+      "marker": "T11A7UNTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "UNT_A8": {
+      "id": 51,
+      "marker": "T11A8UNTD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "USR_A4": {
+      "id": 66,
+      "marker": "T11A4USRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "USR_A5": {
+      "id": 67,
+      "marker": "T11A5USRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "USR_A6": {
+      "id": 68,
+      "marker": "T11A6USRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "USR_A7": {
+      "id": 69,
+      "marker": "T11A7USRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    },
+    "USR_A8": {
+      "id": 70,
+      "marker": "T11A8USRD-02",
+      "delete_status": 204,
+      "get_after": 404
+    }
+  },
+  "steps": [
+    {
+      "op": "OP-CAL-002",
+      "actor": "A2",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A3",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/calibres/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/calibres/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A2",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/8/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A3",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/9/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/10/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/11/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/12/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/13/"
+    },
+    {
+      "op": "OP-CAL-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/14/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A2",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/8/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A3",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/9/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/10/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/11/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/12/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/13/"
+    },
+    {
+      "op": "OP-CAL-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/14/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A2",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/8/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A3",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/9/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/10/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/11/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/12/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/13/"
+    },
+    {
+      "op": "OP-CAL-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/calibres/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/calibres/14/"
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/memberships/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/memberships/"
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/memberships/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/memberships/"
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/memberships/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/memberships/"
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/memberships/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/memberships/"
+    },
+    {
+      "op": "OP-MEM-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/memberships/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/memberships/"
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/56/"
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/57/"
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/58/"
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/59/"
+    },
+    {
+      "op": "OP-MEM-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/60/"
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/56/"
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/57/"
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/58/"
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/59/"
+    },
+    {
+      "op": "OP-MEM-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/60/"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/56/"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/57/"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/58/"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/59/"
+    },
+    {
+      "op": "OP-MEM-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/memberships/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/memberships/60/"
+    },
+    {
+      "op": "OP-POS-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/posiciones/"
+    },
+    {
+      "op": "OP-POS-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/posiciones/"
+    },
+    {
+      "op": "OP-POS-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/posiciones/"
+    },
+    {
+      "op": "OP-POS-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/posiciones/"
+    },
+    {
+      "op": "OP-POS-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/posiciones/"
+    },
+    {
+      "op": "OP-POS-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/69/"
+    },
+    {
+      "op": "OP-POS-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/70/"
+    },
+    {
+      "op": "OP-POS-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/71/"
+    },
+    {
+      "op": "OP-POS-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/72/"
+    },
+    {
+      "op": "OP-POS-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/73/"
+    },
+    {
+      "op": "OP-POS-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/69/"
+    },
+    {
+      "op": "OP-POS-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/70/"
+    },
+    {
+      "op": "OP-POS-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/71/"
+    },
+    {
+      "op": "OP-POS-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/72/"
+    },
+    {
+      "op": "OP-POS-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/73/"
+    },
+    {
+      "op": "OP-POS-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/69/"
+    },
+    {
+      "op": "OP-POS-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/70/"
+    },
+    {
+      "op": "OP-POS-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/71/"
+    },
+    {
+      "op": "OP-POS-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/72/"
+    },
+    {
+      "op": "OP-POS-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/posiciones/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/73/"
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/asignar-holder/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/69/asignar-holder/"
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/asignar-holder/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/70/asignar-holder/"
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/asignar-holder/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/71/asignar-holder/"
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/asignar-holder/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/72/asignar-holder/"
+    },
+    {
+      "op": "OP-POS-007",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/asignar-holder/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/73/asignar-holder/"
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/69/quitar-holder/89/"
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/70/quitar-holder/91/"
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/71/quitar-holder/93/"
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/72/quitar-holder/95/"
+    },
+    {
+      "op": "OP-POS-008",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/posiciones/{id}/quitar-holder/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/posiciones/73/quitar-holder/97/"
+    },
+    {
+      "op": "OP-RCT-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/recintos/"
+    },
+    {
+      "op": "OP-RCT-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/recintos/"
+    },
+    {
+      "op": "OP-RCT-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/recintos/"
+    },
+    {
+      "op": "OP-RCT-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/recintos/"
+    },
+    {
+      "op": "OP-RCT-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/recintos/"
+    },
+    {
+      "op": "OP-RCT-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/22/"
+    },
+    {
+      "op": "OP-RCT-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/23/"
+    },
+    {
+      "op": "OP-RCT-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/24/"
+    },
+    {
+      "op": "OP-RCT-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/25/"
+    },
+    {
+      "op": "OP-RCT-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/26/"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/22/"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/23/"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/24/"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/25/"
+    },
+    {
+      "op": "OP-RCT-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/26/"
+    },
+    {
+      "op": "OP-RCT-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/22/"
+    },
+    {
+      "op": "OP-RCT-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/23/"
+    },
+    {
+      "op": "OP-RCT-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/24/"
+    },
+    {
+      "op": "OP-RCT-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/25/"
+    },
+    {
+      "op": "OP-RCT-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/26/"
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/22/agregar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/23/agregar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/24/agregar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/25/agregar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-007",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/recintos/{id}/agregar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/26/agregar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/22/quitar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/23/quitar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/24/quitar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/25/quitar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-RCT-008",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/recintos/{id}/quitar-unidad/{unit_code}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/recintos/26/quitar-unidad/CIA-A/"
+    },
+    {
+      "op": "OP-UNT-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/organization-units/"
+    },
+    {
+      "op": "OP-UNT-002",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/organization-units/"
+    },
+    {
+      "op": "OP-UNT-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/organization-units/"
+    },
+    {
+      "op": "OP-UNT-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/organization-units/"
+    },
+    {
+      "op": "OP-UNT-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/organization-units/"
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/47/"
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/48/"
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/49/"
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/50/"
+    },
+    {
+      "op": "OP-UNT-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/51/"
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/47/"
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/48/"
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/49/"
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/50/"
+    },
+    {
+      "op": "OP-UNT-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/51/"
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/47/"
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/48/"
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/49/"
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/50/"
+    },
+    {
+      "op": "OP-UNT-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/organization-units/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/51/"
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/47/eliminar-con-migracion/"
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/48/eliminar-con-migracion/"
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/49/eliminar-con-migracion/"
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/50/eliminar-con-migracion/"
+    },
+    {
+      "op": "OP-UNT-008",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/organization-units/51/eliminar-con-migracion/"
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/"
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/"
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/"
+    },
+    {
+      "op": "OP-USR-002",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/"
+    },
+    {
+      "op": "OP-USR-004",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/"
+    },
+    {
+      "op": "OP-USR-004",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/"
+    },
+    {
+      "op": "OP-USR-004",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/"
+    },
+    {
+      "op": "OP-USR-004",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/"
+    },
+    {
+      "op": "OP-USR-004",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/"
+    },
+    {
+      "op": "OP-USR-005",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/"
+    },
+    {
+      "op": "OP-USR-005",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/"
+    },
+    {
+      "op": "OP-USR-005",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/"
+    },
+    {
+      "op": "OP-USR-005",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/"
+    },
+    {
+      "op": "OP-USR-005",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/"
+    },
+    {
+      "op": "OP-USR-006",
+      "actor": "A4",
+      "verb": "DELETE",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/"
+    },
+    {
+      "op": "OP-USR-006",
+      "actor": "A5",
+      "verb": "DELETE",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/"
+    },
+    {
+      "op": "OP-USR-006",
+      "actor": "A6",
+      "verb": "DELETE",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/"
+    },
+    {
+      "op": "OP-USR-006",
+      "actor": "A7",
+      "verb": "DELETE",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/"
+    },
+    {
+      "op": "OP-USR-006",
+      "actor": "A8",
+      "verb": "DELETE",
+      "path_tpl": "/api/usuarios/{id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/"
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A4",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A5",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A6",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A7",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-007",
+      "actor": "A8",
+      "verb": "PUT",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A4",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A5",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A6",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A7",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-008",
+      "actor": "A8",
+      "verb": "PATCH",
+      "path_tpl": "/api/usuarios/{id}/asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/desactivar-asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/desactivar-asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/desactivar-asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/desactivar-asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-009",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desactivar-asignacion-principal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/desactivar-asignacion-principal/"
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/agregar-asignacion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/agregar-asignacion/"
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/agregar-asignacion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/agregar-asignacion/"
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/agregar-asignacion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/agregar-asignacion/"
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/agregar-asignacion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/agregar-asignacion/"
+    },
+    {
+      "op": "OP-USR-010",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/agregar-asignacion/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/agregar-asignacion/"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/quitar-asignacion/98/"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/quitar-asignacion/99/"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/quitar-asignacion/100/"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/quitar-asignacion/101/"
+    },
+    {
+      "op": "OP-USR-011",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/quitar-asignacion/{assignment_id}/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/quitar-asignacion/102/"
+    },
+    {
+      "op": "OP-USR-012",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/crear-temporal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/crear-temporal/"
+    },
+    {
+      "op": "OP-USR-012",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/crear-temporal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/crear-temporal/"
+    },
+    {
+      "op": "OP-USR-012",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/crear-temporal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/crear-temporal/"
+    },
+    {
+      "op": "OP-USR-012",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/crear-temporal/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "directo",
+      "path": "/api/usuarios/crear-temporal/"
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/resetear-contrasena/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/resetear-contrasena/"
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/resetear-contrasena/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/resetear-contrasena/"
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/resetear-contrasena/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/resetear-contrasena/"
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/resetear-contrasena/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/resetear-contrasena/"
+    },
+    {
+      "op": "OP-USR-014",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/resetear-contrasena/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/resetear-contrasena/"
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A4",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desbloquear/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/66/desbloquear/"
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A5",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desbloquear/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/67/desbloquear/"
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A6",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desbloquear/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/68/desbloquear/"
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A7",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desbloquear/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/69/desbloquear/"
+    },
+    {
+      "op": "OP-USR-016",
+      "actor": "A8",
+      "verb": "POST",
+      "path_tpl": "/api/usuarios/{id}/desbloquear/",
+      "status": 403,
+      "verdict": "MATCH_DENY",
+      "note": null,
+      "target": "descartable",
+      "path": "/api/usuarios/70/desbloquear/"
+    }
+  ],
+  "sweep_strict": {
+    "token": "T11A|T11RT|T11R2",
+    "own_matches": 6,
+    "families": {
+      "poligonos": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 2,
+        "marker_matches": 0
+      },
+      "armorias": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "armas": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 4,
+        "marker_matches": 0
+      },
+      "usuarios": {
+        "status": 200,
+        "count": 18,
+        "marker_matches": 0
+      },
+      "unidades": {
+        "status": 200,
+        "count": 12,
+        "marker_matches": 0
+      },
+      "recintos": {
+        "status": 200,
+        "count": 5,
+        "marker_matches": 0
+      },
+      "calibres": {
+        "status": 200,
+        "count": 6,
+        "marker_matches": 0
+      },
+      "posiciones": {
+        "status": 200,
+        "count": 51,
+        "marker_matches": 6
+      },
+      "memberships": {
+        "status": 200,
+        "count": 16,
+        "marker_matches": 0
+      },
+      "consumos-arma": {
+        "status": 200,
+        "count": 1,
+        "marker_matches": 0
+      }
+    }
+  },
+  "coverage": {
+    "expected_total": 191,
+    "expected_families": {
+      "USR": 58,
+      "RCT": 30,
+      "POS": 30,
+      "CAL": 28,
+      "UNT": 25,
+      "MEM": 20
+    },
+    "derived_total": 191,
+    "derived_families": {
+      "CAL": 28,
+      "MEM": 20,
+      "POS": 30,
+      "RCT": 30,
+      "UNT": 25,
+      "USR": 58
+    },
+    "ok": true,
+    "missing": [],
+    "extra": [],
+    "global_total": 341
+  },
+  "summary": {
+    "dry": false,
+    "targets_total": 191,
+    "family_counts": {
+      "CAL": 28,
+      "MEM": 20,
+      "POS": 30,
+      "RCT": 30,
+      "UNT": 25,
+      "USR": 58
+    },
+    "discardables_planned": 32,
+    "unprobeable_planned": 0,
+    "steps": 191,
+    "planned": 0,
+    "match_deny": 191,
+    "mismatch_allow": 0,
+    "other": 0,
+    "no_response": 0,
+    "coverage_expected": 191,
+    "coverage_derived": 191,
+    "coverage_ok": true,
+    "global_total": 341,
+    "sweep_own_matches": 6
+  },
+  "page_errors": []
+}

@@ -1,0 +1,538 @@
+{
+  "schema": "frontend-a1-borders-ui/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — acreditación de alias A1 por correspondencia privada + bordes A1 por UI",
+  "delivery_scope": "UI-driven exercise of A1 pending borders with disposable own records; not an acceptance verdict",
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/frontend-acceptance/2026-10-14/actors-a1-a2-readonly.json",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A1",
+    "private_role_expected": "super_admin",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A1->super_admin; actors-a1-a2-readonly.json records A1 primary assignment=super_admin; credentials.json provisions exactly one super_admin account",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "super_admin",
+      "assignments_roles": [
+        {
+          "role": "super_admin",
+          "is_primary": true,
+          "scope_present": false
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "scopes_count": 1,
+      "active_unit_present": false,
+      "unit_membership_present": true,
+      "permissions_count": 41
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "correspondence_evidence": {
+    "expected_from_actors_file": {
+      "source": ".cache/frontend-acceptance/2026-10-14/actors-a1-a2-readonly.json",
+      "alias": "A1",
+      "aliasMatchedPrivateContext": true,
+      "assignments": [
+        { "role": "super_admin", "scope": null, "is_primary": true, "unit_ref_present": true },
+        { "role": "tirador", "scope": "solo_propio", "is_primary": false, "unit_ref_present": true }
+      ],
+      "scopes": ["solo_propio"],
+      "scope_count": 1,
+      "login": { "method": "POST", "path": "/api/auth/login/", "status": 200, "source": "UI" }
+    },
+    "observed_this_session": {
+      "context": { "method": "GET", "path": "/api/auth/context/", "status": 200 },
+      "active_role": "super_admin",
+      "assignments": [
+        { "role": "super_admin", "is_primary": true, "scope_present": false },
+        { "role": "tirador", "is_primary": false, "scope_present": true }
+      ],
+      "scopes_count": 1,
+      "login": { "method": "POST", "path": "/api/auth/login/", "status": 200, "source": "UI" }
+    },
+    "match": true,
+    "match_basis": "rol activo primario super_admin con scope nulo y secundaria tirador con scope; coincide con el registro de A1 de la corrida de actores",
+    "private_alias_mapping_source": ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs (A1->super_admin; A2..A8 los demás roles provisionados)"
+  },
+  "borders": {
+    "appearance": {
+      "legacy_put": {
+        "path": "/api/me/preferences/appearance/",
+        "offered_by_ui": false,
+        "forced": false,
+        "driver": "ninguno",
+        "reason": "front/src sólo referencia el path design-system (api/appearance.ts); ningún control de UI emite PUT/GET al contrato legacy",
+        "legacy_requests_observed_in_session": 0
+      },
+      "design_system": {
+        "get_pre": {
+          "method": "GET",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200,
+          "keys": [
+            "ds_accent",
+            "ds_ambcolor",
+            "ds_ambient",
+            "ds_bg",
+            "ds_font",
+            "ds_iconfam",
+            "ds_radius",
+            "ds_theme"
+          ],
+          "values": {
+            "ds_theme": "dark",
+            "ds_accent": "emerald",
+            "ds_bg": "blackout",
+            "ds_font": "public-sans",
+            "ds_radius": "square",
+            "ds_iconfam": "phosphor",
+            "ds_ambient": "fireflies",
+            "ds_ambcolor": "accent"
+          }
+        },
+        "put": {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200,
+          "axis_changed": "accent",
+          "value_selected": "violet",
+          "value_previous": "emerald",
+          "put_response_accent": "violet",
+          "changed_vs_pre": true,
+          "driver": "UI (selección de eje en el personalizador)"
+        },
+        "get_confirm": {
+          "method": "GET",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200,
+          "accent_after": "violet",
+          "changed_from_pre": true
+        },
+        "reset_delete": {
+          "method": "DELETE",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 204,
+          "driver": "UI (Restablecer valores por defecto)"
+        },
+        "get_post_reset": {
+          "method": "GET",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200,
+          "values": {
+            "ds_theme": "dark",
+            "ds_accent": "mint",
+            "ds_bg": "command",
+            "ds_font": "ibm-plex",
+            "ds_radius": "square",
+            "ds_iconfam": "phosphor",
+            "ds_ambient": "embers",
+            "ds_ambcolor": "accent"
+          }
+        }
+      },
+      "save_control": {
+        "explicit_save_button": false,
+        "reset_button_present": true,
+        "auto_save_on_selection": "auto-save de 300 ms -> PUT (stores/appearance.ts)"
+      },
+      "net": [
+        {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 204
+        },
+        {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200
+        },
+        {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200
+        },
+        {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200
+        },
+        {
+          "method": "PUT",
+          "path": "/api/me/preferences/appearance/design-system/",
+          "status": 200
+        }
+      ]
+    },
+    "organization_migration": {
+      "unit": {
+        "marker": "A1BMV8B6ZC4",
+        "code": "A1BMV8B6ZC4U",
+        "id": 21,
+        "create": {
+          "method": "POST",
+          "path": "/api/organization-units/",
+          "status": 201
+        }
+      },
+      "preview": {
+        "request": [
+          {
+            "method": "GET",
+            "path": "/api/organization-units/{id}/previsualizar-eliminacion/",
+            "status": 200
+          }
+        ],
+        "counters_count": 8,
+        "counters": [
+          {
+            "label": "Assignments",
+            "value": "0"
+          },
+          {
+            "label": "Weapons",
+            "value": "0"
+          },
+          {
+            "label": "Ranges",
+            "value": "0"
+          },
+          {
+            "label": "Lessons",
+            "value": "0"
+          },
+          {
+            "label": "Fractions",
+            "value": "0"
+          },
+          {
+            "label": "Results",
+            "value": "0"
+          },
+          {
+            "label": "Child units",
+            "value": "0"
+          },
+          {
+            "label": "Lessons as participant",
+            "value": "0"
+          }
+        ],
+        "all_counters_zero": true
+      },
+      "confirm_control": {
+        "before_target_selection": {
+          "present": true,
+          "text": "Confirmar eliminación",
+          "disabled": true
+        },
+        "after_valid_target_selection": {
+          "present": true,
+          "text": "Confirmar eliminación",
+          "disabled": false
+        },
+        "valid_destination_selected": true,
+        "destination_kind": "unit"
+      },
+      "post": {
+        "method": "POST",
+        "path": "/api/organization-units/{id}/eliminar-con-migracion/",
+        "status": 200,
+        "detail_present": true,
+        "target_unit_returned": true
+      },
+      "sequence_after_click": [
+        "POST /api/organization-units/{id}/eliminar-con-migracion/ 200",
+        "GET /api/recintos/ 200",
+        "GET /api/organization-units/ 200"
+      ],
+      "refresh_after_success": {
+        "post_status": 200,
+        "unit_list_get_after_post_200": true,
+        "recintos_get_after_post_200": true,
+        "refresh_before_post_response": false,
+        "success_notice_present": true,
+        "detail_after_delete": {
+          "method": "GET",
+          "path": "/api/organization-units/{id}/",
+          "status": 404
+        }
+      },
+      "detail_after": {
+        "method": "GET",
+        "path": "/api/organization-units/{id}/",
+        "status": 404
+      },
+      "destination": {
+        "selected": true,
+        "kind": "unit"
+      }
+    },
+    "recinto": {
+      "create": {
+        "method": "POST",
+        "path": "/api/recintos/",
+        "status": 201,
+        "id": 7,
+        "marker": "A1BMV8B6ZC4"
+      },
+      "edit": {
+        "method": "PUT",
+        "path": "/api/recintos/{id}/",
+        "status": 200
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/recintos/{id}/",
+        "status": 204,
+        "button_enabled_before_open": true,
+        "open_clicked": true,
+        "confirm_clicked": true
+      },
+      "get_after_delete": {
+        "method": "GET",
+        "path": "/api/recintos/{id}/",
+        "status": 404
+      }
+    }
+  },
+  "mutations": [
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "border"
+    },
+    {
+      "screen": "appearance",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "kind": "reset"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "cleanup"
+    },
+    {
+      "screen": "unit",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 201,
+      "kind": "border"
+    },
+    {
+      "screen": "unit",
+      "method": "POST",
+      "path": "/api/organization-units/{id}/eliminar-con-migracion/",
+      "status": 200,
+      "kind": "border"
+    },
+    {
+      "screen": "recinto",
+      "method": "POST",
+      "path": "/api/recintos/",
+      "status": 201,
+      "kind": "border"
+    },
+    {
+      "screen": "recinto",
+      "method": "PUT",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "kind": "border"
+    },
+    {
+      "screen": "recinto",
+      "method": "DELETE",
+      "path": "/api/recintos/{id}/",
+      "status": 204,
+      "kind": "border"
+    }
+  ],
+  "cleanup": {
+    "units": [],
+    "recintos": [],
+    "appearance_restore": [
+      {
+        "axes_drifted": [
+          "ds_accent",
+          "ds_bg",
+          "ds_font",
+          "ds_ambient"
+        ]
+      },
+      {
+        "axis": "ds_accent",
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "axis": "ds_bg",
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "axis": "ds_font",
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "axis": "ds_ambient",
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      }
+    ],
+    "appearance_final": {
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "values": {
+        "ds_theme": "dark",
+        "ds_accent": "emerald",
+        "ds_bg": "blackout",
+        "ds_font": "public-sans",
+        "ds_radius": "square",
+        "ds_iconfam": "phosphor",
+        "ds_ambient": "fireflies",
+        "ds_ambcolor": "accent"
+      },
+      "restored_to_pre": true
+    },
+    "residue_sweep": {
+      "method": "GET",
+      "paths": ["/api/organization-units/", "/api/recintos/"],
+      "units_total": 12,
+      "units_with_own_marker": 0,
+      "recintos_total": 5,
+      "recintos_with_own_marker": 0,
+      "marker_prefix": "A1B",
+      "note": "0 residuo propio; los totales incluyen registros preexistentes del tenant, no creados en esta corrida"
+    }
+  },
+  "limits": [
+    "Sólo actores/registros descartables propios con marcador; no se tocaron personas reales, cuentas ajenas, roles, puestos ocupados ni RBAC.",
+    "Cero escrituras en RBAC, backend, base de datos o dependencias; sólo la API real del backend en marcha.",
+    "Limpieza: DELETE 204 / GET 404 documentan ausencia en la respuesta del servidor; no se afirma borrado físico.",
+    "correspondence_evidence es una comparación derivada de fuentes leídas (actors-a1-a2-readonly.json + runtime-family-sweep.cjs) contra el contexto observado en esta sesión; no es un veredicto de aceptación.",
+    "Un solo actor (A1) y registros descartables propios; no se promovió ninguna fila de la matriz de aceptación ni se tocó expected_by_actor."
+  ],
+  "errors": [],
+  "harness": {
+    "marker": "A1BMV8B6ZC4",
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 38,
+    "mutations": [
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 204
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/organization-units/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/organization-units/{id}/eliminar-con-migracion/",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/recintos/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/recintos/{id}/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/recintos/{id}/",
+        "status": 204
+      }
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "date":"2026-10-13",
+  "source_kind":"direct_orchestrator_playwright_ui",
+  "method":"Fresh browser context per actor, real UI login, navigate each path with tenant query, wait networkidle, record rendered main and real HTTP responses. Business GET only.",
+  "targets":["/organizacion/unidades","/organizacion/recintos","/organizacion/puestos","/organizacion/membresias","/personas","/personas/roles","/personas/scopes","/personas/permisos","/almacen/armerias","/almacen/armas","/almacen/calibres","/tiro/poligonos","/tiro/lecciones","/tiro/ejercicios","/tiro/consumos-municion","/tiro/consumos-arma","/auditoria","/cuenta"],
+  "row_schema":["target_index","rendered_h1_present","neutral_denial_text_observed","rendered_tbody_rows","business_get_paths_all_status200"],
+  "actors":{
+    "A1":{
+      "role":"super_admin","ui_login_status":200,
+      "auth_context_and_preferences_gets":"Both returned200 on each of18 navigations.",
+      "login_form_after_navigation":false,"harness_errors":0,
+      "rows":[
+        [0,true,false,0,["/api/organization-units/"]],
+        [1,true,false,5,["/api/recintos/"]],
+        [2,true,false,42,["/api/posiciones/"]],
+        [3,true,false,17,["/api/memberships/"]],
+        [4,true,false,18,["/api/usuarios/"]],
+        [5,true,false,8,["/api/authz/roles/","/api/authz/role-categories/"]],
+        [6,true,false,5,["/api/authz/scopes/"]],
+        [7,true,false,41,["/api/authz/permissions/"]],
+        [8,true,false,4,["/api/organization-units/lookup/","/api/armorias/"]],
+        [9,true,false,3,["/api/calibres/","/api/armorias/","/api/organization-units/lookup/","/api/armas/"]],
+        [10,true,false,6,["/api/calibres/"]],
+        [11,true,false,1,["/api/poligonos/"]],
+        [12,true,false,1,["/api/lecciones/"]],
+        [13,true,false,3,["/api/ejercicios/"]],
+        [14,true,false,0,["/api/consumos-municion/"]],
+        [15,true,false,0,["/api/consumos-arma/"]],
+        [16,true,false,4,["/api/auth/audit-log/","/api/organization-units/lookup/"]],
+        [17,true,false,11,["/api/usuarios/20/"]]
+      ]
+    },
+    "A8":{
+      "role":"tirador","ui_login_status":200,
+      "auth_context_and_preferences_gets":"Both returned200 on each of18 navigations.",
+      "login_form_after_navigation":false,"harness_errors":0,
+      "rows":[
+        [0,true,false,0,["/api/organization-units/"]],
+        [1,false,true,0,[]],
+        [2,true,false,13,["/api/posiciones/"]],
+        [3,true,false,8,["/api/memberships/"]],
+        [4,true,false,8,["/api/usuarios/"]],
+        [5,true,false,8,["/api/authz/roles/","/api/authz/role-categories/"]],
+        [6,true,false,5,["/api/authz/scopes/"]],
+        [7,true,false,41,["/api/authz/permissions/"]],
+        [8,false,true,0,[]],
+        [9,false,true,0,[]],
+        [10,true,false,6,["/api/calibres/"]],
+        [11,true,false,0,["/api/poligonos/"]],
+        [12,true,false,1,["/api/lecciones/"]],
+        [13,true,false,0,["/api/ejercicios/"]],
+        [14,true,false,0,["/api/consumos-municion/"]],
+        [15,true,false,0,["/api/consumos-arma/"]],
+        [16,false,true,0,[]],
+        [17,true,false,10,["/api/usuarios/27/"]]
+      ]
+    }
+  },
+  "additional_actor_normalization":{
+    "row_counts_order":"Same18 targets order as above; values are observed DOM tbody counts, not inferred resource totals.",
+    "issued_business_gets":"For each target not listed in neutral_denial_indices, GET paths match A1 row-schema endpoint lists, replacing only own profile detail id per actor. All actually observed business GETs returned200. Secondary request ordering may differ.",
+    "neutral_denial_indices":"These targets rendered neutral denied state with no h1 and no business API request; auth/context and preference GETs still returned200.",
+    "common":"Each additional actor had UI login POST200, auth/context GET200 and preferences GET200 on all18 routes; no redirect to login, all final paths matched targets, no harness errors. Contexts closed."
+  },
+  "additional_actors":{
+    "A2":{"role":"tenant_admin","ui_login_status":200,"row_counts":[0,5,42,17,18,8,5,41,4,3,6,1,1,3,0,0,4,11],"neutral_denial_indices":[],"own_profile_path":"/api/usuarios/21/","harness_errors":0},
+    "A3":{"role":"admin_unidad","ui_login_status":200,"row_counts":[0,5,13,8,8,8,5,41,1,0,6,0,0,0,0,0,0,11],"neutral_denial_indices":[16],"own_profile_path":"/api/usuarios/22/","harness_errors":0},
+    "A4":{"role":"comandante_unidad","ui_login_status":200,"row_counts":[0,5,13,8,8,8,5,41,1,0,6,0,0,0,0,0,0,11],"neutral_denial_indices":[16],"own_profile_path":"/api/usuarios/23/","harness_errors":0},
+    "A5":{"role":"oficial_tiro","ui_login_status":200,"row_counts":[0,0,13,8,8,8,5,41,1,0,6,0,0,0,0,0,0,11],"neutral_denial_indices":[1,16],"own_profile_path":"/api/usuarios/24/","harness_errors":0},
+    "A6":{"role":"oficial_observador","ui_login_status":200,"row_counts":[0,0,13,8,8,8,5,41,0,0,6,0,0,0,0,0,0,11],"neutral_denial_indices":[1,8,9,16],"own_profile_path":"/api/usuarios/25/","harness_errors":0},
+    "A7":{"role":"encargado_almacen","ui_login_status":200,"row_counts":[0,0,13,8,8,8,5,41,1,0,6,0,0,0,0,0,0,11],"neutral_denial_indices":[1,16],"own_profile_path":"/api/usuarios/26/","harness_errors":0}
+  },
+  "totals":{"actors":8,"routes_per_actor":18,"navigations":144,"neutral_denied_route_observations":14,"successful_ui_logins":8,"business_writes":0,"harness_errors":0},
+  "limits":[
+    "Counts describe rendered table rows, not necessarily resource counts; organization defaults to tree view and account combines several tables.",
+    "Neutral route denial with no domain request does not establish backend403 enforcement.",
+    "Read-only route coverage does not certify CRUD or all acceptance criteria.",
+    "No second tenant, no cross-tenant isolation claim.",
+    "Role-visible data is observed, not a security verdict on whether backend permissions are correct.",
+    "Other worker may perform separate route sweep; do not double-count identical actor/operation cells."
+  ],
+  "test_contexts_closed":true,
+  "global_acceptance":"NOT_VERIFIED"
+}

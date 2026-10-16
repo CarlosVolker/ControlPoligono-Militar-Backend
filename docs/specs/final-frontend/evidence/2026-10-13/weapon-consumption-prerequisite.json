@@ -1,0 +1,15 @@
+{
+  "schema": "frontend-ui-crud-family-step/v1",
+  "date": "2026-10-13",
+  "family": "weapon_consumption",
+  "actor_alias": "A1",
+  "dependency_check": {
+    "source": "authenticated UI route and create form",
+    "munition_collection_get_status": 200,
+    "munition_options_in_create_form": 0,
+    "relation_submit_disabled": true,
+    "weapon_consumption_collection_get_status": 200
+  },
+  "write_attempted": false,
+  "blocker": "The required munition-consumption select contains only its placeholder; no real consumption ID is available. Creating a relation would require inventing or bypassing the dependency."
+}

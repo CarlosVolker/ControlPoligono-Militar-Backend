@@ -1,9 +1,19 @@
+from collections.abc import Mapping
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from .models import (Usuario,
+                     DSTheme,
+                     DSAccent,
+                     DSBg,
+                     DSFont,
+                     DSRadius,
+                     DSIconfam,
+                     DSAmbient,
+                     DSAmbcolor,
                      Calibre,
                      Arma,
                      PoligonoTiro,
@@ -11,8 +21,82 @@ from .models import (Usuario,
                      FraccionTiro,
                      ResultadoTiro,
                      EjercicioMilitar,
-                     ConsumoMunicion,
-                     ConsumoArma)
+                      ConsumoMunicion,
+                      ConsumoArma)
+
+
+class DesignSystemAppearanceSerializer(serializers.Serializer):
+    ds_theme = serializers.ChoiceField(
+        choices=DSTheme.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_accent = serializers.ChoiceField(
+        choices=DSAccent.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_bg = serializers.ChoiceField(
+        choices=DSBg.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_font = serializers.ChoiceField(
+        choices=DSFont.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_radius = serializers.ChoiceField(
+        choices=DSRadius.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_iconfam = serializers.ChoiceField(
+        choices=DSIconfam.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_ambient = serializers.ChoiceField(
+        choices=DSAmbient.choices, required=True, allow_null=False, allow_blank=False
+    )
+    ds_ambcolor = serializers.ChoiceField(
+        choices=DSAmbcolor.choices, required=True, allow_null=False, allow_blank=False
+    )
+
+    def __init__(self, *args, **kwargs):
+        kwargs['partial'] = False
+        super().__init__(*args, **kwargs)
+
+    def to_internal_value(self, data):
+        if not isinstance(data, Mapping):
+            return super().to_internal_value(data)
+
+        field_names = set(self.fields)
+        missing_fields = field_names.difference(data)
+        non_field_errors = [
+            'Unexpected field.'
+            for key in data
+            if key not in field_names
+        ]
+        errors = {}
+        invalid_types = {
+            field_name: ['Expected a string.']
+            for field_name in field_names
+            if field_name in data and data[field_name] is not None and not isinstance(data[field_name], str)
+        }
+        validated_input = {
+            key: value
+            for key, value in data.items()
+            if key in field_names and key not in invalid_types
+        }
+
+        try:
+            validated_data = super().to_internal_value(validated_input)
+        except serializers.ValidationError as exc:
+            if isinstance(exc.detail, Mapping):
+                for field_name, field_errors in exc.detail.items():
+                    if field_name in missing_fields:
+                        non_field_errors.extend(field_errors)
+                    else:
+                        errors[field_name] = field_errors
+            else:
+                non_field_errors.extend(exc.detail)
+
+        errors.update(invalid_types)
+        if non_field_errors:
+            errors[serializers.api_settings.NON_FIELD_ERRORS_KEY] = non_field_errors
+        if errors:
+            raise serializers.ValidationError(errors)
+        return validated_data
+
 
 class UsuarioSerializer(serializers.ModelSerializer):
     habilitado = serializers.SerializerMethodField()

@@ -1,0 +1,54 @@
+{
+  "schema": "frontend-ui-crud-batch-recovery/v1",
+  "date": "2026-10-13",
+  "actor": { "alias": "A1", "role": "super_admin" },
+  "resource": { "type": "organization_unit", "id": 13, "marker": "DCTMV7GBLYE" },
+  "events": [
+    {
+      "name": "create_organization_unit",
+      "source": "UI button click",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 201,
+      "sanitized_body": {
+        "code": "DCTMV7GBLYEU",
+        "name": "DCTMV7GBLYE Unidad",
+        "parent": null,
+        "unit_type": "company",
+        "is_active": true
+      }
+    },
+    {
+      "name": "reconcile_after_create",
+      "source": "authenticated GET",
+      "method": "GET",
+      "path": "/api/organization-units/13/",
+      "status": 200,
+      "expected_fields_match": true
+    },
+    {
+      "name": "delete_organization_unit_manual_recovery",
+      "source": "UI button click",
+      "method": "DELETE",
+      "path": "/api/organization-units/13/",
+      "status": 204,
+      "mutation_retried": false
+    },
+    {
+      "name": "reconcile_after_delete",
+      "source": "UI detail route GET",
+      "method": "GET",
+      "path": "/api/organization-units/13/",
+      "status": 404,
+      "detail_not_found": true
+    },
+    {
+      "name": "reconcile_list_ui",
+      "source": "UI search",
+      "path": "/organizacion/unidades",
+      "search_marker": "DCTMV7GBLYEU",
+      "result": "No hay coincidencias para la búsqueda."
+    }
+  ],
+  "scope_note": "The first harness stopped before PATCH; the unit was removed through the UI and reconciled. No other record was created."
+}

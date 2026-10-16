@@ -1,0 +1,182 @@
+{
+  "schema": "frontend-t11-v1b-recinto-relations/v1",
+  "date": "2026-10-15",
+  "task": "T11 V1b — relaciones de recinto por UI (RCT-007/008) con alias A2 acreditado",
+  "alias": "A2",
+  "stage": "residue",
+  "acreditacion": {
+    "alias_claimed": "A2",
+    "private_role_expected": "tenant_admin",
+    "alias_matched": true,
+    "missing_field": null,
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "tenant_admin",
+      "permissions_count": 41
+    }
+  },
+  "unit": {
+    "marker": "T11A2RCTMV9UJ9OJ",
+    "code": "T11A2RCTMV9UJ9OJU",
+    "id": 41,
+    "create": {
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "raw": "/api/organization-units/",
+      "status": 201
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/api/organization-units/41/",
+      "raw": "/api/organization-units/41/",
+      "status": 204
+    }
+  },
+  "recinto": {
+    "marker": "T11A2RCTMV9UJ9OJ",
+    "code": "T11A2RCTMV9UJ9OJR",
+    "id": 20,
+    "create": {
+      "method": "POST",
+      "path": "/api/recintos/",
+      "raw": "/api/recintos/",
+      "status": 201
+    },
+    "create_response_field_names": [
+      "code",
+      "description",
+      "id",
+      "is_active",
+      "name",
+      "tenant",
+      "unit_codes",
+      "unit_count",
+      "units"
+    ],
+    "unit_codes_before": 0,
+    "relation_add": {
+      "method": "POST",
+      "path": "/api/recintos/{id}/agregar-unidad/T11A2RCTMV9UJ9OJU/",
+      "raw": "/api/recintos/20/agregar-unidad/T11A2RCTMV9UJ9OJU/",
+      "status": 200
+    },
+    "relation_add_body": {
+      "detail": "Unidad 'T11A2RCTMV9UJ9OJU' agregada al recinto.",
+      "unit_count": 1
+    },
+    "option_present_after_relate": 0,
+    "relation_present_after_add": 1,
+    "relation_remove": {
+      "method": "DELETE",
+      "path": "/api/recintos/{id}/quitar-unidad/T11A2RCTMV9UJ9OJU/",
+      "raw": "/api/recintos/20/quitar-unidad/T11A2RCTMV9UJ9OJU/",
+      "status": 200
+    },
+    "relation_remove_body": {
+      "detail": "Unidad 'T11A2RCTMV9UJ9OJU' quitada del recinto.",
+      "unit_count": 0
+    },
+    "relation_present_after_remove": 0,
+    "delete": {
+      "method": "DELETE",
+      "path": "/api/recintos/20/",
+      "raw": "/api/recintos/20/",
+      "status": 204
+    }
+  },
+  "verify": {
+    "recinto_get_after_delete": 404,
+    "unit_get_after_delete": 404
+  },
+  "residue": {
+    "recintos_rows_with_marker": 0,
+    "units_tree_links_with_marker": 0
+  },
+  "gate": {
+    "actor_role": "tenant_admin",
+    "used_super_admin_bypass": false,
+    "credentials_printed_or_persisted": false
+  },
+  "cleanup_errors": [],
+  "post_add_now": {
+    "button_present": true,
+    "button_disabled": false,
+    "button_html": "<button data-v-6b35cf24=\"\" type=\"button\" class=\"btn btn-primary\">Agregar unidad</button>",
+    "pointer_events": "auto",
+    "element_at_center_class": "DIV.ds-modal",
+    "uncertain_banner_visible": false,
+    "uncertain_banner_text": null,
+    "modal_present": true
+  },
+  "post_add_after_4s": {
+    "button_present": true,
+    "button_disabled": false,
+    "button_html": "<button data-v-6b35cf24=\"\" type=\"button\" class=\"btn btn-primary\">Agregar unidad</button>",
+    "pointer_events": "auto",
+    "element_at_center_class": "DIV.ds-modal",
+    "uncertain_banner_visible": false,
+    "uncertain_banner_text": null,
+    "modal_present": true
+  },
+  "post_renav": {
+    "button_present": true,
+    "button_disabled": false,
+    "button_html": "<button data-v-6b35cf24=\"\" type=\"button\" class=\"btn btn-primary\">Agregar unidad</button>",
+    "pointer_events": "auto",
+    "element_at_center_class": "BUTTON.btn btn-primary",
+    "uncertain_banner_visible": false,
+    "uncertain_banner_text": null,
+    "modal_present": false
+  },
+  "duplicate_probe_click_via_dom": true,
+  "network": {
+    "total_api_calls": 50,
+    "mutations": [
+      {
+        "method": "POST",
+        "path": "/api/organization-units/",
+        "raw": "/api/organization-units/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/recintos/",
+        "raw": "/api/recintos/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/recintos/{id}/agregar-unidad/T11A2RCTMV9UJ9OJU/",
+        "raw": "/api/recintos/20/agregar-unidad/T11A2RCTMV9UJ9OJU/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/recintos/{id}/quitar-unidad/T11A2RCTMV9UJ9OJU/",
+        "raw": "/api/recintos/20/quitar-unidad/T11A2RCTMV9UJ9OJU/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/recintos/{id}/",
+        "raw": "/api/recintos/20/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/organization-units/{id}/",
+        "raw": "/api/organization-units/41/",
+        "status": 204
+      }
+    ]
+  },
+  "page_errors": []
+}

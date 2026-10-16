@@ -1,0 +1,26 @@
+{
+  "schema": "frontend-ui-crud-reconciliation/v1",
+  "date": "2026-10-13",
+  "scope": "own disposable organization-unit attempts only; no further organization CRUD in this batch",
+  "records": [
+    {
+      "id": 13,
+      "marker": "DCTMV7GBLYEU",
+      "authenticated_get_detail_status": 404,
+      "source": ".cache/frontend-acceptance/2026-10-13/crud-batch-recovery.json"
+    },
+    {
+      "candidate_id": 14,
+      "marker": null,
+      "authenticated_get_detail_status": 404,
+      "source": "current-session GET; no existing artifact maps this candidate ID to an owned attempt"
+    },
+    {
+      "id": 15,
+      "marker": "DCTMV7GIND8U",
+      "authenticated_get_detail_status": 404,
+      "source": "current-session GET"
+    }
+  ],
+  "organization_crud_again": false
+}

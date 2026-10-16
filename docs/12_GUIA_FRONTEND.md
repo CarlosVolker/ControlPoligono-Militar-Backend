@@ -47,7 +47,7 @@ api.interceptors.request.use(config => {
   return config
 })
 
-// 401 → redirigir al login (no hay refresh token)
+// 401 → redirigir al login (la sesión expiró o no existía; no hay refresh que intentar)
 api.interceptors.response.use(
   response => response,
   error => {
@@ -66,8 +66,10 @@ export default api
 ### 1. Inicialización de la app
 
 Al montar la app, hacer un `GET /api/auth/context/`. Esto:
-- Carga los datos del usuario si hay sesión activa
-- Siempre emite la cookie `csrftoken` que se necesita para el login
+- Si hay sesión activa, devuelve los datos del usuario, scopes, assignments y permisos efectivos.
+- Si no hay sesión activa, devuelve **401** y el frontend debe redirigir al login.
+
+> **Origen del `csrftoken`**: la cookie `csrftoken` la emite **`POST /api/auth/login/`** (decorado con `@ensure_csrf_cookie`), no `/api/auth/context/`. Tras un login exitoso, el frontend debe leer `csrftoken` de la respuesta y usarla para todos los POST/PUT/PATCH/DELETE posteriores.
 
 ```javascript
 async function initApp() {
@@ -76,6 +78,7 @@ async function initApp() {
     store.setUser(response.data.user)
     store.setPermissions(response.data.permissions)  // array de permission_codes
     store.setUnitMembership(response.data.unit_membership)
+    store.setActiveOrganizationUnit(response.data.active_organization_unit)
     store.setAuthenticated(true)
   } catch (err) {
     if ([401, 403].includes(err.response?.status)) {
@@ -88,20 +91,30 @@ async function initApp() {
 
 ### 2. Login
 
+`POST /api/auth/login/` es **público**: la vista tiene `permission_classes = ()` y `authentication_classes = ()`. **No requiere `X-Tenant-Code`** ni `X-CSRFToken` para procesar las credenciales (los interceptores de Axios pueden incluirlos sin causar error, simplemente son ignorados). La cookie `csrftoken` se emite en la respuesta exitosa.
+
 ```javascript
 const login = async (rut, password) => {
-  const response = await api.post('/api/auth/login/', { rut, password })
-  const { id_usuario, must_change_password } = response.data
+  try {
+    const response = await api.post('/api/auth/login/', { rut, password })
+    const { id_usuario, must_change_password } = response.data
 
-  if (must_change_password) {
-    router.push('/cambiar-contrasena')
-    return
+    if (must_change_password) {
+      router.push('/cambiar-contrasena')
+      return
+    }
+    router.push('/dashboard')
+  } catch (err) {
+    // El login fallido NO devuelve 401; DRF traduce ValidationError del serializer a 400.
+    // El cuerpo trae el error en `non_field_errors` (no en un campo específico).
+    const msg = err.response?.data?.non_field_errors?.[0]
+      ?? 'Credenciales inválidas.'
+    store.setLoginError(msg)
   }
-  router.push('/dashboard')
 }
 ```
 
-**Respuesta del login:**
+**Respuesta exitosa del login (200):**
 ```json
 {
   "id_usuario": 42,
@@ -111,7 +124,16 @@ const login = async (rut, password) => {
 
 > **Nota**: la respuesta ya **no incluye `rol`** — los permisos se obtienen del campo `permissions` en `/api/auth/context/`.
 
+**Login fallido (400):**
+```json
+{
+  "non_field_errors": ["Unable to log in with provided credentials."]
+}
+```
+
 ### 3. Logout
+
+`POST /api/logout/` requiere estar autenticado (`permission_classes = [IsAuthenticated]`) y enviar `X-CSRFToken` en el header (regla general para métodos no-seguros). **No requiere `X-Tenant-Code`**: la vista no consulta `request.tenant`.
 
 ```javascript
 const logout = async () => {
@@ -130,21 +152,20 @@ GET /api/auth/context/
 X-Tenant-Code: ejercito-demo
 ```
 
-**Respuesta completa:**
+**Respuesta completa** (verificada contra `apipoligono/views.py:AuthContextView`):
+
 ```json
 {
   "user": {
     "id_usuario": 42,
     "rut": "12345678-9",
-    "nombre": "Juan",
-    "apellido_paterno": "Pérez",
-    "grado": "Teniente",
     "must_change_password": false
   },
   "tenant": {
     "code": "ejercito-demo",
     "context": "military"
   },
+  "active_organization_unit": "CO-A",
   "unit_membership": {
     "id": 5,
     "unit_code": "CO-A",
@@ -168,6 +189,8 @@ X-Tenant-Code: ejercito-demo
   ]
 }
 ```
+
+> **Importante**: el objeto `user` en `/api/auth/context/` expone **solo tres campos** (`id_usuario`, `rut`, `must_change_password`). Para `nombre`, `apellido_paterno`, `grado`, `correo`, etc., se debe llamar a `GET /api/usuarios/{id}/` — el serializer completo vive en `apipoligono/serializers.py:UsuarioSerializer` y se aplica sobre el detalle o listado de `/api/usuarios/`.
 
 ---
 
@@ -238,21 +261,45 @@ await fetch('/api/recuperar/cambiar/', { method: 'POST', body: JSON.stringify({ 
 ## Tipos TypeScript principales
 
 ```typescript
-interface Usuario {
+// /api/auth/context/ — versión reducida del usuario (solo 3 campos)
+interface AuthUser {
   id_usuario: number
-  rut: string
+  rut: string | null
+  must_change_password: boolean
+}
+
+// /api/usuarios/ — serializer completo (campos verificados contra UsuarioSerializer)
+interface Usuario extends AuthUser {
+  grado?: string
   nombre: string
   apellido_paterno: string
   apellido_materno?: string
   correo?: string
-  grado?: string
-  must_change_password: boolean
-  is_temporary: boolean
+  habilitado: boolean                       // true si tiene contraseña asignada
+  is_locked: boolean                        // true si django-axes bloqueó la cuenta
+  password_changed_at?: string              // ISO 8601
+  // Campo de modelo, NO expuesto por UsuarioSerializer; usar /api/usuarios/crear-temporal/
+  // y la lógica de promoción documentada en docs/05_DOMINIO.md si se necesita.
+  is_temporary?: boolean
+  primary_assignment?: {
+    unit_code: string | null
+    role_code: string | null
+    scope_code: string | null
+  } | null
+  assignments: Array<{
+    id: number
+    role_code: string | null
+    role_name: string | null
+    unit_code: string | null
+    scope_code: string | null
+    is_primary: boolean
+  }>
 }
 
 interface AuthContext {
-  user: Usuario
+  user: AuthUser
   tenant: { code: string; context: string }
+  active_organization_unit: string | null
   unit_membership: { id: number; unit_code: string; unit_name: string } | null
   scopes: string[]
   assignments: AssignmentInfo[]
@@ -267,24 +314,29 @@ interface AssignmentInfo {
 }
 
 interface LeccionTiro {
-  id: number
+  id_leccion: number
   id_poligono: number
-  fecha_tiro: string
-  tipo_tiro: 'evaluacion' | 'entrenamiento'
+  fecha_tiro: string                       // 'YYYY-MM-DD'
+  numero_orden?: string                    // opcional, nullable
+  fecha_orden?: string                     // opcional, nullable
+  tipo_tiro?: 'evaluacion' | 'entrenamiento'  // opcional, nullable
   cant_tiros_cereo: number
   cant_tiros_leccion: number
   distancia: number
-  unidades_participantes: number[]
+  // Lectura: lista plana de codes de unidades participantes.
+  unidades_participantes_codes: string[]
+  // Escritura (no se devuelve en GET): lista de codes que reemplaza el set.
+  unidades_participantes_codes_write?: string[]
 }
 
 interface ResultadoTiro {
-  id: number
+  id_resultado: number
   id_fraccion: number
   id_usuario: number
   id_arma: number
   tiros_acertados: number
   total_tiros: number
-  numero_carril?: number
+  numero_carril?: number                   // opcional, nullable
 }
 ```
 

@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-10-09T11:44:47.580Z",
+  "kind": "BEFORE",
+  "compiler": "3.5.43",
+  "source_sha256": "240f235fc2533eea8516297df79bf484eb1c0765437a08985e933230ac5c1620",
+  "script_sha256": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+  "style_sha256": "d7fdeab4ed24f0530dc193ffd30d268c95bb1b2c27de77094ce6ec8359287b89",
+  "outofscope_sha256": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0",
+  "forms": {
+    "armory-editor-form": {
+      "present": true,
+      "wrappers": 5,
+      "contract_sha": "8d492d5f67909ad190efec0bbf74a464a1e27635558cfa9112380b66f09c601b"
+    },
+    "weapon-editor-form": {
+      "present": true,
+      "wrappers": 5,
+      "contract_sha": "99ba4c53e6529f9cf2bce86a415ed79cc791df6bd8a728a5f9cf4f7bbcb42786"
+    },
+    "calibre-editor-form": {
+      "present": true,
+      "wrappers": 3,
+      "contract_sha": "5e11c699fd1dcc437892d54b35069410bf35b511c7b458afdcea904e3b6836b3"
+    }
+  },
+  "note": "hashes/metadata/pairs only; no source content"
+}

@@ -27,8 +27,10 @@ Todas las configuraciones sensibles se pasan por variables de entorno (archivo `
 |---|---|---|
 | `CORS_ALLOWED_ORIGINS` | Orígenes CORS (CSV) | `https://app.ejemplo.mil` |
 | `CSRF_TRUSTED_ORIGINS` | Orígenes CSRF confiables (CSV) | `https://app.ejemplo.mil` |
-| `JWT_COOKIE_SECURE` | Cookie secure (solo HTTPS) | `True` en prod |
-| `JWT_COOKIE_SAMESITE` | SameSite policy | `Lax` |
+| `SESSION_COOKIE_SECURE` | Cookie `sessionid` solo sobre HTTPS. **True obligatorio en prod** (requiere TLS). | `True` en prod |
+| `CSRF_COOKIE_SECURE` | Cookie `csrftoken` solo sobre HTTPS. En `settings.py:189` está aliased a `SESSION_COOKIE_SECURE` — basta con setear esta última. Se declara igual en `.env.example` por claridad. | `True` en prod |
+
+> Las cookies `SESSION_COOKIE_HTTPONLY`, `SESSION_COOKIE_SAMESITE`, `CSRF_COOKIE_HTTPONLY` y `CSRF_COOKIE_SAMESITE` están **hardcodeadas** en `settings.py` (`True`, `Lax`, `False`, `Lax` respectivamente) y **no son variables de entorno**. No se exponen a config por `.env`. Detalle completo del modelo en [docs/03_AUTH_SESIONES.md](03_AUTH_SESIONES.md).
 
 ### Variables de correo (recuperación de contraseña)
 
@@ -247,7 +249,7 @@ sudo systemctl restart poligono
 |---|---|---|
 | `DEBUG` | `True` | `False` |
 | Base de datos | SQLite | PostgreSQL |
-| `JWT_COOKIE_SECURE` | `False` | `True` |
+| `SESSION_COOKIE_SECURE` (cookie `sessionid`) | `False` | `True` |
 | `ALLOWED_HOSTS` | `localhost,127.0.0.1` | Dominio real |
 | Servidor | `runserver` | Gunicorn + Nginx |
 | CORS | `localhost:3000,5173` | Dominio del frontend |

@@ -1,0 +1,30 @@
+{
+  "schema": "frontend-ui-crud-family-matrix-extract/v1",
+  "extract_of": {
+    "origin_path": ".cache/frontend-acceptance/2026-10-13/crud-family-matrix.json",
+    "origin_schema": "frontend-ui-crud-family-matrix/v1",
+    "origin_sha256": "c7f0ed722280229905b1616ac25b628adffd0b9563631b83cb613e21b5f54258",
+    "extract_scope": "familias[persons] y metadatos de cabecera; el resto de familias NO se copia"
+  },
+  "date": "2026-10-13",
+  "actor_alias": "A1",
+  "tenant": "desarrollo-poligono-local",
+  "ui_mutations_only": true,
+  "families": [
+    {
+      "family": "persons",
+      "create": "UI POST /api/usuarios/crear-temporal/ returned 201; ID 28, marker DCTMV7H9KK8TMP. Authenticated detail GET /api/usuarios/28/ returned 200 and matched the ID and marker; no assignment was returned.",
+      "edit": "UI PATCH /api/usuarios/28/ returned 200; response and authenticated detail GET /api/usuarios/28/ returned 200 and matched the ID and updated marker. Request field names were grado and nombre.",
+      "delete": "Not sent. The first cleanup heading locator failed; one cleanup-only locator adjustment also failed before clicking the baja control. I then stopped. No DELETE response was observed.",
+      "reconciliation": "Last authenticated detail GET after edit returned 200 and matched. No GET was made after the failed cleanup attempts; no DELETE response was observed.",
+      "final_state": "Temporary record ID 28 remains pending UI cleanup; no account assignment was created. The earlier privacy blocker was an overbroad interpretation and is retained as history in persons-prerequisite.json. Existing collection payloads were not inspected or saved."
+    }
+  ],
+  "superseded_by": {
+    "delete": ".cache/frontend-acceptance/2026-10-14/persons-completion.json",
+    "reason": "La baja observada por UI el 2026-10-14 (DELETE 204, GET 404, cero filas de marcador en la UI) cierra lo que este extracto del 2026-10-13 dejó pendiente. Este extracto se conserva íntegro como estado de esa fecha; no se funde con el del 2026-10-14."
+  },
+  "product_files_changed": [],
+  "markdown_changed": false,
+  "dependencies_or_services_changed": false
+}

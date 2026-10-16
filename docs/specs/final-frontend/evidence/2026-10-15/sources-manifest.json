@@ -1,0 +1,297 @@
+{
+  "schema": "frontend-acceptance-sources-manifest/v1",
+  "date": "2026-10-15",
+  "batch": "t11_v0_v1_2026_10_15",
+  "scope": "Tanda T11 del plan de cierre: barrido V0 de familias por ruta (8 actores) y modulos V1a (alta formal de persona y panel de asignaciones) y V1b/V1b2 (relaciones de recinto), ejercitados por UI con el alias A2 acreditado por correspondencia privada, sobre registros descartables propios. Esta tanda SI promueve 7 celdas de A2 de la matriz de aceptacion (todas NOT_EXERCISED -> OBSERVED_OK). El 2026-10-15 se amplia este manifiesto con un lote posterior (`t11_v1c_v1e_2026_10_15`): modulos V1c (puestos por UI, A1), V1d (asignacion principal por UI, A2) y V1e (ejercicios por UI, A7 con relevo de A1; incluye la lectura OP-RCT-003 de A1), que promueve 12 celdas mas de la matriz de aceptacion (todas NOT_EXERCISED -> OBSERVED_OK) y enriquece sin cambiar de estado la celda OP-EJR-006 de A7. El 2026-10-15 se amplia de nuevo con un tercer lote (`t11_v1f_v1g_2026_10_15`): modulos V1f (holders por UI, A1) y V1g (editor de cuenta por UI, A3) y la limpieza de relevo de A1 sobre la unidad residuo de V1g, que promueve 5 celdas mas de la matriz de aceptacion (todas NOT_EXERCISED -> OBSERVED_OK) y deja registrada la trampa §11 (residuo propio del puesto id 65).",
+  "purpose": "Relacion univoca entre cada copia durable de este directorio y su archivo de origen en `.cache/frontend-acceptance/2026-10-15/`. Las veinte copias se hicieron desde esa cache y son byte a byte identicas a su origen; no se altero ningun origen. La copia no depende de la cache borrable. Las seis copias del lote posterior `t11_v1c_v1e_2026_10_15` y las seis del tercer lote `t11_v1f_v1g_2026_10_15` se identifican por su propio campo `batch`; las ocho copias anteriores pertenecen al lote `t11_v0_v1_2026_10_15` (valor del `batch` raiz del documento) y conservan su formato original.",
+  "pii_policy": "Cero secretos y cero datos personales. Sin API keys, tokens, contrasenas, webhooks ni credenciales; sin cookies con valor; sin nombres de persona, RUT ni correos. Solo se conservan alias de actor, rol, marcadores de turno descartables propios `T11A2USR*` / `T11A2RCT*` / `T11A1POS*` / `T11A2PRA*` / `T11A7EJR*` / `T11A1HLD*` / `T11A3USR*`, identificadores de registros descartables propios, rutas y metodos HTTP, estados de respuesta, nombres de campo y hashes SHA-256. Las credenciales de los alias no se imprimen ni se persisten (los artefactos declaran `credentials_printed_or_persisted: false`).",
+  "copies": [
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/runtime-family-evidence.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/runtime-family-evidence.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "d45a78338c0cb3c0ed1fa9df3bd6a789bc43b8b663869723828dfc33d013b2d5",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Barrido V0 multi-actor: 8 actores (A1..A8), 19 familias por actor, contexto de navegador nuevo por actor, login y logout por UI. Sin credenciales, cookies con valor, cuerpos de respuesta ni datos de personas: solo alias, rutas, metodos, estados HTTP, superficies y limitaciones.",
+      "contributes": "Corte de lectura por actor: 8/8 actores observados, 19 rutas cada uno, 208 respuestas 200 + 14 respuestas 403 sobre los GET de negocio de las familias (222 en total, excluyendo login, context y logout), superficies evaluadas (130 page_shell / 22 neutral_denial) y cero bloqueos. No promueve celdas.",
+      "matrix_effect": "Ninguno. El V0 no promueve filas ni altera conteos; queda como corte de lectura por actor en observations.t11_v0_sweep_2026_10_15."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v0-sweep-summary.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v0-sweep-summary.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "da6612b097dd50ebb1ca7b5fea94b5aa60957b2a46e91ab792237cda9a12b864",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Resumen derivado del artefacto V0: los 8 actores con estado `observed` y 19 familias cada uno. Sin credenciales ni datos de personas.",
+      "contributes": "Resumen del barrido V0 (artefacto declarado `.cache/frontend-acceptance/2026-10-15/runtime-family-evidence.json`).",
+      "matrix_effect": "Ninguno."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1a-persons-formal-a2.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1a-persons-formal-a2.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "3a7091589d890479c3119ae999c4d58480502e85b977f3e618af65631d966359",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A2 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo `tenant_admin`; la cuenta creada es descartable propia (marcador `T11A2USR*`), nunca inicio sesion (`created_account_login_attempted: false`) y se dio de baja al final (204). Sin credenciales, cookies con valor, RUT ni correos: solo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP, nombres de campo y booleanos de control.",
+      "contributes": "Modulo V1a por UI con A2: POST /api/usuarios/ 201 (fila OP-USR-002), POST .../desactivar-asignacion-principal/ 200 (OP-USR-009), POST .../agregar-asignacion/ 201 (OP-USR-010), POST .../quitar-asignacion/{assignment_id}/ 200 (OP-USR-011) y GET de unidades asignables poblado con la unidad descartable propia (OP-UNT-010), con baja de cuenta 204 y limpieza trazable. Detalle en `observations.t11_v1a_2026_10_15`.",
+      "matrix_effect": "Promueve 5 celdas de A2 (OP-USR-002/009/010/011 y OP-UNT-010) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1b2-recinto-relations-a2.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1b2-recinto-relations-a2.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "3f2a935c849fbce72b0cb6aed744bb8463613e90c113bc2439441c4f7b17bb27",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A2 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo `tenant_admin`; el recinto y la unidad son descartables propios (marcador `T11A2RCT*`) y se dieron de baja al final (204/404). Reproduce la sonda de duplicado via DOM (`duplicate_probe_click_via_dom: true`). Conserva la observacion del modal que no se cierra solo (post_add_now / post_add_after_4s / post_renav). Sin credenciales, cookies con valor, RUT ni correos.",
+      "contributes": "Modulo V1b2 por UI con A2: POST /api/recintos/{id}/agregar-unidad/{unit_code}/ 200 con `unit_count: 1` y sonda de duplicado que excluye la unidad ya relacionada (fila OP-RCT-007), y DELETE /api/recintos/{id}/quitar-unidad/{unit_code}/ 200 con `unit_count: 0` y lista 1 -> 0 (fila OP-RCT-008). Detalle en `observations.t11_v1b_2026_10_15`.",
+      "matrix_effect": "Promueve 2 celdas de A2 (OP-RCT-007 y OP-RCT-008) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/run-module.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/run-module.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "072c78a35da3b197e70753770dfdd0a90768e9d9f091dc71455d42ec07361ea5",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Runner generico de modulo del harness T11. Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script de ejecucion del harness (carga y corre un modulo `.run.cjs`).",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en los JSON de salida copiados."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/runtime-family-sweep-v0.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/runtime-family-sweep-v0.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "18e8b391661a2142ea2f434136d914f34a514a1adf503f25d5bb1a1714b5ec69",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del barrido V0 (8 actores x 19 rutas, contexto nuevo por actor, login/logout por UI). Script ejecutado, sin credenciales embebidas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `runtime-family-evidence.json` y `v0-sweep-summary.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1a-persons-formal-a2.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1a-persons-formal-a2.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "30274daa045cd0257a2533863554db3d5aa4c67823d86c7bcf8836303d031f0c",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1a (alta formal de persona y panel de asignaciones). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1a-persons-formal-a2.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1b2-recinto-relations-a2.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1b2-recinto-relations-a2.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "562e86187aafa96f134611a24eb8be76fa0e42af98cf086bfeb28f9e4cc148a5",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1b2 (relaciones de recinto, pasada diagnostica). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1b2-recinto-relations-a2.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1c-positions-a1.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1c-positions-a1.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "71d8365e894492e68526421e4b185f19e20d4e4c9ba3377bd09eddff6e7c7362",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A1 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo super_admin; el puesto descartable propio (marcador T11A1POS*) se creo, se edito por PUT y PATCH, se leyo (detalle e historico) y se dio de baja en la misma corrida, SIN holder a proposito. Sin credenciales, cookies con valor, RUT ni correos: solo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP, nombres de campo y booleanos de control.",
+      "contributes": "Modulo V1c por UI con A1: POST /api/posiciones/ 201 (OP-POS-002), GET /api/posiciones/{id}/ 200 (OP-POS-003), PUT 200 (OP-POS-004), PATCH 200 (OP-POS-005), DELETE 204 con GET posterior 404 (OP-POS-006) y GET /api/posiciones/{id}/historico/ 200 (OP-POS-009). Detalle en observations.t11_v1c_v1d_v1e_2026_10_15.",
+      "matrix_effect": "Promueve 6 celdas de A1 (OP-POS-002/003/004/005/006/009) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1c-positions-a1.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1c-positions-a1.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "a6623b642818e685c13d9d5235e875aae70a50d142f3a9238b0e9a94588c0a08",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1c (puestos por UI de punta a punta). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1c-positions-a1.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1d-primary-assignment-a2.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1d-primary-assignment-a2.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "c7380e8b2f5d7c8495bc4a290f47c6b3dae3eb5232974dd5403ac344f9a8984e",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A2 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo tenant_admin; la cuenta descartable propia (marcador T11A2PRA*) se creo, se le cambio la asignacion principal por UI con PUT y luego con PATCH (roles no privilegiados), se confirmo el rol final por lectura y se dio de baja en la misma corrida. Sin credenciales, cookies con valor, RUT ni correos.",
+      "contributes": "Modulo V1d por UI con A2: PUT /api/usuarios/{id}/asignacion-principal/ 200 (OP-USR-007) y PATCH /api/usuarios/{id}/asignacion-principal/ 200 (OP-USR-008), con el rol final confirmado por lectura (GET 200). Detalle en observations.t11_v1c_v1d_v1e_2026_10_15.",
+      "matrix_effect": "Promueve 2 celdas de A2 (OP-USR-007 y OP-USR-008) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1d-primary-assignment-a2.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1d-primary-assignment-a2.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "4e78e8b83975c5edae1b34dea4d56d5aa7d12455e0bdf78285da6fc9ae66279d",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1d (asignacion principal por UI, PUT y PATCH separados). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1d-primary-assignment-a2.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1e-exercises-relay-a7-a1.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1e-exercises-relay-a7-a1.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "7c3932ccbdc2dae1a074ded89eb41cea2cd9eb9a66627219702fc37c2368385c",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita dos alias: A7 (encargado_almacen) y A1 (super_admin), cada uno por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con su rol activo. El ejercicio descartable propio (marcador T11A7EJR*) se creo (201), se edito por PUT y PATCH (200, ambos por A7), se leyo (200) y se dio de baja por relevo de A1 (DELETE 204, GET posterior 404); la UI de A7 refleja el gating de permisos (boton «Eliminar» deshabilitado con aviso de permiso, SIN emision de request). Sin credenciales, cookies con valor, RUT ni correos.",
+      "contributes": "Modulo V1e por UI: GET /api/ejercicios/{id}/ 200, PUT 200 y PATCH 200 por A7 (OP-EJR-003/004/005), baja por relevo de A1 (OP-EJR-006, evidencia enriquecida) y GET /api/recintos/{id}/ 200 por A1 (OP-RCT-003, apertura de ficha desde la lista). Detalle en observations.t11_v1c_v1d_v1e_2026_10_15.",
+      "matrix_effect": "Promueve 4 celdas (OP-EJR-003/004/005 de A7 y OP-RCT-003 de A1) de NOT_EXERCISED a OBSERVED_OK; OP-EJR-006 de A7 queda en PARTIAL, con la evidencia enriquecida sin cambiar de estado."
+    },
+    {
+      "batch": "t11_v1c_v1e_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1e-exercises-relay-a7-a1.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1e-exercises-relay-a7-a1.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "e156105e5aca800669fc36e60afe83d1135c3ebcee4719f6ff6e83c954544a9d",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1e (ejercicios por A7 con relevo A1 y lectura de recinto RCT-003). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1e-exercises-relay-a7-a1.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1f-holders-a1.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1f-holders-a1.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "d8f0310bbe2934868b1db154e18250ea00ab3753f7f003997c0e46877c2561bd",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A1 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo super_admin; el puesto descartable propio (marcador T11A1HLD*) se creo (201), se edito por PUT y PATCH y se le asigno y retiro un holder con la cuenta propia (201/200); la baja del puesto respondio 500 (ProtectedError, deuda §11) y dejo el residuo propio id 65. Sin credenciales, cookies con valor, RUT ni correos: solo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP, nombres de campo y booleanos de control.",
+      "contributes": "Modulo V1f por UI con A1: POST /api/posiciones/{id}/asignar-holder/ 201 (OP-POS-007) y POST /api/posiciones/{id}/quitar-holder/{assignment_id}/ 200 (OP-POS-008), sobre puesto descartable propio; incluye la sonda de la trampa §11 (DELETE del puesto 500). Detalle en observations.t11_v1f_v1g_2026_10_15.",
+      "matrix_effect": "Promueve 2 celdas de A1 (OP-POS-007 y OP-POS-008) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1f-holders-a1.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1f-holders-a1.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "7744aeb399b1321d992c3c890165446b4eaa92102f2e40a43070f7f27b20aef6",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1f (holders por UI con la cuenta propia y sonda de la trampa §11). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1f-holders-a1.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1g-user-editor-a3.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1g-user-editor-a3.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "a70bebb797fa68bc00e55c4c8c10e954a9401deaee5e192d234432518a23b198",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue` y `gate.credentials_printed_or_persisted: false`. Acredita el alias A3 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo admin_unidad; la cuenta descartable propia (marcador T11A3USR*) se creo (201), se edito por PUT y PATCH (200/200), se confirmo por lectura y se dio de baja (204, GET posterior 404); las dos posiciones laterales se limpiaron (204 x2). Sin credenciales, cookies con valor, RUT ni correos: solo alias, rol, ids de registros descartables propios, marcador de turno, rutas, estados HTTP, nombres de campo y booleanos de control.",
+      "contributes": "Modulo V1g por UI con A3: PUT /api/usuarios/{id}/ 200 (OP-USR-004), PATCH 200 (OP-USR-005) y DELETE 204 con GET posterior 404 (OP-USR-006), sobre cuenta descartable propia. Detalle en observations.t11_v1f_v1g_2026_10_15.",
+      "matrix_effect": "Promueve 3 celdas de A3 (OP-USR-004/005/006) de NOT_EXERCISED a OBSERVED_OK."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1g-user-editor-a3.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1g-user-editor-a3.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "264e8b61b1b350a0ac0b463b1c63252ebf04446c841b23a2fbc2ef9843157dd0",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script del modulo V1g (editor de cuenta por UI: PUT y PATCH separados y baja). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1g-user-editor-a3.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1g-cleanup-unit-a1.json",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1g-cleanup-unit-a1.json",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "c5ccd378e149b34e2b9182abd2a535db790276f1263f1a1af5eeabd3337d0078",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Declara `stage: residue`. Acredita el alias A1 por login de UI (POST /api/auth/login/ 200) y GET /api/auth/context/ 200 con rol activo super_admin; la unidad residuo de V1g (id 43, marcador T11A3USR) se dio de baja por UI (DELETE 204, GET posterior 404) y el barrido por marcador T11A3USR cerro en 0/0 (arbol y tabla). Sin credenciales, cookies con valor, RUT ni correos.",
+      "contributes": "Limpieza de relevo de A1 sobre la unidad residuo de V1g: DELETE /api/organization-units/43/ 204 y GET posterior 404 con barrido 0/0. No promueve celdas. Detalle en observations.t11_v1f_v1g_2026_10_15.",
+      "matrix_effect": "Ninguno; la limpieza no promueve celdas ni altera cell_state_counts."
+    },
+    {
+      "batch": "t11_v1f_v1g_2026_10_15",
+      "copy_path": "docs/specs/final-frontend/evidence/2026-10-15/v1g-cleanup-unit-a1.run.cjs",
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1g-cleanup-unit-a1.run.cjs",
+      "origin_date": "2026-10-15",
+      "identical_to_origin": true,
+      "sha256": "ee6738863cdbcf9fff0a80313831438295a13c614233e41e5064254f6c763da8",
+      "redactions_applied": [],
+      "reviewed_before_copy": true,
+      "review_notes": "Script de la limpieza de relevo de V1g (baja de la unidad residuo por A1). Script ejecutado, sin credenciales embebidas ni datos de personas; conservado por pedido explicito del encargo.",
+      "contributes": "Script que produjo `v1g-cleanup-unit-a1.json`.",
+      "matrix_effect": "Ninguno; su ejecucion queda registrada en el JSON de salida copiado."
+    }
+  ],
+  "not_copied": [
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/runtime-family-evidence-run1.json",
+      "reason": "Pasada previa del barrido V0 (run1), preservada intacta en la cache; no se copia. La evidencia durable es la pasada vigente `runtime-family-evidence.json`."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v0-sweep-summary-run1.json",
+      "reason": "Resumen de la pasada previa del barrido V0 (run1), preservado intacto en la cache; no se copia."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1b-recinto-relations-a2.json",
+      "reason": "Primera pasada del modulo V1b, que cerro con un error de harness en la sonda de duplicado y dejo campos en null; preservada intacta en la cache. La pasada vigente es la diagnostica `v1b2-recinto-relations-a2.json`, que la reproduce con la sonda via DOM."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/v1b-recinto-relations-a2-run1.json",
+      "reason": "Duplicado/previo de la primera pasada del modulo V1b (run1), preservado intacto en la cache; no se copia."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/pw-probe.cjs",
+      "reason": "Sonda de arranque del harness, no evidencia de resultado de esta tanda."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/smoke-login.cjs",
+      "reason": "Sonda de humo de login del harness, no evidencia de resultado de esta tanda."
+    },
+    {
+      "origin_path": ".cache/frontend-acceptance/2026-10-15/smoke-login.json",
+      "reason": "Salida de la sonda de humo de login del harness, no evidencia de resultado de esta tanda."
+    }
+  ],
+  "integrity": {
+    "origins_modified": false,
+    "product_files_modified": false,
+    "verification_method": "`cmp` byte a byte y sha256 del origen y de la copia para las veinte copias declaradas; los veinte pares coinciden (cmp sin diferencias, sha256 identico origen/copia)."
+  }
+}

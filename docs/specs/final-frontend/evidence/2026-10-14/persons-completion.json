@@ -1,0 +1,39 @@
+{
+  "schema": "frontend-ui-persons-completion/v1",
+  "date": "2026-10-14",
+  "delivery_status": "DELIVERED",
+  "actor_alias": "A1",
+  "record": { "id_usuario": 28, "marker": "DCTMV7H9KK8TMP" },
+  "reviewed_sources": [
+    ".cache/frontend-acceptance/2026-10-13/persons-prerequisite.json",
+    ".cache/frontend-acceptance/2026-10-13/crud-family-matrix.json"
+  ],
+  "prior_observations": {
+    "create": { "source": "prior artifact: UI click", "method": "POST", "path": "/api/usuarios/crear-temporal/", "status": 201 },
+    "edit": { "source": "prior artifact: UI click", "method": "PATCH", "path": "/api/usuarios/28/", "status": 200, "request_field_names": ["grado", "nombre"] },
+    "last_detail": { "source": "prior artifact: authenticated GET harness", "method": "GET", "path": "/api/usuarios/28/", "status": 200, "id_match": true, "marker_match": true },
+    "delete": "not sent in reviewed sources"
+  },
+  "current_observations": {
+    "servers": {
+      "backend_preflight": { "http_status": "000", "curl_exit_code": 7, "port_8000_listener_count": 0 },
+      "frontend_start": { "directory": "front", "command": "pnpm dev --port 5175" },
+      "backend_start": { "directory": ".", "command": ".venv/bin/python manage.py runserver 127.0.0.1:8000 --noreload" },
+      "existing_live_server_restarted": false,
+      "migrations_or_seeds_executed": false
+    },
+    "login": { "actor_alias": "A1", "source": "UI login with existing local credential mechanism", "method": "POST", "path": "/api/auth/login/", "status": 200, "cookies_fabricated": false },
+    "current_detail_get": { "source": "authenticated GET harness before UI cleanup", "method": "GET", "path": "/api/usuarios/28/", "status": 200, "id_match": true, "marker_match": true, "marker_fields": ["nombre"], "assignment_count": 0 },
+    "ownership": { "source": "2026-10-13 prior UI creation artifacts linked to current GET and owned UI row", "marker": "DCTMV7H9KK8TMP", "edited_marker": "DCTMV7H9KK8TMP-EDIT", "ui_detail_path": "/personas/28", "owned_marker_row_count_before": 1 },
+    "confirmation": { "source": "current owned UI dialog snapshot", "heading": "Confirmar baja de usuario", "marker_match": true, "button": "Confirmar baja" },
+    "delete": { "source": "UI Confirmar baja click; Playwright response event", "method": "DELETE", "path": "/api/usuarios/28/", "status": 204 },
+    "final_detail_get": { "source": "authenticated GET harness after observed UI DELETE", "method": "GET", "path": "/api/usuarios/28/", "status": 404 },
+    "final_ui": { "route": "/personas", "exact_marker_row_count": 0 },
+    "final_record_state": "detail GET 404 after observed UI DELETE 204; no owned marker row in UI"
+  },
+  "limits": { "physical_database_deletion_inferred": false, "PUT_exercised_or_inferred": false, "other_families_exercised": false, "POST_and_PATCH_repeated": false, "servers_left_running": true },
+  "prior_artifacts_modified": false,
+  "product_files_modified": false,
+  "personal_data_retained": false,
+  "global_acceptance_certified": false
+}

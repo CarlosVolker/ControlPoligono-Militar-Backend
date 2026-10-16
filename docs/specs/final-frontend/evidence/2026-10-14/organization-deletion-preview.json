@@ -1,0 +1,465 @@
+{
+  "schema": "frontend-organization-deletion-preview/v1",
+  "date": "2026-10-14",
+  "ac": "AC-4",
+  "delivery_scope": "AC-4 runtime read-only observation of deletion-with-migration preview; no deletion executed",
+  "status": "DELIVERED",
+  "alias": {
+    "value": "NOT_VERIFIED",
+    "reason": "single-role UI login used (super_admin); actor alias and expected_by_actor are not accredited by this observation"
+  },
+  "criterion_source": {
+    "file": "front/src/views/organization/OrganizationView.vue",
+    "constant": "MIGRATION_COUNT_FIELDS",
+    "lines": "105-117",
+    "api_validator": "front/src/features/organization/api.ts"
+  },
+  "source_mapping_paths": [
+    "front/src/views/organization/OrganizationView.vue",
+    "front/src/features/organization/api.ts"
+  ],
+  "context": {
+    "route_template": "/organizacion/unidades/{id}",
+    "actor_role": "super_admin"
+  },
+  "expected_count_fields": [
+    "assignments",
+    "weapons",
+    "ranges",
+    "lessons",
+    "fractions",
+    "results",
+    "child_units",
+    "lessons_as_participant"
+  ],
+  "flow": {
+    "login": {
+      "landed": "/"
+    },
+    "list": {
+      "unit_detail_link_present": true,
+      "unit_id_persisted": false
+    },
+    "detail": {
+      "migration_control_present": true,
+      "migration_control_enabled": true,
+      "landed_route_template": "/organizacion/unidades/{id}"
+    },
+    "cancel": {
+      "clicked": true
+    }
+  },
+  "preview": {
+    "request": [
+      {
+        "method": "GET",
+        "path": "/api/organization-units/{id}/previsualizar-eliminacion/",
+        "status": 200
+      }
+    ],
+    "counters_rendered": [
+      {
+        "label": "Assignments",
+        "value": "1"
+      },
+      {
+        "label": "Weapons",
+        "value": "0"
+      },
+      {
+        "label": "Ranges",
+        "value": "1"
+      },
+      {
+        "label": "Lessons",
+        "value": "1"
+      },
+      {
+        "label": "Fractions",
+        "value": "1"
+      },
+      {
+        "label": "Results",
+        "value": "0"
+      },
+      {
+        "label": "Child units",
+        "value": "2"
+      },
+      {
+        "label": "Lessons as participant",
+        "value": "1"
+      }
+    ],
+    "counters_expected_labels": [
+      "Assignments",
+      "Weapons",
+      "Ranges",
+      "Lessons",
+      "Fractions",
+      "Results",
+      "Child units",
+      "Lessons as participant"
+    ],
+    "counters_present_by_name": {
+      "assignments": true,
+      "weapons": true,
+      "ranges": true,
+      "lessons": true,
+      "fractions": true,
+      "results": true,
+      "child_units": true,
+      "lessons_as_participant": true
+    },
+    "counters_count": 8,
+    "counters_values": [
+      {
+        "label": "Assignments",
+        "value": "1"
+      },
+      {
+        "label": "Weapons",
+        "value": "0"
+      },
+      {
+        "label": "Ranges",
+        "value": "1"
+      },
+      {
+        "label": "Lessons",
+        "value": "1"
+      },
+      {
+        "label": "Fractions",
+        "value": "1"
+      },
+      {
+        "label": "Results",
+        "value": "0"
+      },
+      {
+        "label": "Child units",
+        "value": "2"
+      },
+      {
+        "label": "Lessons as participant",
+        "value": "1"
+      }
+    ],
+    "response": {
+      "top_level_field_names": [
+        "counts",
+        "parent_code",
+        "unit_code",
+        "unit_name"
+      ],
+      "unit_code_is_string": true,
+      "unit_name_is_string": true,
+      "parent_code_is_null": true,
+      "parent_code_is_string": false,
+      "counts_field_names": [
+        "assignments",
+        "child_units",
+        "fractions",
+        "lessons",
+        "lessons_as_participant",
+        "ranges",
+        "results",
+        "weapons"
+      ],
+      "counts_are_non_negative_integers": true,
+      "counts_quantities": {
+        "assignments": 1,
+        "weapons": 0,
+        "ranges": 1,
+        "lessons": 1,
+        "fractions": 1,
+        "results": 0,
+        "child_units": 2,
+        "lessons_as_participant": 1
+      }
+    }
+  },
+  "destination": {
+    "selector": {
+      "present": true,
+      "selected_value_template": "",
+      "option_count": 12,
+      "options": [
+        {
+          "value_template": "",
+          "disabled": true
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        }
+      ],
+      "placeholder_present": true
+    },
+    "valid_option_selected": true,
+    "selector_after_selection": {
+      "present": true,
+      "selected_value_template": "unit_code",
+      "option_count": 12,
+      "options": [
+        {
+          "value_template": "",
+          "disabled": true
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        },
+        {
+          "value_template": "unit_code",
+          "disabled": false
+        }
+      ],
+      "placeholder_present": true
+    }
+  },
+  "confirm_control": {
+    "before_target_selection": {
+      "present": true,
+      "text": "Confirmar eliminación",
+      "disabled": true
+    },
+    "after_valid_target_selection": {
+      "present": true,
+      "text": "Confirmar eliminación",
+      "disabled": false
+    }
+  },
+  "network": {
+    "api_calls": [
+      {
+        "phase": "login",
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/poligonos/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/lecciones/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/usuarios/{id}/",
+        "status": 200
+      },
+      {
+        "phase": "login",
+        "method": "GET",
+        "path": "/api/lecciones/{id}/resultados-resumen/",
+        "status": 200
+      },
+      {
+        "phase": "list",
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200
+      },
+      {
+        "phase": "list",
+        "method": "GET",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "phase": "list",
+        "method": "GET",
+        "path": "/api/organization-units/",
+        "status": 200
+      },
+      {
+        "phase": "detail",
+        "method": "GET",
+        "path": "/api/organization-units/{id}/",
+        "status": 200
+      },
+      {
+        "phase": "detail",
+        "method": "GET",
+        "path": "/api/recintos/",
+        "status": 200
+      },
+      {
+        "phase": "detail",
+        "method": "GET",
+        "path": "/api/organization-units/",
+        "status": 200
+      },
+      {
+        "phase": "preview",
+        "method": "GET",
+        "path": "/api/me/assignable-units/",
+        "status": 200
+      },
+      {
+        "phase": "preview",
+        "method": "GET",
+        "path": "/api/organization-units/{id}/previsualizar-eliminacion/",
+        "status": 200
+      }
+    ],
+    "business_mutation_count": 0,
+    "business_mutations": [],
+    "auth_calls_excluded_from_mutation_count": [
+      {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200
+      }
+    ],
+    "post_eliminar_con_migracion_count": 0
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "harness": null,
+    "stage": null
+  },
+  "criterion_comparison": {
+    "reference": "AC-4 (docs/specs/final-frontend/completion-plan-2026-10-14.md): previsualizacion con ocho contadores de destino, los exige, refresca la vista solo tras exito confirmado",
+    "eight_destination_counters_required": {
+      "observed": true,
+      "detail": "8/8 counters rendered from the preview response; labels matched MIGRATION_COUNT_FIELDS"
+    },
+    "destination_required_before_confirm": {
+      "observed": true,
+      "detail": "confirm button disabled with no target, enabled after selecting a valid target"
+    },
+    "preview_is_read_only_GET": {
+      "observed": true,
+      "detail": "GET /api/organization-units/{id}/previsualizar-eliminacion/ 200"
+    },
+    "no_mutation_fired": {
+      "observed": true,
+      "detail": "0 business mutations; 0 POST /eliminar-con-migracion/"
+    },
+    "refresh_only_after_confirmed_success": {
+      "observed": false,
+      "reason": "not exercised: deletion not executed by design"
+    }
+  },
+  "limits": [
+    "Read-only observation: the deletion was NOT confirmed and no unit was modified or created.",
+    "One existing unit was previewed via UI under a single role (super_admin); other roles, other units and multi-tenant scopes were not exercised.",
+    "actor alias and expected_by_actor remain NOT_VERIFIED; no matrix cell is promoted by this artifact.",
+    "Response bodies were summarised to field names and non-negative integer quantities; unit_code/unit_name/parent_code values were not persisted to avoid org-identifying data.",
+    "The refresh-after-confirmed-success half of AC-4 was not exercised because it requires executing the deletion.",
+    "Destination values were reduced to templates (unit_code / __parent__ / empty placeholder); actual unit codes were not retained.",
+    "No screenshots, HAR, cookies, credentials, tenant value or unit identifier were persisted.",
+    "Expected: the previewed unit is a root (parent_code null), so the '__parent__' destination option did not apply; a valid target was still selectable from assignable units."
+  ],
+  "policy": {
+    "mutations_expected": 0,
+    "preview_read_only": true,
+    "destination_selection_is_ui_state_only": true,
+    "no_confirmation": true,
+    "excluded": [
+      "executing deletion",
+      "creating or editing units",
+      "appearance preferences",
+      "response bodies containing org identifiers"
+    ]
+  }
+}

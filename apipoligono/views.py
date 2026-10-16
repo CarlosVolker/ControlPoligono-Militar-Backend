@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -13,9 +14,10 @@ from rest_framework.throttling import UserRateThrottle
 from .models import (Usuario, Arma, PoligonoTiro, LeccionTiro, FraccionTiro, ResultadoTiro,
                      Calibre, EjercicioMilitar, ConsumoMunicion, ConsumoArma)
 from .serializers import (UsuarioSerializer, ArmaSerializer, PoligonoTiroSerializer,
-                          LeccionTiroSerializer, FraccionTiroSerializer, ResultadoTiroSerializer,
-                          RUTAuthTokenSerializer, CalibreSerializer, EjercicioMilitarSerializer,
-                          ConsumoMunicionSerializer, ConsumoArmaSerializer)
+                           LeccionTiroSerializer, FraccionTiroSerializer, ResultadoTiroSerializer,
+                           RUTAuthTokenSerializer, CalibreSerializer, EjercicioMilitarSerializer,
+                           ConsumoMunicionSerializer, ConsumoArmaSerializer,
+                           DesignSystemAppearanceSerializer)
 from .utils.recuperacion_utilidades import iniciar_recuperacion, crea_codigo, cambiar_contrasena, comprobar_codigo
 from apps.authorization.permissions import (
     HasResourcePermission,
@@ -1938,4 +1940,52 @@ class UserPreferencesView(APIView):
             'palette': user.palette,
             'density': user.density,
         })
+
+
+class DesignSystemAppearanceView(APIView):
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'put', 'delete']
+
+    appearance_fields = (
+        'ds_theme',
+        'ds_accent',
+        'ds_bg',
+        'ds_font',
+        'ds_radius',
+        'ds_iconfam',
+        'ds_ambient',
+        'ds_ambcolor',
+    )
+
+    def get(self, request):
+        return Response(DesignSystemAppearanceSerializer(request.user).data)
+
+    def put(self, request):
+        serializer = DesignSystemAppearanceSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        with transaction.atomic():
+            for field_name in self.appearance_fields:
+                setattr(user, field_name, serializer.validated_data[field_name])
+            user.save(update_fields=self.appearance_fields)
+
+        return Response(
+            DesignSystemAppearanceSerializer(user).data,
+            status=status.HTTP_200_OK,
+        )
+
+    def delete(self, request):
+        user = request.user
+        defaults = {
+            field_name: user._meta.get_field(field_name).get_default()
+            for field_name in self.appearance_fields
+        }
+
+        with transaction.atomic():
+            for field_name, value in defaults.items():
+                setattr(user, field_name, value)
+            user.save(update_fields=self.appearance_fields)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
         

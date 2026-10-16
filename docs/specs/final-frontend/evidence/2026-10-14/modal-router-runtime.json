@@ -1,0 +1,41 @@
+{
+  "status": "DELIVERED",
+  "sources": ["playwright.browser_run_code_unsafe: single-invocation request/response collectors and sanitized DOM measurements", "../../Inume Design System/assets/css/baseui.css:945-982", "front/src/router/routes.ts:3,9,12", "front/src/components/shared/DsModal.vue", "front/AGENTS.md", "docs/specs/final-frontend/completion-plan-2026-10-14.md"],
+  "sessionProvenance": {"source": "existing authorized local browser session", "loginPerformed": false, "contextGETWithoutTenantStatus": 403, "contextGETWithExistingTenantHeaderStatus": 200, "contextAvailable": true, "assignmentsPresent": true, "privateCredentialMappingUsed": false},
+  "alias": {"name": "A1", "status": "NOT_VERIFIED", "actorCellsPromoted": false, "authorizationVerdict": false},
+  "conditions": {"existingLocalServerReused": true, "initialRoute": "/organizacion/unidades", "cacheState": "existing warm browser; not reset", "viewport": {"width": 1277, "height": 1285}, "formSubmitted": false, "formValuesChanged": false},
+  "routes": [
+    {"name": "dashboard", "path": "/", "routeMatched": true, "headingVisible": true, "domainGET": [{"domain": "poligonos", "status": 200}, {"domain": "lecciones", "status": 200}, {"domain": "usuarios", "status": 200}, {"domain": "lecciones", "status": 200}]},
+    {"name": "organization", "path": "/organizacion/unidades", "routeMatched": true, "headingVisible": true, "domainGET": [{"domain": "organization-units", "status": 200}]},
+    {"name": "armories", "path": "/almacen/armerias", "routeMatched": true, "headingVisible": true, "domainGET": [{"domain": "organization-units", "status": 200}, {"domain": "armorias", "status": 200}]}
+  ],
+  "computedDSComparison": {
+    "source": "organization existing detail editor, opened without submission",
+    "headerPadding": {"literal": "16px 20px", "computed": "16px 20px", "matches": true},
+    "transition": {"literal": "transform .2s ease-out", "computedProperty": "transform", "computedDuration": "0.2s", "propertyAndDurationMatch": true, "timingFunctionMeasured": false},
+    "shownTransform": {"literal": "none", "computed": "none", "matches": true},
+    "margin": {"literal": "30px auto", "computed": "30px 388.621px", "verticalMatch": true, "horizontalAutoResolved": true},
+    "shadow": {"literal": "0 14px 30px rgba(0,0,0,.45)", "computed": "rgba(0, 0, 0, 0.45) 0px 14px 30px 0px", "equivalent": true},
+    "confidence": "direct computed-style observation of listed properties in the settled open state only"
+  },
+  "geometry": {"x": 388.62066650390625, "y": 29.999998092651367, "width": 499.9999694824219, "height": 580.7434692382812},
+  "keyboardChecks": {"initialFocusInside": true, "focusableCount": 9, "shiftTabInside": false, "tabInside": true, "fullTabCycleInsideAtEnd": true, "escapeClosed": true, "focusRestored": true, "scrollLocked": true, "scrollRestored": true},
+  "restoration": {"initialRouteRestored": true, "initialScrollRestored": true, "modalClosed": true},
+  "statusMethods": {"routeCollector": {"GET": 8}, "detailAvailabilityCollector": {"GET": 4}, "modalCollector": {"GET": 5}},
+  "modalResponses": [{"method": "GET", "domain": "organization-units", "status": 200}, {"method": "GET", "domain": "recintos", "status": 200}, {"method": "GET", "domain": "organization-units", "status": 200}, {"method": "GET", "domain": "me", "status": 200}, {"method": "GET", "domain": "organization-units", "status": 200}],
+  "mutationRequestsCount": 0,
+  "mutationCountScope": "API requests observed inside all three interaction collectors; context probes were GET only",
+  "chunkErrorsCount": 0,
+  "routeConsoleErrorsCount": 0,
+  "routePageErrorsCount": 0,
+  "modalPageErrorsCount": 0,
+  "limits": [
+    "I observed focus outside the modal after the first Shift+Tab. I did not change CSS or code or diagnose the cause.",
+    "I observed Tab-cycle containment only at the recorded checkpoints, not every intermediate focus position.",
+    "I observed route rendering with successful domain GETs and no captured chunk errors; cold lazy-chunk loading and production build behavior were not measured.",
+    "I found no matching armory detail link in the first route pass and used an existing organization detail editor instead.",
+    "I did not measure the hidden transform, transition trajectory, reduced motion, other viewport states or complete DS fidelity.",
+    "I retained no personal DOM values, response bodies, credentials, raw context or screenshots. I made no business mutations, preference changes or permission changes.",
+    "The earlier collector persistence failure was replaced by single-invocation collectors; no count is inferred for intervals outside those collectors."
+  ]
+}

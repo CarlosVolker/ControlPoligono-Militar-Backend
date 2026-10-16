@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-12",
+  "source": "direct_orchestrator_playwright_ui",
+  "_note": "Copia durable de .cache/frontend-acceptance/2026-10-12/armory-extended-coverage-results.json. Sin secretos: sólo estados HTTP, claves de cuerpo y conteos.",
+  "put_diff_a7": {
+    "actor": "A7",
+    "role": "encargado_almacen",
+    "op": "OP-ARM-004",
+    "method": "PUT",
+    "path": "/api/armorias/{id}/",
+    "status": 200,
+    "body_keys": ["code", "name", "descripcion", "is_active", "organization_unit_code_write"],
+    "variation": "nombre original + sufijo [put-diff]",
+    "response_name_matches_variation": true,
+    "fresh_get_confirms_variation": true,
+    "restore_put_status": 200,
+    "fresh_get_confirms_original": true,
+    "other_fields_preserved": true,
+    "logout_in_this_run": false,
+    "note": "El logout de esta corrida no se completó por un modal de editor abierto que intercepta el menú (flujo del harness, no defecto de producto); el logout de A7 quedó observado en corridas anteriores. Datos restaurados y confirmados por GET."
+  },
+  "crud_a1": {
+    "actor": "A1",
+    "role": "super_admin",
+    "operations": [
+      { "op": "OP-ARM-002", "method": "POST", "path": "/api/armorias/", "status": 201, "body_keys": ["code", "name", "organization_unit_code_write"] },
+      { "op": "OP-ARM-006", "method": "DELETE", "path": "/api/armorias/{id}/", "status": 204 }
+    ],
+    "baseline_rows": 4,
+    "rows_after_create": 5,
+    "rows_after_delete": 4,
+    "temp_id": 6,
+    "temp_row_gone": true,
+    "detail_get_after_delete": 404,
+    "logout": 200,
+    "records_left_behind": 0
+  },
+  "limitations": [
+    "PUT con valores distintos observado sólo con A7 y restaurado en la misma corrida",
+    "Alta/baja de A1 sobre registro descartable; no certifica otras familias ni otros actores",
+    "La aceptación integral permanece sin verificar"
+  ],
+  "global": "NOT_VERIFIED"
+}

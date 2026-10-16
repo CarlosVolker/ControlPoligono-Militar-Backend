@@ -1,0 +1,1681 @@
+{
+  "schema": "frontend-t11-read-sweep/v2",
+  "date": "2026-10-16",
+  "task": "T11 — Barrido 1+2 v2: lecturas pendientes (ALLOW→2xx con id propio; DENY→403) con sesiones reales acreditadas; solo lectura",
+  "correction": "v1 resolvía ids con una cadena genérica que contaminaba claves (p.ej. id_leccion de una fracción); v2 usa claves por recurso confirmadas contra serializers/modelos.",
+  "sessions": {
+    "A1": {
+      "alias": "A1",
+      "private_role_expected": "super_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "super_admin"
+      },
+      "alias_matched": true
+    },
+    "A2": {
+      "alias": "A2",
+      "private_role_expected": "tenant_admin",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tenant_admin"
+      },
+      "alias_matched": true
+    },
+    "A3": {
+      "alias": "A3",
+      "private_role_expected": "admin_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "admin_unidad"
+      },
+      "alias_matched": true
+    },
+    "A4": {
+      "alias": "A4",
+      "private_role_expected": "comandante_unidad",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "comandante_unidad"
+      },
+      "alias_matched": true
+    },
+    "A5": {
+      "alias": "A5",
+      "private_role_expected": "oficial_tiro",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_tiro"
+      },
+      "alias_matched": true
+    },
+    "A6": {
+      "alias": "A6",
+      "private_role_expected": "oficial_observador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "oficial_observador"
+      },
+      "alias_matched": true
+    },
+    "A7": {
+      "alias": "A7",
+      "private_role_expected": "encargado_almacen",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "encargado_almacen"
+      },
+      "alias_matched": true
+    },
+    "A8": {
+      "alias": "A8",
+      "private_role_expected": "tirador",
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login/",
+        "status": 200,
+        "source": "UI"
+      },
+      "context_read": {
+        "method": "GET",
+        "path": "/api/auth/context/",
+        "status": 200,
+        "active_role": "tirador"
+      },
+      "alias_matched": true
+    }
+  },
+  "list_diagnostics": {
+    "A1": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2
+      },
+      "overrides": {
+        "status": 200,
+        "count": 0
+      },
+      "posperms": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A2": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2
+      },
+      "overrides": {
+        "status": 200,
+        "count": 0
+      },
+      "posperms": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    "A3": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    "A4": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      },
+      "armas": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    "A5": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    "A6": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    "A7": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 1
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    "A8": {
+      "car": {
+        "status": 200,
+        "count": 1
+      },
+      "cmn": {
+        "status": 200,
+        "count": 1
+      },
+      "ejercicios": {
+        "status": 200,
+        "count": 1
+      },
+      "fracciones": {
+        "status": 200,
+        "count": 1
+      },
+      "lecciones": {
+        "status": 200,
+        "count": 2
+      },
+      "poligonos": {
+        "status": 200,
+        "count": 1
+      }
+    }
+  },
+  "probes": [
+    {
+      "op": "OP-CAR-003",
+      "actor": "A1",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A2",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CAR-003",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-arma/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A1",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A2",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-CMN-003",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/consumos-municion/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-EJR-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/ejercicios/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-EJR-003",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/ejercicios/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-003",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-007",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/tiradores/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-FRC-008",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/fracciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-003",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-003",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-003",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-003",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-007",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/fracciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-007",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/fracciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-007",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/fracciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-007",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/fracciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-007",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/fracciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-008",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/usuarios/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-008",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/usuarios/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-008",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/usuarios/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-008",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/usuarios/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-008",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/usuarios/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A1",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 500,
+      "verdict": "SERVER_FAILURE",
+      "note": "deuda §9 (500 conocido)",
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 2
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A2",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 500,
+      "verdict": "SERVER_FAILURE",
+      "note": "deuda §9 (500 conocido)",
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 2
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-009",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW_SCOPED",
+      "tpl": "/api/lecciones/{id}/resultados/",
+      "status": 500,
+      "verdict": "SERVER_FAILURE",
+      "note": "deuda §9 (500 conocido)",
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 2
+      }
+    },
+    {
+      "op": "OP-LES-010",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados-resumen/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-010",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados-resumen/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-010",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados-resumen/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-010",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados-resumen/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-010",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/resultados-resumen/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-011",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/reporte/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-011",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/reporte/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-011",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/reporte/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-011",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/reporte/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-011",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/reporte/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-012",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/tiradores-elegibles/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-012",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/tiradores-elegibles/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-012",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/tiradores-elegibles/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-012",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/tiradores-elegibles/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-LES-012",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/lecciones/{id}/tiradores-elegibles/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-OVR-003",
+      "actor": "A1",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/authz/overrides/{id}/",
+      "status": null,
+      "verdict": "UNPROBEABLE",
+      "note": "sin_filas_propias",
+      "used": null,
+      "list_ctx": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    {
+      "op": "OP-OVR-003",
+      "actor": "A2",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/authz/overrides/{id}/",
+      "status": null,
+      "verdict": "UNPROBEABLE",
+      "note": "sin_filas_propias",
+      "used": null,
+      "list_ctx": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    {
+      "op": "OP-PPR-003",
+      "actor": "A1",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/authz/position-permissions/{id}/",
+      "status": null,
+      "verdict": "UNPROBEABLE",
+      "note": "sin_filas_propias",
+      "used": null,
+      "list_ctx": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    {
+      "op": "OP-PPR-003",
+      "actor": "A2",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/authz/position-permissions/{id}/",
+      "status": null,
+      "verdict": "UNPROBEABLE",
+      "note": "sin_filas_propias",
+      "used": null,
+      "list_ctx": {
+        "status": 200,
+        "count": 0
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-003",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A3",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A5",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A6",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A7",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-RNG-007",
+      "actor": "A8",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/poligonos/{id}/lecciones/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    },
+    {
+      "op": "OP-WPN-003",
+      "actor": "A4",
+      "expected": "EXPECTED_ALLOW",
+      "tpl": "/api/armas/{id}/",
+      "status": 200,
+      "verdict": "MATCH_ALLOW",
+      "note": null,
+      "used": "propio",
+      "list_ctx": {
+        "status": 200,
+        "count": 1
+      }
+    }
+  ],
+  "summary": {
+    "targets": 91,
+    "match_allow": 84,
+    "match_deny": 0,
+    "mismatch_deny_for_allow": 0,
+    "mismatch_allow_for_deny": 0,
+    "server_failure": 3,
+    "other": 0,
+    "unprobeable": 4,
+    "placeholders_used": [],
+    "mismatches": [],
+    "unprobeable_list": [
+      {
+        "op": "OP-OVR-003",
+        "actor": "A1",
+        "note": "sin_filas_propias",
+        "list_ctx": {
+          "status": 200,
+          "count": 0
+        }
+      },
+      {
+        "op": "OP-OVR-003",
+        "actor": "A2",
+        "note": "sin_filas_propias",
+        "list_ctx": {
+          "status": 200,
+          "count": 0
+        }
+      },
+      {
+        "op": "OP-PPR-003",
+        "actor": "A1",
+        "note": "sin_filas_propias",
+        "list_ctx": {
+          "status": 200,
+          "count": 0
+        }
+      },
+      {
+        "op": "OP-PPR-003",
+        "actor": "A2",
+        "note": "sin_filas_propias",
+        "list_ctx": {
+          "status": 200,
+          "count": 0
+        }
+      }
+    ],
+    "server_failures": [
+      {
+        "op": "OP-LES-009",
+        "actor": "A1",
+        "status": 500
+      },
+      {
+        "op": "OP-LES-009",
+        "actor": "A2",
+        "status": 500
+      },
+      {
+        "op": "OP-LES-009",
+        "actor": "A8",
+        "status": 500
+      }
+    ]
+  },
+  "page_errors": [],
+  "targets_total": 91,
+  "read_only": true,
+  "mutations": []
+}

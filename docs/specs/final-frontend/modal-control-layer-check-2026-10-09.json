@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-10-09T11:54:56.291Z",
+  "compiler": "3.5.43",
+  "dsmodal": {
+    "before": "874d7af45c518b7939ad5a35bd0a11821fdc70c962a4243943ec508401eb05a8",
+    "expected_after": "384135717650b2a4be5d2ecdf4ee83f08e49b0023fc8877b4c7166e2e1594409",
+    "current": "384135717650b2a4be5d2ecdf4ee83f08e49b0023fc8877b4c7166e2e1594409",
+    "script_unchanged": true,
+    "template_unchanged": true,
+    "old_style_intact": true,
+    "style_errors": []
+  },
+  "shooting": {
+    "before": "8722ca98ac68ba54f92ed8043d0a794e2f76dff143860a762ccb22bffaf5670e",
+    "expected_after": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+    "current": "c6588244f7521caefccac52fbd8ad163fe58890e9dda82b84ea0dec0971b425f",
+    "script_unchanged": true,
+    "style_unchanged": true,
+    "template_errors": [],
+    "style_errors": []
+  },
+  "defects": [],
+  "ok": true
+}

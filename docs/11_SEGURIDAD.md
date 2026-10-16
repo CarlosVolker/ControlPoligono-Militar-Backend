@@ -6,8 +6,8 @@ El sistema implementa defensa en profundidad con múltiples capas:
 
 ```
 1. HTTPS (TLS) en producción
-2. Autenticación JWT en cookies HttpOnly (mitiga XSS)
-3. CSRF protection (mitiga CSRF)
+2. Autenticación por sesión Django (cookie `sessionid` HttpOnly) — mitiga XSS
+3. CSRF protection (cookie `csrftoken` + header `X-CSRFToken`) — mitiga CSRF
 4. CORS configurado explícitamente
 5. RBAC + Scope (control de acceso a datos)
 6. Multi-tenant con aislamiento completo
@@ -19,28 +19,42 @@ El sistema implementa defensa en profundidad con múltiples capas:
 
 ## Autenticación
 
-### JWT en cookies HttpOnly
+### Sesiones Django en cookie HttpOnly
 
-Los tokens JWT se almacenan en cookies `HttpOnly; Secure; SameSite=Lax`:
+El sistema **no usa JWT**. La autenticación se hace con sesiones Django persistidas en la base de datos (`django.contrib.sessions.backends.db`) y expuestas al frontend como una cookie `sessionid` con atributos `HttpOnly; Secure; SameSite=Lax`. El frontend nunca toca el identificador de sesión: la cookie viaja automáticamente con `withCredentials: true` y `SessionCsrfAuthentication` la lee del lado servidor vía `AuthenticationMiddleware`.
 
-- **HttpOnly**: JavaScript no puede leer la cookie → inmune a XSS que roba tokens
-- **Secure**: solo se envía en HTTPS (configurar `JWT_COOKIE_SECURE=True` en prod)
-- **SameSite=Lax**: mitiga CSRF — la cookie no se envía en requests cross-site de terceros
+| Cookie | HttpOnly | Propósito |
+|---|---|---|
+| `sessionid` | Sí | Identifica la sesión. JS no puede leerla. |
+| `csrftoken` | No | Token CSRF. JS la lee para enviarla como header `X-CSRFToken`. |
 
 ```python
-# settings.py
-SIMPLE_JWT = {
-    'AUTH_COOKIE_SECURE': not DEBUG,      # True en producción
-    'AUTH_COOKIE_HTTP_ONLY': True,         # Siempre True
-    'AUTH_COOKIE_SAMESITE': 'Lax',
-}
+# control_poligono/settings.py
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=str(not DEBUG), cast=...)
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_AGE = 60 * 60 * 8          # 8 horas de inactividad
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True          # Sesión sliding
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_COOKIE_HTTPONLY = False               # JS debe poder leerla para incluirla como header
+CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 ```
 
-### Vida útil de los tokens
+Clase de autenticación: `apps/identity/authentication.py → SessionCsrfAuthentication`. Hereda de `SessionAuthentication` de DRF, lee `request.user` desde la sesión y valida el header `X-CSRFToken` contra la cookie `csrftoken` en métodos no-seguros.
 
-- **Access token**: 10 minutos — minimiza la ventana si un token es comprometido
-- **Refresh token**: 7 días — balanceo entre seguridad y UX
-- **Rotación**: cada refresh genera un nuevo refresh token (`ROTATE_REFRESH_TOKENS=True`)
+### Vida útil y renovación de la sesión
+
+- **Inactividad**: 8 horas (`SESSION_COOKIE_AGE = 28800`).
+- **Renovación sliding**: cada request autenticado renueva el TTL (`SESSION_SAVE_EVERY_REQUEST = True`).
+- **Persistencia entre pestañas**: la sesión no expira al cerrar el navegador (`SESSION_EXPIRE_AT_BROWSER_CLOSE = False`).
+- **Sin tokens de larga vida separados**: no hay access/refresh token que rotar. La "rotación" es logout + login explícito (`POST /api/logout/` → `POST /api/auth/login/`).
+- **Sin tope absoluto de tiempo**: un usuario activo nunca es desconectado involuntariamente. Esto está marcado como pendiente con decisión de negocio (`M6`).
 
 ### Autenticación con RUT
 
@@ -196,7 +210,7 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '120/hour',
         'user': '2000/hour',
-        'auth': '20/minute',          # login + refresh
+        'auth': '20/minute',          # login + endpoints de recuperación
         'unit_selection': '30/minute',
     }
 }
@@ -365,7 +379,7 @@ Agregar una segunda capa de verificación para las cuentas `super_admin` y `tena
 - [ ] `DEBUG=False`
 - [ ] `SECRET_KEY` larga y aleatoria (no en el repositorio)
 - [ ] `ALLOWED_HOSTS` con solo los dominios reales
-- [ ] `JWT_COOKIE_SECURE=True`
+- [ ] `SESSION_COOKIE_SECURE=True` (y `CSRF_COOKIE_SECURE` hereda del mismo valor)
 - [ ] `CORS_ALLOWED_ORIGINS` con solo el dominio del frontend (no `*`)
 - [ ] `CSRF_TRUSTED_ORIGINS` configurado
 - [ ] HTTPS configurado en Nginx con certificado válido
@@ -382,12 +396,12 @@ Agregar una segunda capa de verificación para las cuentas `super_admin` y `tena
 
 | Riesgo | Mitigación |
 |---|---|
-| XSS que roba tokens | Cookies HttpOnly → JS no puede leerlas |
-| CSRF | `SameSite=Lax` + verificación CSRF de Django |
-| Fuerza bruta en login | Throttle 20/min en endpoints de auth |
+| XSS que roba la sesión | Cookie `sessionid` HttpOnly → JS no puede leerla |
+| CSRF | `SameSite=Lax` + verificación CSRF de Django (cookie `csrftoken` + header `X-CSRFToken`) |
+| Fuerza bruta en login | Throttle 20/min en endpoints de auth + django-axes |
 | Acceso cross-tenant | `TenantScopedQuerysetMixin` en todos los ViewSets |
 | Escalada de privilegios | Pipeline de permisos con precedencia fija; MASTER solo para dev |
-| Tokens de larga vida | Access token: 10 min; rotación de refresh |
+| Sesión sin expiración absoluta | Pendiente `M6` (ver "Pendientes con decisión de negocio") |
 | Inyección SQL | ORM de Django → queries parametrizadas |
 | Exposición de datos en listados | Scope automático en `get_queryset` |
 

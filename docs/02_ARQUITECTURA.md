@@ -149,6 +149,6 @@ MIDDLEWARE = [
 - API versioning (`/api/v1/`)
 - pytest (usa `manage.py test`)
 - factory_boy (usa `_factories.py` propio)
-- JWT (usa sesiones Django)
+- JWT — usa sesiones Django + CSRF (cookies HttpOnly); sin access/refresh tokens
 - PermissionRule (eliminado — usa RolePermission)
 - Modo civil

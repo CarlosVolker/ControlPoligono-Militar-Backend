@@ -6,6 +6,120 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
 
+
+class DSTheme(models.TextChoices):
+    DARK = "dark"
+    LIGHT = "light"
+
+
+class DSAccent(models.TextChoices):
+    VIOLET = "violet"
+    GREEN = "green"
+    AMBER = "amber"
+    BLUE = "blue"
+    PINK = "pink"
+    TEAL = "teal"
+    ORANGE = "orange"
+    RED = "red"
+    CYAN = "cyan"
+    LIME = "lime"
+    INDIGO = "indigo"
+    FUCHSIA = "fuchsia"
+    SKY = "sky"
+    ROSE = "rose"
+    EMERALD = "emerald"
+    GOLD = "gold"
+    OLIVE = "olive"
+    SIGNAL = "signal"
+    STEEL = "steel"
+    MINT = "mint"
+    COPPER = "copper"
+    NVG = "nvg"
+    KHAKI = "khaki"
+    GUNMETAL = "gunmetal"
+    WRAITH = "wraith"
+    SENTINEL = "sentinel"
+    SONAR = "sonar"
+
+
+class DSBg(models.TextChoices):
+    NEUTRAL = "neutral"
+    ABYSS = "abyss"
+    FERN = "fern"
+    EMBER = "ember"
+    MIDNIGHT = "midnight"
+    WINE = "wine"
+    SLATE = "slate"
+    SAND = "sand"
+    FIELD = "field"
+    COMMAND = "command"
+    FORGE = "forge"
+    GLACIER = "glacier"
+    ORCHID = "orchid"
+    CLAY = "clay"
+    BLACKOUT = "blackout"
+    CARBON = "carbon"
+    OBSIDIAN = "obsidian"
+    BUNKER = "bunker"
+    TRENCH = "trench"
+    PURE = "pure"
+    STONE = "stone"
+    ZINC = "zinc"
+    MAUVE = "mauve"
+    SAGE = "sage"
+    MIST = "mist"
+    TAUPE = "taupe"
+
+
+class DSFont(models.TextChoices):
+    PLAY = "play"
+    TITILLIUM = "titillium"
+    EXO2 = "exo2"
+    RAJDHANI = "rajdhani"
+    IBM_PLEX = "ibm-plex"
+    INTER = "inter"
+    MANROPE = "manrope"
+    PUBLIC_SANS = "public-sans"
+    GEIST = "geist"
+
+
+class DSRadius(models.TextChoices):
+    SOFT = "soft"
+    SUBTLE = "subtle"
+    SQUARE = "square"
+
+
+class DSIconfam(models.TextChoices):
+    DEFAULT = "default"
+    MINGCUTE = "mingcute"
+    SOLAR = "solar"
+    MDI = "mdi"
+    FA7_SOLID = "fa7-solid"
+    PHOSPHOR = "phosphor"
+    LUCIDE = "lucide"
+
+
+class DSAmbient(models.TextChoices):
+    EMBERS = "embers"
+    FIREFLIES = "fireflies"
+    RAIN = "rain"
+    SEARCHLIGHTS = "searchlights"
+    TRACERS = "tracers"
+    RICOCHET = "ricochet"
+    ASH = "ash"
+    OFF = "off"
+
+
+class DSAmbcolor(models.TextChoices):
+    ACCENT = "accent"
+    EMBER = "ember"
+    GOLD = "gold"
+    LIME = "lime"
+    MINT = "mint"
+    CYAN = "cyan"
+    VIOLET = "violet"
+
+
 # Extensión del modelo de Usuario de Django
 class Usuario(AbstractUser):
     id_usuario = models.BigAutoField(primary_key=True)
@@ -35,6 +149,15 @@ class Usuario(AbstractUser):
     palette = models.CharField(max_length=20, choices=PALETTE_CHOICES, default='corporate-blue')
     density = models.CharField(max_length=20, choices=DENSITY_CHOICES, default='comfortable')
 
+    ds_theme = models.CharField(max_length=16, choices=DSTheme.choices, default="dark", null=False, blank=False)
+    ds_accent = models.CharField(max_length=16, choices=DSAccent.choices, default="mint", null=False, blank=False)
+    ds_bg = models.CharField(max_length=16, choices=DSBg.choices, default="command", null=False, blank=False)
+    ds_font = models.CharField(max_length=16, choices=DSFont.choices, default="ibm-plex", null=False, blank=False)
+    ds_radius = models.CharField(max_length=16, choices=DSRadius.choices, default="square", null=False, blank=False)
+    ds_iconfam = models.CharField(max_length=16, choices=DSIconfam.choices, default="phosphor", null=False, blank=False)
+    ds_ambient = models.CharField(max_length=16, choices=DSAmbient.choices, default="embers", null=False, blank=False)
+    ds_ambcolor = models.CharField(max_length=16, choices=DSAmbcolor.choices, default="accent", null=False, blank=False)
+
     # Onboarding seguro: forzar cambio de contrasena temporal en primer login.
     must_change_password = models.BooleanField(default=False)
     password_changed_at = models.DateTimeField(null=True, blank=True)
@@ -46,6 +169,44 @@ class Usuario(AbstractUser):
     # duplicar. Mientras es temporal, NO puede loguearse (is_active=False y sin
     # password).
     is_temporary = models.BooleanField(default=False)
+
+    class Meta(AbstractUser.Meta):
+        abstract = False
+        constraints = [
+            *AbstractUser._meta.constraints,
+            models.CheckConstraint(
+                condition=models.Q(ds_theme__in=DSTheme.values),
+                name="usuario_ds_theme_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_accent__in=DSAccent.values),
+                name="usuario_ds_accent_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_bg__in=DSBg.values),
+                name="usuario_ds_bg_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_font__in=DSFont.values),
+                name="usuario_ds_font_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_radius__in=DSRadius.values),
+                name="usuario_ds_radius_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_iconfam__in=DSIconfam.values),
+                name="usuario_ds_iconfam_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_ambient__in=DSAmbient.values),
+                name="usuario_ds_ambient_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ds_ambcolor__in=DSAmbcolor.values),
+                name="usuario_ds_ambcolor_valid",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.grado} {self.apellido_paterno} {self.apellido_materno}, {self.nombre}"

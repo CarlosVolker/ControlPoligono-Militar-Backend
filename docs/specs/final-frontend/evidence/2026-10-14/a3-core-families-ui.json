@@ -1,0 +1,1084 @@
+{
+  "schema": "frontend-a3-core-families-ui/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — aceptación por actor A3 (admin_unidad), familias núcleo por UI",
+  "delivery_scope": "UI-driven exercise of A3 pending core-family writes with disposable own records and cleanup; not an acceptance verdict",
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/frontend-acceptance/2026-10-14/a2-core-families-ui.run.cjs",
+    ".cache/frontend-acceptance/2026-10-14/a2-core-families-ui.json",
+    ".cache/development-role-accounts/credentials.json"
+  ],
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A3",
+    "private_role_expected": "admin_unidad",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A3->admin_unidad; the same private credential file (.cache/development-role-accounts/) used by the 2026-10-14 tandas",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "admin_unidad",
+      "assignments_roles": [
+        {
+          "role": "admin_unidad",
+          "is_primary": true,
+          "scope_present": true
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "scopes_count": 2,
+      "active_unit_present": false,
+      "unit_membership_present": true,
+      "permissions_count": 19
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "operations": [
+    {
+      "family": "unidades",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 403,
+      "driver": "UI (Crear unidad)"
+    },
+    {
+      "family": "recintos",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/recintos/",
+      "status": 201,
+      "driver": "UI (Crear recinto)"
+    },
+    {
+      "family": "recintos",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "driver": "UI (navegación a ficha)"
+    },
+    {
+      "family": "recintos",
+      "operation": "edit",
+      "method": "PUT",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar (PUT))"
+    },
+    {
+      "family": "recintos",
+      "operation": "edit",
+      "method": "PATCH",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar cambios (PATCH))"
+    },
+    {
+      "family": "recintos",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/recintos/{id}/",
+      "status": 204,
+      "driver": "UI (Eliminar recinto → Eliminar recinto)"
+    },
+    {
+      "family": "recintos",
+      "operation": "detail_after_delete",
+      "method": "GET",
+      "path": "/api/recintos/{id}/",
+      "status": 404,
+      "driver": "UI/API (verificación de baja)"
+    },
+    {
+      "family": "puestos",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/posiciones/",
+      "status": 201,
+      "driver": "UI (Crear puesto)",
+      "note": "rol no privilegiado: admin_unidad; SIN holder (deuda §11)"
+    },
+    {
+      "family": "puestos",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "driver": "UI (navegación a ficha)"
+    },
+    {
+      "family": "puestos",
+      "operation": "history",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/historico/",
+      "status": 200,
+      "driver": "UI (ficha carga holders/histórico)"
+    },
+    {
+      "family": "puestos",
+      "operation": "history_tab",
+      "method": "GET",
+      "path": "/api/posiciones/{id}/historico/",
+      "status": 200,
+      "driver": "UI (pestaña Histórico)"
+    },
+    {
+      "family": "puestos",
+      "operation": "edit",
+      "method": "PUT",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → método PUT → Guardar puesto)"
+    },
+    {
+      "family": "puestos",
+      "operation": "edit",
+      "method": "PATCH",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → método PATCH → Guardar puesto)"
+    },
+    {
+      "family": "puestos",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/posiciones/{id}/",
+      "status": 204,
+      "driver": "UI (Dar de baja → Confirmar baja)"
+    },
+    {
+      "family": "membresías",
+      "operation": "aux_unit_create",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 403,
+      "driver": "UI (Crear unidad auxiliar para membresía)"
+    },
+    {
+      "family": "membresías",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/memberships/",
+      "status": 201,
+      "driver": "UI (Crear pertenencia)",
+      "note": "cuenta propia A3 + unidad descartable"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "create_temporal",
+      "method": "POST",
+      "path": "/api/usuarios/crear-temporal/",
+      "status": 201,
+      "driver": "UI (Alta temporal → Crear temporal)",
+      "note": "RUT descartable propio"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/usuarios/{id}/",
+      "status": 404,
+      "driver": "UI (ficha de usuario temporal)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "edit",
+      "method": "PATCH",
+      "path": "/api/usuarios/{id}/",
+      "status": null,
+      "driver": "UI (Editar → método PATCH → Guardar usuario)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "edit",
+      "method": "PUT",
+      "path": "/api/usuarios/{id}/",
+      "status": null,
+      "driver": "UI (Editar → método PUT → Guardar usuario)"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/usuarios/{id}/",
+      "status": null,
+      "driver": "UI (Dar de baja → Confirmar baja)"
+    },
+    {
+      "family": "calibres",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/calibres/",
+      "status": 200,
+      "driver": "UI (navegación a catálogo)"
+    },
+    {
+      "family": "armas",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/armas/",
+      "status": 201,
+      "driver": "UI (Registrar arma)"
+    },
+    {
+      "family": "armas",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "driver": "UI (navegación a ficha)"
+    },
+    {
+      "family": "armas",
+      "operation": "edit",
+      "method": "PUT",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar con PUT)"
+    },
+    {
+      "family": "armas",
+      "operation": "edit",
+      "method": "PATCH",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar cambios con PATCH)"
+    },
+    {
+      "family": "armas",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/armas/{id}/",
+      "status": 403,
+      "driver": "UI (Eliminar → Confirmar baja)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/ejercicios/",
+      "status": 201,
+      "driver": "UI (Crear ejercicio)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "driver": "UI (navegación a ficha)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "edit",
+      "method": "PUT",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar completo · PUT)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "edit",
+      "method": "PATCH",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "driver": "UI (Editar → Guardar cambios · PATCH)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "delete",
+      "method": "DELETE",
+      "path": "/api/ejercicios/{id}/",
+      "status": null,
+      "driver": "UI (Eliminar → Confirmar baja)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API/UI (lectura de la apariencia propia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "write",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "UI (selección de eje accent)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read_confirm",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API (confirmación de persistencia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "reset",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "driver": "UI (Restablecer valores por defecto)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/roles/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/role-categories/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/roles/{id}/",
+      "status": 200,
+      "driver": "UI (botón Detalle del rol)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/scopes/",
+      "status": 200,
+      "driver": "UI (navegación /personas/scopes)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/scopes/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del scope)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/permissions/",
+      "status": 200,
+      "driver": "UI (navegación /personas/permisos)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/permissions/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "role_matrix",
+      "method": "GET",
+      "path": "/api/authz/role-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz rol → permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "position_matrix",
+      "method": "GET",
+      "path": "/api/authz/position-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz puesto → permiso)"
+    }
+  ],
+  "not_offered": [
+    {
+      "family": "membresías",
+      "operation": "GET /api/memberships/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de membresía en el cliente"
+    },
+    {
+      "family": "membresías",
+      "operation": "PUT /api/memberships/{id}/",
+      "reason": "fila de membresía propia no localizada"
+    },
+    {
+      "family": "membresías",
+      "operation": "PATCH /api/memberships/{id}/",
+      "reason": "fila de membresía propia no localizada"
+    },
+    {
+      "family": "membresías",
+      "operation": "DELETE /api/memberships/{id}/",
+      "reason": "fila de membresía propia no localizada"
+    },
+    {
+      "family": "calibres",
+      "operation": "POST/PUT/PATCH/DELETE /api/calibres/",
+      "reason": "la UI no ofrece mutación de calibre para admin_unidad (gating super_admin); no se forzó la API"
+    },
+    {
+      "family": "calibres",
+      "operation": "GET /api/calibres/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de calibre en el cliente"
+    }
+  ],
+  "blocked": [
+    {
+      "family": "puestos",
+      "operation": "POST /api/posiciones/{id}/asignar-holder/ y POST /api/posiciones/{id}/quitar-holder/{assignmentId}/",
+      "offered_by_ui": true,
+      "reason": "RETENIDO por el encargo (ATENCIÓN): asignar cualquier holder crea una Assignment que el backend no puede borrar (DELETE /api/posiciones/{id}/ -> 500 ProtectedError, deuda §11), dejando el puesto descartable indeleble. El encargo prohíbe crear puestos descartables que no puedan limpiarse. No se forzó la API."
+    }
+  ],
+  "diagnostics": [
+    {
+      "where": "temp.edit.patch",
+      "diag": {
+        "url": "/personas/40",
+        "modalPresent": false,
+        "modalButtons": null,
+        "alerts": [
+          "No Usuario matches the given query.Reintentar lectura"
+        ]
+      },
+      "netTail": [
+        "GET /api/usuarios/ 200",
+        "GET /api/auth/context/ 200",
+        "GET /api/me/preferences/appearance/design-system/ 200",
+        "GET /api/usuarios/{id}/ 404",
+        "GET /api/usuarios/{id}/estado-bloqueo/ 404",
+        "GET /api/memberships/ 200"
+      ],
+      "netLen": 77
+    },
+    {
+      "where": "temp.edit.put",
+      "diag": {
+        "url": "/personas/40",
+        "modalPresent": false,
+        "modalButtons": null,
+        "alerts": [
+          "No Usuario matches the given query.Reintentar lectura"
+        ]
+      },
+      "netTail": [
+        "GET /api/usuarios/ 200",
+        "GET /api/auth/context/ 200",
+        "GET /api/me/preferences/appearance/design-system/ 200",
+        "GET /api/usuarios/{id}/ 404",
+        "GET /api/usuarios/{id}/estado-bloqueo/ 404",
+        "GET /api/memberships/ 200"
+      ],
+      "netLen": 77
+    }
+  ],
+  "mutations": [
+    {
+      "screen": "unit",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 403,
+      "kind": "write"
+    },
+    {
+      "screen": "recinto",
+      "method": "POST",
+      "path": "/api/recintos/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "recinto",
+      "method": "PUT",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "recinto",
+      "method": "PATCH",
+      "path": "/api/recintos/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "recinto",
+      "method": "DELETE",
+      "path": "/api/recintos/{id}/",
+      "status": 204,
+      "kind": "write"
+    },
+    {
+      "screen": "position",
+      "method": "POST",
+      "path": "/api/posiciones/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "position",
+      "method": "PUT",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "position",
+      "method": "PATCH",
+      "path": "/api/posiciones/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "position",
+      "method": "DELETE",
+      "path": "/api/posiciones/{id}/",
+      "status": 204,
+      "kind": "write"
+    },
+    {
+      "screen": "membership_aux_unit",
+      "method": "POST",
+      "path": "/api/organization-units/",
+      "status": 403,
+      "kind": "write"
+    },
+    {
+      "screen": "membership",
+      "method": "POST",
+      "path": "/api/memberships/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "temp_user",
+      "method": "POST",
+      "path": "/api/usuarios/crear-temporal/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "weapon",
+      "method": "POST",
+      "path": "/api/armas/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "weapon",
+      "method": "PUT",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "weapon",
+      "method": "PATCH",
+      "path": "/api/armas/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "weapon",
+      "method": "DELETE",
+      "path": "/api/armas/{id}/",
+      "status": 403,
+      "kind": "write"
+    },
+    {
+      "screen": "exercise",
+      "method": "POST",
+      "path": "/api/ejercicios/",
+      "status": 201,
+      "kind": "write"
+    },
+    {
+      "screen": "exercise",
+      "method": "PUT",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "exercise",
+      "method": "PATCH",
+      "path": "/api/ejercicios/{id}/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "appearance",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "kind": "reset"
+    },
+    {
+      "screen": "temp_user",
+      "method": "DELETE",
+      "path": "/api/usuarios/40/",
+      "status": 404,
+      "kind": "cleanup_fallback_api"
+    },
+    {
+      "screen": "membership",
+      "method": "DELETE",
+      "path": "/api/memberships/39/",
+      "status": 204,
+      "kind": "cleanup_fallback_api"
+    },
+    {
+      "screen": "weapon",
+      "method": "DELETE",
+      "path": "/api/armas/14/",
+      "status": 403,
+      "kind": "cleanup_fallback_api"
+    },
+    {
+      "screen": "exercise",
+      "method": "DELETE",
+      "path": "/api/ejercicios/15/",
+      "status": 403,
+      "kind": "cleanup_fallback_api"
+    },
+    {
+      "screen": "prior_residue",
+      "method": "DELETE",
+      "path": "/api/armas/{id}/",
+      "status": 403,
+      "kind": "cleanup_fallback_api"
+    },
+    {
+      "screen": "prior_residue",
+      "method": "DELETE",
+      "path": "/api/ejercicios/{id}/",
+      "status": 403,
+      "kind": "cleanup_fallback_api"
+    }
+  ],
+  "cleanup": {
+    "designed": [
+      "unidad descartable: DELETE simple por UI desde la ficha propia",
+      "recinto descartable: DELETE por UI desde la ficha propia",
+      "puesto descartable: SIN holder (por deuda backend §11 ProtectedError); baja por UI desde la ficha propia",
+      "membresía descartable: baja por UI",
+      "usuario temporal descartable: baja por UI desde la ficha propia",
+      "arma descartable: baja por UI desde la ficha propia",
+      "ejercicio descartable: baja por UI desde la ficha propia",
+      "apariencia propia: restaurar ejes derivados al valor previo por UI",
+      "barrido final: listar unidades/recintos/puestos/membresías/usuarios/armas/ejercicios y contar residuo propio por marcador A3CF"
+    ],
+    "executed": [
+      {
+        "step": "appearance_restore",
+        "axes_drifted": []
+      },
+      {
+        "step": "temp_user",
+        "method": "DELETE",
+        "via": "api_fallback",
+        "status": 404
+      },
+      {
+        "step": "membership",
+        "method": "DELETE",
+        "via": "api_fallback",
+        "status": 204
+      },
+      {
+        "step": "weapon",
+        "method": "DELETE",
+        "via": "api_fallback",
+        "status": 403
+      },
+      {
+        "step": "exercise",
+        "method": "DELETE",
+        "via": "api_fallback",
+        "status": 403
+      },
+      {
+        "step": "recinto",
+        "result": "deleted_in_sweep"
+      }
+    ],
+    "residue": [
+      {
+        "step": "temp_user",
+        "id": "/api/usuarios/40/",
+        "note": "DELETE 404 tras intento por UI"
+      },
+      {
+        "step": "weapon",
+        "id": "/api/armas/14/",
+        "note": "DELETE 403 tras intento por UI"
+      },
+      {
+        "step": "exercise",
+        "id": "/api/ejercicios/15/",
+        "note": "DELETE 403 tras intento por UI"
+      }
+    ],
+    "appearance_final": {
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "restored_to_pre": true
+    },
+    "prior_residue": [
+      {
+        "list": "/api/armas/",
+        "id": 14,
+        "path": "/api/armas/14/",
+        "status": 403
+      },
+      {
+        "list": "/api/ejercicios/",
+        "id": 15,
+        "path": "/api/ejercicios/15/",
+        "status": 403
+      }
+    ],
+    "residue_sweep": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 0,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "own_marker": 0,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 13,
+        "own_marker": 0,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 1,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 1,
+        "other_marker_a2": 0,
+        "marker_prefix": "A3CF",
+        "run_marker": "A3CFMV8F5G61"
+      }
+    },
+    "residue_verified": {
+      "weapons": [
+        {
+          "id": 14,
+          "serie": "A3CFMV8F5G61S1"
+        }
+      ],
+      "exercises": [
+        {
+          "id": 15,
+          "nombre": "A3CFMV8F5G61 ejercicio patch"
+        }
+      ],
+      "temp_user_marker_present": false,
+      "clean_families_own": {
+        "units": 0,
+        "recintos": 0,
+        "positions": 0,
+        "memberships": 0
+      }
+    }
+  },
+  "limits": [
+    "Sólo actores/registros descartables propios con marcador A3CF; no se tocaron personas reales, cuentas ajenas, roles, puestos con titular único ocupado ni RBAC.",
+    "Cero escrituras en roles/permisos/overrides/position-permissions; cero cambios de backend, base de datos o dependencias.",
+    "Limpieza: DELETE 2xx / GET 404 documentan ausencia en la respuesta del servidor; no se afirma borrado físico.",
+    "El rol del puesto creado es no privilegiado (no super_admin/tenant_admin). El puesto descartable se creó SIN holder (deuda backend §11).",
+    "assign/quitar holder: RETENIDO por el encargo (ATENCIÓN) para no dejar puestos indelebles; la UI lo ofrece pero no se ejerció ni se forzó la API.",
+    "expected_by_actor sigue NOT_VERIFIED; esta corrida no emite veredicto de aceptación."
+  ],
+  "errors": [],
+  "harness": {
+    "marker": "A3CFMV8F5G61",
+    "temp_rut_marker": "01040409-6",
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 175,
+    "mutations": [
+      {
+        "method": "POST",
+        "path": "/api/organization-units/",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/recintos/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/recintos/{id}/",
+        "status": 200
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/recintos/{id}/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/recintos/{id}/",
+        "status": 204
+      },
+      {
+        "method": "POST",
+        "path": "/api/posiciones/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/posiciones/{id}/",
+        "status": 200
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/posiciones/{id}/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/posiciones/{id}/",
+        "status": 204
+      },
+      {
+        "method": "POST",
+        "path": "/api/organization-units/",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/memberships/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/usuarios/crear-temporal/",
+        "status": 201
+      },
+      {
+        "method": "POST",
+        "path": "/api/armas/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/armas/{id}/",
+        "status": 200
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/armas/{id}/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/armas/{id}/",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/ejercicios/",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/ejercicios/{id}/",
+        "status": 200
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/ejercicios/{id}/",
+        "status": 200
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 204
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/armas/{id}/",
+        "status": 403
+      }
+    ]
+  },
+  "findings": [
+    {
+      "family": "armas",
+      "operation": "DELETE /api/armas/{id}/",
+      "status": 403,
+      "cause": "la UI ofrece 'Eliminar' para admin_unidad, pero el backend deniega el borrado (403)",
+      "impact": "ejercer create/edit de armas con A3 deja residuo indeleble por este actor; queda 1 arma descartable propia (id 14, serie A3CFMV8F5G61S1)",
+      "handling": "reportado, no reparado; limpiarlo exigiría otro actor (fuera de alcance)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "DELETE /api/ejercicios/{id}/",
+      "status": 403,
+      "cause": "la UI ofrece 'Eliminar' para admin_unidad, pero el backend deniega el borrado (403)",
+      "impact": "ejercer create/edit de ejercicios con A3 deja residuo indeleble por este actor; queda 1 ejercicio descartable propio (id 15, nombre 'A3CFMV8F5G61 ejercicio patch')",
+      "handling": "reportado, no reparado; limpiarlo exigiría otro actor (fuera de alcance)"
+    },
+    {
+      "family": "unidades",
+      "operation": "POST /api/organization-units/",
+      "status": 403,
+      "cause": "admin_unidad no tiene permiso de creación de unidades; la UI ofrece 'Crear unidad' pero el backend deniega",
+      "impact": "A3 no puede crear unidades (ni la unidad auxiliar prevista para la membresía); no se forzó la API",
+      "handling": "registrado como denegado por backend"
+    },
+    {
+      "family": "autorización",
+      "operation": "GET /api/authz/role-permissions/ y GET /api/authz/position-permissions/",
+      "status": 403,
+      "cause": "admin_unidad lee catálogos (roles, categorías de rol, scopes, permisos) y sus detalles (200), pero NO las matrices por rol ni por puesto (403)",
+      "impact": "las pestañas de matriz quedan denegadas para A3; no se forzó la API",
+      "handling": "registrado como denegado por backend"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "POST /api/usuarios/crear-temporal/",
+      "status": 201,
+      "cause": "el alta temporal responde 201 pero el registro creado no es recuperable por A3 (GET /api/usuarios/{id}/ 404) ni aparece en el listado de A3 por marcador ni por RUT",
+      "impact": "el resultado de esa escritura es incierto para el actor; el barrido de residuo propio da 0 (own_marker 0, temp_rut_present 0). Si persiste fuera del alcance de A3 queda NO verificado",
+      "handling": "reportado; no se reparó; comprobarlo con otro actor queda fuera de alcance"
+    },
+    {
+      "family": "puestos",
+      "operation": "DELETE /api/posiciones/{id}/",
+      "status": 204,
+      "cause": "puesto descartable creado SIN holder (deuda §11 evitada por diseño)",
+      "impact": "a diferencia de A2 (500 ProtectedError con residuo), el puesto sin assignment se borra limpio (204); confirma la guía del encargo",
+      "handling": "limpieza limpia"
+    }
+  ],
+  "residue_verification": {
+    "schema": "frontend-a3-residue-verification/v1",
+    "date": "2026-10-14",
+    "mutations": 0,
+    "acreditacion": {
+      "status": 200,
+      "active_role": "admin_unidad"
+    },
+    "users": {
+      "status": 200,
+      "total": 8,
+      "own_marker": 0,
+      "temp_rut_body": "01040409",
+      "temp_rut_present": 0,
+      "matched": []
+    },
+    "weapons": {
+      "status": 200,
+      "total": 1,
+      "own_marker": 1,
+      "matched": [
+        {
+          "id": 14,
+          "serie": "A3CFMV8F5G61S1"
+        }
+      ]
+    },
+    "exercises": {
+      "status": 200,
+      "total": 1,
+      "own_marker": 1,
+      "matched": [
+        {
+          "id": 15,
+          "nombre": "A3CFMV8F5G61 ejercicio patch"
+        }
+      ]
+    },
+    "other_families_own": {
+      "units": 0,
+      "recintos": 0,
+      "positions": 0,
+      "memberships": 0
+    },
+    "status": "DELIVERED"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-10-09T11:49:07.877Z",
+  "kind": "BEFORE",
+  "phase": "armory control CSS correction (pre-append)",
+  "compiler": "3.5.43",
+  "source_sha256": "a4342aaf11f676dd249b4677b3e47040ca49f0ca846a3589b34dfeec96736ddf",
+  "script_sha256": "de89097d91c56acf0732328fa197dcae15dbca3c49f07ddaf4c7b6ee087ecd57",
+  "style_sha256": "7c84f5be7614070d250e3c3f4344fbf35f9fc4dc2378307f9a73062d18bac15f",
+  "outofscope_sha256": "ca12701153b83765f244b99913a052811a2b8f2abd9adbe3ad3cf0d08bc0cbc0",
+  "forms": {
+    "armory-editor-form": {
+      "present": true,
+      "for_count": 5,
+      "id_count": 5
+    },
+    "weapon-editor-form": {
+      "present": true,
+      "for_count": 5,
+      "id_count": 5
+    },
+    "calibre-editor-form": {
+      "present": true,
+      "for_count": 3,
+      "id_count": 3
+    }
+  },
+  "note": "hashes/metadata only; no source content"
+}

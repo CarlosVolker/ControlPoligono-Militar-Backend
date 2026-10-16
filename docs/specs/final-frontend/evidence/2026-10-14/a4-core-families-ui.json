@@ -1,0 +1,419 @@
+{
+  "schema": "frontend-a4-core-families-ui/v1",
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "task": "C11 — aceptación por actor A4 (comandante_unidad), familias núcleo por UI",
+  "delivery_scope": "UI-driven exercise of A4 pending core-family writes with disposable own records and cleanup; not an acceptance verdict",
+  "source_mapping_paths": [
+    ".cache/frontend-acceptance/2026-10-13/runtime-family-sweep.cjs",
+    ".cache/frontend-acceptance/2026-10-14/a2-core-families-ui.json",
+    ".cache/development-role-accounts/credentials.json",
+    ".cache/frontend-acceptance/2026-10-14/a4-exercises-probe.json"
+  ],
+  "aliasAcreditado": true,
+  "acreditacion": {
+    "alias_claimed": "A4",
+    "private_role_expected": "comandante_unidad",
+    "correspondence_basis": "runtime-family-sweep.cjs maps A4->comandante_unidad",
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login/",
+      "status": 200,
+      "source": "UI",
+      "landed": "/dashboard"
+    },
+    "context_read": {
+      "method": "GET",
+      "path": "/api/auth/context/",
+      "status": 200,
+      "active_role": "comandante_unidad",
+      "assignments_roles": [
+        {
+          "role": "comandante_unidad",
+          "is_primary": true,
+          "scope_present": true
+        },
+        {
+          "role": "tirador",
+          "is_primary": false,
+          "scope_present": true
+        }
+      ],
+      "scopes_count": 2,
+      "active_unit_present": false,
+      "unit_membership_present": true,
+      "permissions_count": 6
+    },
+    "alias_matched": true,
+    "missing_field": null
+  },
+  "operations": [
+    {
+      "family": "calibres",
+      "operation": "list_read",
+      "method": "GET",
+      "path": "/api/calibres/",
+      "status": 200,
+      "driver": "UI (navegación a catálogo)"
+    },
+    {
+      "family": "armas",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/armas/",
+      "status": 403,
+      "driver": "UI (Registrar arma)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API/UI (lectura de la apariencia propia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "write",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "UI (selección de eje accent)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "read_confirm",
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "driver": "API (confirmación de persistencia)"
+    },
+    {
+      "family": "apariencia propia",
+      "operation": "reset",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "driver": "UI (Restablecer valores por defecto)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/roles/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/role-categories/",
+      "status": 200,
+      "driver": "UI (navegación /personas/roles)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/roles/{id}/",
+      "status": 200,
+      "driver": "UI (botón Detalle del rol)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/scopes/",
+      "status": 200,
+      "driver": "UI (navegación /personas/scopes)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/scopes/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del scope)"
+    },
+    {
+      "family": "autorización",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/authz/permissions/",
+      "status": 200,
+      "driver": "UI (navegación /personas/permisos)"
+    },
+    {
+      "family": "autorización",
+      "operation": "detail",
+      "method": "GET",
+      "path": "/api/authz/permissions/{id}/",
+      "status": 200,
+      "driver": "UI (botón Ver detalle del permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "role_matrix",
+      "method": "GET",
+      "path": "/api/authz/role-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz rol → permiso)"
+    },
+    {
+      "family": "autorización",
+      "operation": "position_matrix",
+      "method": "GET",
+      "path": "/api/authz/position-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz puesto → permiso)"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "list",
+      "method": "GET",
+      "path": "/api/ejercicios/",
+      "status": 200,
+      "driver": "UI (navegación a la familia ejercicios)"
+    }
+  ],
+  "not_offered": [
+    {
+      "family": "unidades",
+      "operation": "POST /api/organization-units/",
+      "reason": "botón \"Crear unidad\" ausente"
+    },
+    {
+      "family": "recintos",
+      "operation": "POST /api/recintos/",
+      "reason": "botón \"Crear recinto\" ausente"
+    },
+    {
+      "family": "puestos",
+      "operation": "POST /api/posiciones/",
+      "reason": "botón \"Crear puesto\" ausente"
+    },
+    {
+      "family": "membresías",
+      "operation": "GET /api/memberships/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de membresía en el cliente"
+    },
+    {
+      "family": "membresías",
+      "operation": "POST /api/memberships/",
+      "reason": "botón \"Crear pertenencia\" ausente"
+    },
+    {
+      "family": "usuarios temporales",
+      "operation": "POST /api/usuarios/crear-temporal/",
+      "reason": "botón \"Alta temporal\" ausente"
+    },
+    {
+      "family": "calibres",
+      "operation": "POST/PUT/PATCH/DELETE /api/calibres/",
+      "reason": "la UI no ofrece mutación de calibre para A4; no se forzó la API"
+    },
+    {
+      "family": "calibres",
+      "operation": "GET /api/calibres/{id}/ (detalle)",
+      "reason": "no existe ruta de detalle de calibre en el cliente"
+    },
+    {
+      "family": "ejercicios",
+      "operation": "POST /api/ejercicios/",
+      "reason": "botón \"Crear ejercicio\" presente pero DESHABILITADO para A4 (sin permiso de alta); la UI no ofrece la mutación y no se forzó la API"
+    }
+  ],
+  "blocked": [],
+  "denials": [
+    {
+      "family": "armas",
+      "operation": "create",
+      "method": "POST",
+      "path": "/api/armas/",
+      "status": 403,
+      "driver": "UI (Registrar arma)",
+      "note": "backend denegó la acción ofrecida por la UI"
+    },
+    {
+      "family": "autorización",
+      "operation": "role_matrix",
+      "method": "GET",
+      "path": "/api/authz/role-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz rol → permiso)",
+      "note": "backend denegó la acción ofrecida por la UI"
+    },
+    {
+      "family": "autorización",
+      "operation": "position_matrix",
+      "method": "GET",
+      "path": "/api/authz/position-permissions/",
+      "status": 403,
+      "driver": "UI (pestaña Matriz puesto → permiso)",
+      "note": "backend denegó la acción ofrecida por la UI"
+    }
+  ],
+  "diagnostics": [],
+  "mutations": [
+    {
+      "screen": "weapon",
+      "method": "POST",
+      "path": "/api/armas/",
+      "status": 403,
+      "kind": "write"
+    },
+    {
+      "screen": "appearance",
+      "method": "PUT",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "kind": "write"
+    },
+    {
+      "screen": "appearance",
+      "method": "DELETE",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 204,
+      "kind": "reset"
+    }
+  ],
+  "cleanup": {
+    "designed": [
+      "unidad descartable: DELETE simple por UI desde la ficha propia",
+      "recinto descartable: DELETE por UI desde la ficha propia",
+      "puesto descartable SIN holder: baja por UI desde la ficha propia (sin assignment → borrable)",
+      "membresía descartable: baja por UI",
+      "usuario temporal descartable: baja por UI desde la ficha propia",
+      "arma descartable: baja por UI desde la ficha propia",
+      "ejercicio descartable: baja por UI desde la ficha propia",
+      "apariencia propia: restaurar ejes derivados al valor previo por UI",
+      "barrido final: listar unidades/recintos/puestos/membresías/usuarios/armas/ejercicios y contar residuo propio por marcador"
+    ],
+    "executed": [
+      {
+        "step": "appearance_restore",
+        "axes_drifted": []
+      }
+    ],
+    "residue": [],
+    "appearance_final": {
+      "method": "GET",
+      "path": "/api/me/preferences/appearance/design-system/",
+      "status": 200,
+      "restored_to_pre": true
+    },
+    "prior_residue": [],
+    "residue_sweep": {
+      "units": {
+        "path": "/api/organization-units/",
+        "status": 200,
+        "total": 1,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "recintos": {
+        "path": "/api/recintos/",
+        "status": 200,
+        "total": 5,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "positions": {
+        "path": "/api/posiciones/",
+        "status": 200,
+        "total": 13,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "memberships": {
+        "path": "/api/memberships/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "users": {
+        "path": "/api/usuarios/",
+        "status": 200,
+        "total": 8,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "weapons": {
+        "path": "/api/armas/",
+        "status": 200,
+        "total": 0,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      },
+      "exercises": {
+        "path": "/api/ejercicios/",
+        "status": 200,
+        "total": 0,
+        "own_marker": 0,
+        "marker_prefix": "A4CF",
+        "run_marker": "A4CFMV8G4BO7"
+      }
+    }
+  },
+  "limits": [
+    "Sólo actores/registros descartables propios con marcador; no se tocaron personas reales, cuentas ajenas, roles, puestos con titular único ocupado ni RBAC.",
+    "Cero escrituras en roles/permisos/overrides/position-permissions; cero cambios de backend, base de datos o dependencias.",
+    "Puesto descartable creado SIN holder: la rama asignar/quitar holder NO se ejerció para no dejar el puesto indeleble (DELETE /api/posiciones/{id}/ = 500 con assignment asociada, deuda backend §11).",
+    "Limpieza: DELETE 2xx / GET 404 documentan ausencia en la respuesta del servidor; no se afirma borrado físico.",
+    "El rol del puesto creado es no privilegiado (no super_admin/tenant_admin).",
+    "expected_by_actor sigue NOT_VERIFIED; esta corrida no emite veredicto de aceptación.",
+    "Observado: para A4 la UI NO ofrece el alta en unidades, recintos, puestos, membresías ni usuarios temporales (botones ausentes del DOM); no se forzó la API en ninguna de esas ramas.",
+    "Observado: para A4 la UI SÍ ofrece \"Registrar arma\" (botón habilitado y formulario abierto) y el backend respondió 403; registrado como denegación real observada, sin forzar la API.",
+    "Observado: para A4 \"Crear ejercicio\" existe en el DOM pero está deshabilitado; registrado como no ofrecido. Detalle en a4-exercises-probe.json.",
+    "Lecturas de autorización ofrecidas a A4: roles, categorías, detalle de rol, scopes, detalle de scope, permisos y detalle de permiso (todas 200). Las matrices por rol y por puesto respondieron 403 (denegación real observada)."
+  ],
+  "errors": [
+    "exercises:page.waitForSelector: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#exercise-name') to be visible\u001b[22m\n"
+  ],
+  "harness": {
+    "marker": "A4CFMV8G4BO7",
+    "temp_rut_marker": "02667543-K",
+    "stage": "done",
+    "error": null
+  },
+  "network": {
+    "total_api_calls": 38,
+    "mutations": [
+      {
+        "method": "POST",
+        "path": "/api/armas/",
+        "status": 403
+      },
+      {
+        "method": "PUT",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 200
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/me/preferences/appearance/design-system/",
+        "status": 204
+      }
+    ]
+  },
+  "blocked_removed_vague": 1,
+  "family_corrections": [
+    {
+      "family": "ejercicios",
+      "original_record": "blocked (waitForSelector #exercise-name timeout)",
+      "resolved_by": "sonda focalizada A4 (a4-exercises-probe.run.cjs)",
+      "finding": "el botón Crear ejercicio existe en el DOM pero está disabled=true para comandante_unidad; el helper hizo fallback a clickText y clicó el botón deshabilitado (no-op), de ahí el timeout",
+      "probe_artifact": ".cache/frontend-acceptance/2026-10-14/a4-exercises-probe.json",
+      "probe_surface_buttons": "Crear ejercicio: disabled=true",
+      "outcome": "not_offered (mutación no ofrecida por la UI); lectura GET /api/ejercicios/ 200 ofrecida"
+    }
+  ]
+}

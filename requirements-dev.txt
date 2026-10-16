@@ -1,0 +1,7 @@
+# Dependencias de desarrollo del backend — NO instalar en producción.
+# Producción usa requirements.txt (este archivo no lo referencia ni lo modifica).
+#
+# ruff: linter del backend. Configuración en ruff.toml (raíz del proyecto).
+# Uso:  ruff check .             análisis
+#       ruff check . --fix       autofix (solo cuando se decida pagar la deuda)
+ruff==0.16.1

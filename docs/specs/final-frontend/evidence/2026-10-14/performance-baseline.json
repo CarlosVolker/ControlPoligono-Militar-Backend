@@ -1,0 +1,93 @@
+{
+  "status": "DELIVERED",
+  "date": "2026-10-14",
+  "scope": "T10: entrego medición inicial acotada; no optimizo ni cierro performance",
+  "conditions": {
+    "mode": "DEV",
+    "origin": "http://127.0.0.1:5175",
+    "backend": "API real mediante proxy existente a 127.0.0.1:8000",
+    "servers": "Reusé servidores existentes; no inicié, reinicié ni detuve procesos",
+    "viewportCssPixels": [1277, 1285],
+    "theme": "dark",
+    "browser": "Chrome/155.0.0.0 Linux x86_64",
+    "authentication": "Reusé sesión autenticada existente; login excluido. No consulté cookies ni credenciales. No pude acreditar su correspondencia con el alias A1: requiere confirmación del orquestador",
+    "cache": "Contexto de navegador existente, caché sin vaciar; reload normal al principio de cada muestra; no es entrada fría",
+    "throttling": "No configuré throttling de CPU o red",
+    "dataset": "API local real sin escrituras; dashboard 1 fila y ejercicios 3 filas en ambas muestras. Observé posteriormente 12 treeitems en organización, no medidos como filas de tabla",
+    "version": {
+      "package": "poligonotiro-dashboard@0.1.0",
+      "viteBuildObserved": "8.3.1",
+      "vueDeclared": "3.5.43",
+      "routerDeclared": "5.3.1",
+      "piniaDeclared": "4.0.3",
+      "sourceRevision": "No fijé hash; medí worktree local existente"
+    },
+    "scripts": {"dev": "vite --host 127.0.0.1", "build": "vite build"},
+    "executedCommand": {"command": "pnpm build", "directory": "front/", "exitStatus": 0},
+    "productFilesChanged": []
+  },
+  "instrumentation": {
+    "sequence": ["reload /", "/organizacion/unidades", "/", "/tiro/ejercicios", "/", "/personalizador", "/"],
+    "actions": "Usé clicks de enlaces existentes a través del router. Para personalizador abrí antes el botón Abrir menú de identidad y contexto; esa apertura queda fuera del intervalo",
+    "marks": ["baseline-start", "baseline-useful"],
+    "timeToUsefulMs": "Medí desde performance.mark baseline-start previo al click; para reload desde navigation time origin. Esperé pathname destino, main h1 existente, ausencia de main [aria-busy=true] y del texto Cargando en main, luego 100 ms y mark baseline-useful. Es un proxy observado, incluye polling, click y 100 ms; no es primer paint exacto ni garantiza visibilidad geométrica de cada dato",
+    "resources": "Sumé PerformanceResourceTiming completados con startTime >= comienzo del intervalo; excluye documento de navegación, solicitudes pendientes, WebSocket/HMR y respuestas fuera del intervalo. transferSize, encodedBodySize, decodedBodySize en bytes. Ceros no demuestran ausencia de transferencia: caché o restricciones de Timing-Allow-Origin pueden ocultar tamaños",
+    "apiDurationSumMs": "Suma de duration de recursos /api/; solicitudes paralelas se suman. No es CPU ni tiempo total de navegación",
+    "rows": "Conteo main tbody tr; cero en organización significa árbol, no dataset vacío",
+    "heap": "Tomé performance.memory.usedJSHeapSize como observación Chromium; no forcé GC ni deduzco leak o limpieza de memoria",
+    "privacy": "Conservo sólo agregados, rutas sin query y IDs normalizados. No HAR, payloads, nombres, cookies, credenciales ni screenshots con datos personales"
+  },
+  "apiRoutePatterns": {
+    "entry": ["/api/auth/context/", "/api/me/preferences/appearance/design-system/", "/api/usuarios/:id/", "/api/poligonos/", "/api/lecciones/", "/api/lecciones/:id/resultados-resumen/"],
+    "dashboardReturn": ["/api/usuarios/:id/", "/api/poligonos/", "/api/lecciones/", "/api/lecciones/:id/resultados-resumen/"],
+    "organization": ["/api/organization-units/"],
+    "exercises": ["/api/ejercicios/"],
+    "appearance": []
+  },
+  "samples": [
+    {"run": 1, "steps": [
+      {"path":"/","entry":true,"timeToUsefulMs":264.9,"rows":1,"resourceCount":113,"transferBytes":31351,"encodedBytes":7670806,"decodedBytes":7702200,"apiRequests":6,"apiDurationSumMs":172,"usedJSHeapBytes":29525640},
+      {"path":"/organizacion/unidades","timeToUsefulMs":189,"rows":0,"resourceCount":1,"transferBytes":1909,"encodedBytes":1609,"decodedBytes":1609,"apiRequests":1,"apiDurationSumMs":16.8,"usedJSHeapBytes":31347414},
+      {"path":"/","timeToUsefulMs":203.7,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":118.9,"usedJSHeapBytes":30800077},
+      {"path":"/tiro/ejercicios","timeToUsefulMs":172.2,"rows":3,"resourceCount":1,"transferBytes":1190,"encodedBytes":890,"decodedBytes":890,"apiRequests":1,"apiDurationSumMs":16.5,"usedJSHeapBytes":31586714},
+      {"path":"/","timeToUsefulMs":208.9,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":124.9,"usedJSHeapBytes":31268297},
+      {"path":"/personalizador","timeToUsefulMs":160,"rows":0,"resourceCount":0,"transferBytes":0,"encodedBytes":0,"decodedBytes":0,"apiRequests":0,"apiDurationSumMs":0,"usedJSHeapBytes":32432000},
+      {"path":"/","timeToUsefulMs":210.5,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":136.8,"usedJSHeapBytes":33161912}
+    ]},
+    {"run": 2, "steps": [
+      {"path":"/","entry":true,"timeToUsefulMs":218.8,"rows":1,"resourceCount":123,"transferBytes":31351,"encodedBytes":7905218,"decodedBytes":7936612,"apiRequests":6,"apiDurationSumMs":272.3,"usedJSHeapBytes":36473711},
+      {"path":"/organizacion/unidades","timeToUsefulMs":179.6,"rows":0,"resourceCount":1,"transferBytes":1909,"encodedBytes":1609,"decodedBytes":1609,"apiRequests":1,"apiDurationSumMs":16.1,"usedJSHeapBytes":36393341},
+      {"path":"/","timeToUsefulMs":204.3,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":117.1,"usedJSHeapBytes":37131293},
+      {"path":"/tiro/ejercicios","timeToUsefulMs":173.4,"rows":3,"resourceCount":1,"transferBytes":1190,"encodedBytes":890,"decodedBytes":890,"apiRequests":1,"apiDurationSumMs":18,"usedJSHeapBytes":37911919},
+      {"path":"/","timeToUsefulMs":191.5,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":134.3,"usedJSHeapBytes":38637055},
+      {"path":"/personalizador","timeToUsefulMs":361.4,"rows":0,"resourceCount":6,"transferBytes":0,"encodedBytes":0,"decodedBytes":0,"apiRequests":0,"apiDurationSumMs":0,"usedJSHeapBytes":34028124},
+      {"path":"/","timeToUsefulMs":241,"rows":1,"resourceCount":4,"transferBytes":2312,"encodedBytes":1112,"decodedBytes":1112,"apiRequests":4,"apiDurationSumMs":134.5,"usedJSHeapBytes":34756089}
+    ]}
+  ],
+  "productionBuild": {
+    "separateFromDevMetrics": true,
+    "elapsedSecondsReported": 2.81,
+    "modulesTransformed": 144,
+    "jsChunksReported": 1,
+    "sizesUnit": "kB decimales redondeados por Vite; no tamaños exactos en bytes",
+    "artifacts": [
+      {"path":"front/dist/index.html","kB":0.94,"gzipKB":0.50},
+      {"path":"front/dist/assets/index-D28NSkJf.css","kB":200.04,"gzipKB":30.24},
+      {"path":"front/dist/assets/index-BtztZEAT.js","kB":856.24,"gzipKB":217.14}
+    ],
+    "warnings": ["Some chunks are larger than 500 kB after minification"],
+    "interpretation": "Registro warning y tamaños; no demuestro rendimiento runtime de producción ni aplico sus sugerencias"
+  },
+  "limitations": [
+    "No acredito alias A1 del principal existente; para una comparación por actor necesito confirmación externa",
+    "No congelé dataset ni versión del worktree; los conteos y bytes API observados coinciden entre muestras, pero eso no demuestra igualdad de contenido",
+    "DEV y caché caliente: no comparo métricas de red con chunks de producción. Recuento estático difiere entre entradas (113 frente a 123), sin diagnóstico causal",
+    "No medí búsqueda, orden, ficha, pestañas, consumos, CPU ni Core Web Vitals. Este paquete es navegación de lectura limitada, no T10 completo",
+    "No demuestro limpieza ni estabilidad de memoria con dos muestras y sin GC controlado",
+    "No medí primer instante de filas visibles; el proxy usa ausencia de carga y conteos DOM tras espera de 100 ms",
+    "La consola del navegador informó 7 errores previos; no inspeccioné payloads ni diagnostiqué su causa",
+    "Primer recorrido instrumental abortó al encontrar enlace de apariencia oculto; lo descarté y repetí dos recorridos completos abriendo el menú real",
+    "No hubo optimización, escrituras de apariencia, registros nuevos, instalaciones ni cambios de backend"
+  ],
+  "review": "Entrego evidencia para interpretación estrecha de Hasted; no fijo presupuestos, targets ni veredicto de performance"
+}
